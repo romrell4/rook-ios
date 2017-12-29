@@ -6,7 +6,7 @@
 //  Copyright © 2017 Eric Romrell. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class RookCard {
 	
@@ -15,8 +15,18 @@ class RookCard {
 	enum Suit : String {
 		case rook, red, green, yellow, black
 		
-		var description: String {
+		var text: String {
 			return self.rawValue.uppercased()
+		}
+		
+		var color: UIColor {
+			switch self {
+				case .red	: 	return UIColor(r: 237, g:  37, b:  50)
+				case .green : 	return UIColor(r:  36, g: 193, b:  80)
+				case .yellow: 	return UIColor(r: 242, g: 199, b:  58)
+				case .black : 	return .black
+				default		: 	return .black
+			}
 		}
 		
 		static let validSuits: [Suit] = [.rook, .red, .green, .yellow, .black]

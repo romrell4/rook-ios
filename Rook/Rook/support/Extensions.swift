@@ -13,3 +13,9 @@ extension UIColor {
 		self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: alpha)
 	}
 }
+
+extension UIImage {
+	convenience init?(named name: String, inView vc: UIView) {
+		self.init(named: name, in: Bundle(for: type(of: vc)), compatibleWith: vc.traitCollection)
+	}
+}

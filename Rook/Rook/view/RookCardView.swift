@@ -12,13 +12,8 @@ import UIKit
 class RookCardView: UIView {
 	
 	private struct UI {
-		static let suitColors: [RookCard.Suit : UIColor] = [
-			.rook   : UIColor(r:  34, g: 193, b: 196),
-			.red    : UIColor(r: 237, g:  37, b:  50),
-			.green  : UIColor(r:  36, g: 193, b:  80),
-			.yellow : UIColor(r: 242, g: 199, b:  58),
-			.black  : UIColor.black
-		]
+		static let rookImageName = "RookSquare"
+		static let fontName = "Palatino-Bold"
 		static let underlinedRanks = [6, 9]
 	}
 	
@@ -35,9 +30,9 @@ class RookCardView: UIView {
 		set { card.rank = newValue }
 	}
 	@IBInspectable var suit: String {
-		get { return card.suit.description }
+		get { return card.suit.text.uppercased() }
 		set {
-			if let suit = RookCard.Suit(rawValue: newValue) {
+			if let suit = RookCard.Suit(rawValue: newValue.lowercased()) {
 				card.suit = suit
 			}
 		}
@@ -86,22 +81,154 @@ class RookCardView: UIView {
 	
 	override func draw(_ rect: CGRect) {
 		drawBaseCard()
+		
+		if card.isFaceUp {
+			drawFront()
+		}
 	}
 	
 	private func drawBaseCard() {
 		let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
 		roundedRect.addClip()
 		
-		_ = pushContext()
+		pushContext()
 		UIColor.white.setFill()
 		UIRectFill(bounds)
 		popContext()
 	}
 	
-	private func pushContext() -> CGContext? {
+	private func drawFront() {
+		if card.suit == .rook {
+			drawRook()
+		} else {
+			drawCenter()
+		}
+		
+		drawCorners()
+	}
+	
+	private func drawRook() {
+		guard let rookImage = UIImage(named: UI.rookImageName, inView: self) else { return }
+		
+		let width = bounds.width - (2 * centerImageMargin)
+		let imageRect = CGRect(x: centerImageMargin, y: (bounds.height - width) / 2, width: width, height: width)
+		rookImage.draw(in: imageRect)
+	}
+	
+	private func drawCenter() {
+		//Draw rank
+		let font = rookCardFont(ofSize: centerFontSize)
+		let rankText = NSAttributedString(string: "\(card.rank)", attributes: [
+			.font: font,
+			.foregroundColor: card.suit.color
+		])
+		var textRect = CGRect.zero
+		textRect.size = rankText.size()
+		textRect.origin = CGPoint(x: (bounds.width - textRect.width) / 2, y: (bounds.height - textRect.height) / 2)
+		rankText.draw(in: textRect)
+		
+		if UI.underlinedRanks.contains(rank) {
+			let underline = UIBezierPath()
+			let yOffset = textRect.origin.y + textRect.height + font.descender + underlineOffset
+			
+			pushContext()
+			card.suit.color.setStroke()
+			underline.move(to: CGPoint(x: textRect.origin.x + underlineInset, y: yOffset))
+			underline.addLine(to: CGPoint(x: textRect.origin.x + textRect.width - underlineOffset, y: yOffset))
+			underline.lineWidth = underlineStrokeWidth
+			underline.stroke()
+			popContext()
+		}
+		
+		//Draw square
+		let square = UIBezierPath()
+		let width = bounds.width - (2 * squareMargin)
+		let yOffset = (bounds.height - width) / 2
+		
+		pushContext()
+		card.suit.color.setStroke()
+		square.lineWidth = squareStrokeWidth
+		square.move(to: CGPoint(x: squareMargin, y: yOffset))
+		square.addLine(to: CGPoint(x: squareMargin + width, y: yOffset))
+		square.addLine(to: CGPoint(x: squareMargin + width, y: yOffset + width))
+		square.addLine(to: CGPoint(x: squareMargin, y: yOffset + width))
+		square.close()
+		square.stroke()
+		popContext()
+	}
+	
+	private func drawCorners() {
+		//Setup the suit (it will be used
+		let suitFont = rookCardFont(ofSize: cornerSuitFontSize)
+		let suitText = NSAttributedString(string: "\(card.suit.text)", attributes: [
+			.font: suitFont,
+			.foregroundColor: card.suit.color
+		])
+		var suitRect = CGRect.zero
+		suitRect.size = suitText.size()
+		
+		if card.suit == .rook {
+			//Setup the rook image
+			guard let rookImage = UIImage(named: UI.rookImageName, inView: self) else {
+				return
+			}
+			
+			let rookRect = CGRect(x: cornerXOffset, y: cornerYOffset, width: cornerImageWidth, height: cornerImageWidth)
+			
+			//Make the suitRect fit to the side of the rank
+			suitRect.origin = CGPoint(x: cornerXOffset + cornerImageWidth + cornerSuitOffset, y: cornerYOffset)
+			
+			//Draw the rank and the suit name
+			rookImage.draw(in: rookRect)
+			suitText.draw(in: suitRect)
+			
+			//Do it again upside down
+			pushContextAndFlipUpsideDown()
+			rookImage.draw(in: rookRect)
+			suitText.draw(in: suitRect)
+			popContext()
+		} else {
+			//Setup the rank
+			let rankFont = rookCardFont(ofSize: cornerRankFontSize)
+			let rankText = NSAttributedString(string: "\(card.rank)", attributes: [
+				.font: rankFont,
+				.foregroundColor: card.suit.color
+				])
+			var rankRect = CGRect.zero
+			rankRect.size = rankText.size()
+			rankRect.origin = CGPoint(x: cornerXOffset, y: cornerYOffset - rankFont.lineHeight + rankFont.capHeight - rankFont.descender)
+			
+			//Make the suitRect fit to the side of the rank
+			suitRect.origin = CGPoint(x: cornerXOffset + rankText.size().width + cornerSuitOffset, y: cornerYOffset)
+			
+			//Draw the rank and the suit name
+			rankText.draw(in: rankRect)
+			suitText.draw(in: suitRect)
+			
+			//Do it again upside down
+			pushContextAndFlipUpsideDown()
+			rankText.draw(in: rankRect)
+			suitText.draw(in: suitRect)
+			popContext()
+		}
+	}
+	
+	//MARK: Helpers
+	
+	private func rookCardFont(ofSize fontSize: CGFloat) -> UIFont {
+		guard let font = UIFont(name: UI.fontName, size: fontSize) else { return UIFont.preferredFont(forTextStyle: .body) }
+		return font
+	}
+	
+	private func pushContext() {
+		UIGraphicsGetCurrentContext()?.saveGState()
+	}
+	
+	private func pushContextAndFlipUpsideDown() {
 		let context = UIGraphicsGetCurrentContext()
 		context?.saveGState()
-		return context
+		context?.translateBy(x: bounds.width, y: bounds.height)
+		context?.rotate(by: CGFloat(Double.pi))
 	}
 	
 	private func popContext() {
