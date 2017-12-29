@@ -12,6 +12,9 @@
 		0C588FCB1FF6B3EF00D6831E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FC91FF6B3EF00D6831E /* Main.storyboard */; };
 		0C588FCD1FF6B3EF00D6831E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FCC1FF6B3EF00D6831E /* Assets.xcassets */; };
 		0C588FD01FF6B3EF00D6831E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FCE1FF6B3EF00D6831E /* LaunchScreen.storyboard */; };
+		0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDB1FF6BB0300D6831E /* RookCardView.swift */; };
+		0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDD1FF6BC6700D6831E /* RookCard.swift */; };
+		0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDF1FF6C23C00D6831E /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		0C588FCC1FF6B3EF00D6831E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C588FCF1FF6B3EF00D6831E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0C588FD11FF6B3EF00D6831E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0C588FDB1FF6BB0300D6831E /* RookCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCardView.swift; sourceTree = "<group>"; };
+		0C588FDD1FF6BC6700D6831E /* RookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCard.swift; sourceTree = "<group>"; };
+		0C588FDF1FF6C23C00D6831E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +60,49 @@
 		0C588FC41FF6B3EF00D6831E /* Rook */ = {
 			isa = PBXGroup;
 			children = (
-				0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */,
-				0C588FC71FF6B3EF00D6831E /* ViewController.swift */,
-				0C588FC91FF6B3EF00D6831E /* Main.storyboard */,
-				0C588FCC1FF6B3EF00D6831E /* Assets.xcassets */,
-				0C588FCE1FF6B3EF00D6831E /* LaunchScreen.storyboard */,
+				0C588FD91FF6B9C600D6831E /* view */,
+				0C588FD81FF6B9C200D6831E /* controller */,
+				0C588FD71FF6B9BB00D6831E /* model */,
+				0C588FDA1FF6B9CA00D6831E /* support */,
 				0C588FD11FF6B3EF00D6831E /* Info.plist */,
 			);
 			path = Rook;
+			sourceTree = "<group>";
+		};
+		0C588FD71FF6B9BB00D6831E /* model */ = {
+			isa = PBXGroup;
+			children = (
+				0C588FDD1FF6BC6700D6831E /* RookCard.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		0C588FD81FF6B9C200D6831E /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */,
+				0C588FC71FF6B3EF00D6831E /* ViewController.swift */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		0C588FD91FF6B9C600D6831E /* view */ = {
+			isa = PBXGroup;
+			children = (
+				0C588FCC1FF6B3EF00D6831E /* Assets.xcassets */,
+				0C588FCE1FF6B3EF00D6831E /* LaunchScreen.storyboard */,
+				0C588FC91FF6B3EF00D6831E /* Main.storyboard */,
+				0C588FDB1FF6BB0300D6831E /* RookCardView.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		0C588FDA1FF6B9CA00D6831E /* support */ = {
+			isa = PBXGroup;
+			children = (
+				0C588FDF1FF6C23C00D6831E /* Extensions.swift */,
+			);
+			path = support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,8 +177,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */,
 				0C588FC81FF6B3EF00D6831E /* ViewController.swift in Sources */,
 				0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */,
+				0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */,
+				0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
