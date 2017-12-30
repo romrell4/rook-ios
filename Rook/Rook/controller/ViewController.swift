@@ -18,6 +18,7 @@ class ViewController: UIViewController {
 	
 	//Computed
 	private var myCards: [RookCard] { return game.players.first?.cards ?? [] }
+	
 	private var cardHeight: CGFloat { return view.frame.height * 0.3 }
 	private var cardWidth: CGFloat { return cardHeight * cardAspectRatio }
 	private var cardSpacing: CGFloat {
@@ -44,10 +45,6 @@ class ViewController: UIViewController {
 	}
 	
 	//MARK: Private functions
-	
-	private func createStackView() {
-		
-	}
 	
 	private func drawCards() {
 		//TODO: Identify "me" better than using the first
