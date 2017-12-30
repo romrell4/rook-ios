@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0C06A0651FF70CF900797ABD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C06A0641FF70CF900797ABD /* Assets.xcassets */; };
+		0C06A0671FF748D400797ABD /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C06A0661FF748D400797ABD /* Game.swift */; };
+		0C06A0691FF74B7600797ABD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C06A0681FF74B7600797ABD /* Player.swift */; };
 		0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */; };
 		0C588FC81FF6B3EF00D6831E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC71FF6B3EF00D6831E /* ViewController.swift */; };
 		0C588FCB1FF6B3EF00D6831E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FC91FF6B3EF00D6831E /* Main.storyboard */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		0C06A0641FF70CF900797ABD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0C06A0661FF748D400797ABD /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		0C06A0681FF74B7600797ABD /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0C588FC21FF6B3EF00D6831E /* Rook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C588FC71FF6B3EF00D6831E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +76,8 @@
 		0C588FD71FF6B9BB00D6831E /* model */ = {
 			isa = PBXGroup;
 			children = (
+				0C06A0661FF748D400797ABD /* Game.swift */,
+				0C06A0681FF74B7600797ABD /* Player.swift */,
 				0C588FDD1FF6BC6700D6831E /* RookCard.swift */,
 			);
 			path = model;
@@ -178,8 +184,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */,
+				0C06A0671FF748D400797ABD /* Game.swift in Sources */,
 				0C588FC81FF6B3EF00D6831E /* ViewController.swift in Sources */,
 				0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */,
+				0C06A0691FF74B7600797ABD /* Player.swift in Sources */,
 				0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */,
 				0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */,
 			);

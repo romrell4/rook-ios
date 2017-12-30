@@ -12,6 +12,7 @@ import UIKit
 class RookCardView: UIView {
 	
 	private struct UI {
+		static let aspectRatio: CGFloat = 0.7
 		static let backText = "ROOK"
 		static let rookImageName = "RookSquare"
 		static let backImageName = "RookBack"
@@ -22,26 +23,21 @@ class RookCardView: UIView {
 	//MARK: Public properties
 	var card = RookCard()
 	
-	//MARK: Inspectable properties
-	@IBInspectable var isFaceUp: Bool {
+	//Inspectable properties
+	@IBInspectable private var isFaceUp: Bool {
 		get { return card.isFaceUp }
 		set { card.isFaceUp = newValue }
 	}
-	@IBInspectable var rank: Int {
+	@IBInspectable private var rank: Int {
 		get { return card.rank }
 		set { card.rank = newValue }
 	}
-	@IBInspectable var suit: String {
-		get { return card.suit.text.uppercased() }
-		set {
-			if let suit = RookCard.Suit(rawValue: newValue.lowercased()) {
-				card.suit = suit
-			}
-		}
+	@IBInspectable private var suit: String {
+		get { return card.suit.text }
+		set { card.suit = RookCard.Suit.fromText(text: newValue) }
 	}
 	
-	//MARK: Computed properties
-	
+	//Computed properties
 	private var centerFontSize       : CGFloat { return bounds.width * 0.55 }
 	private var centerImageMargin    : CGFloat { return bounds.width * 0.15 }
 	private var cornerImageWidth     : CGFloat { return bounds.width * 0.18 }
@@ -61,6 +57,16 @@ class RookCardView: UIView {
 	private var backImageMargin		 : CGFloat { return bounds.width * 0.2 }
 	
 	//MARK: Initializers
+	
+	init(card: RookCard, width: CGFloat) {
+		self.init()
+		self.card = card
+		NSLayoutConstraint.activate([
+			widthAnchor.constraint(equalToConstant: width),
+			widthAnchor.constraint(equalTo: heightAnchor, multiplier: UI.aspectRatio)
+		])
+		setup()
+	}
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -101,6 +107,8 @@ class RookCardView: UIView {
 		pushContext()
 		UIColor.white.setFill()
 		UIRectFill(bounds)
+		roundedRect.lineWidth = 0.5
+		roundedRect.stroke()
 		popContext()
 	}
 	
