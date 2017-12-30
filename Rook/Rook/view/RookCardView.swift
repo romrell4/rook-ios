@@ -8,11 +8,12 @@
 
 import UIKit
 
+let cardAspectRatio: CGFloat = 0.7
+
 @IBDesignable
 class RookCardView: UIView {
 	
 	private struct UI {
-		static let aspectRatio: CGFloat = 0.7
 		static let backText = "ROOK"
 		static let rookImageName = "RookSquare"
 		static let backImageName = "RookBack"
@@ -58,12 +59,12 @@ class RookCardView: UIView {
 	
 	//MARK: Initializers
 	
-	init(card: RookCard, width: CGFloat) {
+	init(card: RookCard, height: CGFloat) {
 		self.init()
 		self.card = card
 		NSLayoutConstraint.activate([
-			widthAnchor.constraint(equalToConstant: width),
-			widthAnchor.constraint(equalTo: heightAnchor, multiplier: UI.aspectRatio)
+			heightAnchor.constraint(equalToConstant: height),
+			widthAnchor.constraint(equalTo: heightAnchor, multiplier: cardAspectRatio)
 		])
 		setup()
 	}

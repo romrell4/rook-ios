@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="-75" translatesAutoresizingMaskIntoConstraints="NO" id="3sY-hJ-PMs">
-                                <rect key="frame" x="281" y="215" width="105" height="150"/>
+                                <rect key="frame" x="281" y="217" width="105" height="150"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yng-3X-1Xx" customClass="RookCardView" customModule="Rook" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="105" height="150"/>
@@ -45,10 +45,8 @@
                         <constraints>
                             <constraint firstItem="3sY-hJ-PMs" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="1Ni-P4-gRK"/>
                             <constraint firstItem="ViN-sX-dwA" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="2wN-sp-Nab"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="3sY-hJ-PMs" secondAttribute="bottom" constant="10" id="DYG-si-lUD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="3sY-hJ-PMs" secondAttribute="bottom" constant="8" id="DYG-si-lUD"/>
                             <constraint firstItem="ViN-sX-dwA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Gky-ek-IV3"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3sY-hJ-PMs" secondAttribute="trailing" constant="25" id="aMd-9l-Ibi"/>
-                            <constraint firstItem="3sY-hJ-PMs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="25" id="ekK-4n-ltl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
