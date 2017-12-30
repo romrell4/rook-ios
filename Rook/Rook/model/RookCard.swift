@@ -72,7 +72,10 @@ class RookCard: Comparable {
 	
 	static func <(lhs: RookCard, rhs: RookCard) -> Bool {
 		if lhs.suit == rhs.suit {
-			return lhs.rank < rhs.rank
+			//Make the ones act like fifteens for sorting purposes
+			let lRank = lhs.rank == 1 ? 15: lhs.rank
+			let rRank = rhs.rank == 1 ? 15: rhs.rank
+			return lRank < rRank
 		}
 		return lhs.suit.rawValue < rhs.suit.rawValue
 	}
