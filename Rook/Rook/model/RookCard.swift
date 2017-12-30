@@ -21,9 +21,9 @@ class RookCard {
 		
 		var color: UIColor {
 			switch self {
-				case .red	: 	return UIColor(r: 237, g:  37, b:  50)
-				case .green : 	return UIColor(r:  36, g: 193, b:  80)
-				case .yellow: 	return UIColor(r: 242, g: 199, b:  58)
+				case .red	: 	return .rookRed
+				case .green : 	return .rookGreen
+				case .yellow: 	return .rookYellow
 				case .black : 	return .black
 				default		: 	return .black
 			}

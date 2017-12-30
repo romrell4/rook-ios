@@ -12,7 +12,9 @@ import UIKit
 class RookCardView: UIView {
 	
 	private struct UI {
+		static let backText = "ROOK"
 		static let rookImageName = "RookSquare"
+		static let backImageName = "RookBack"
 		static let fontName = "Palatino-Bold"
 		static let underlinedRanks = [6, 9]
 	}
@@ -54,6 +56,9 @@ class RookCardView: UIView {
 	private var underlineOffset      : CGFloat { return bounds.width * 0.0333 }
 	private var underlineInset       : CGFloat { return bounds.width * 0.0222 }
 	private var underlineStrokeWidth : CGFloat { return bounds.width * 0.0111 }
+	private var backFontSize		 : CGFloat { return bounds.width * 0.25 }
+	private var backMargin	 		 : CGFloat { return bounds.width * 0.04 }
+	private var backImageMargin		 : CGFloat { return bounds.width * 0.2 }
 	
 	//MARK: Initializers
 	
@@ -84,6 +89,8 @@ class RookCardView: UIView {
 		
 		if card.isFaceUp {
 			drawFront()
+		} else {
+			drawBack()
 		}
 	}
 	
@@ -193,7 +200,7 @@ class RookCardView: UIView {
 			let rankText = NSAttributedString(string: "\(card.rank)", attributes: [
 				.font: rankFont,
 				.foregroundColor: card.suit.color
-				])
+			])
 			var rankRect = CGRect.zero
 			rankRect.size = rankText.size()
 			rankRect.origin = CGPoint(x: cornerXOffset, y: cornerYOffset - rankFont.lineHeight + rankFont.capHeight - rankFont.descender)
@@ -211,6 +218,34 @@ class RookCardView: UIView {
 			suitText.draw(in: suitRect)
 			popContext()
 		}
+	}
+	
+	private func drawBack() {
+		//Draw the background
+		if let image = UIImage(named: UI.backImageName, inView: self) {
+			let imageRect = CGRect(x: backMargin, y: backMargin, width: bounds.width - (2 * backMargin), height: bounds.height - (2 * backMargin))
+			image.draw(in: imageRect)
+		}
+		
+		//Draw the image/text
+		guard let image = UIImage(named: UI.rookImageName, inView: self) else { return }
+		let text = NSAttributedString(string: UI.backText, attributes: [
+			.font: rookCardFont(ofSize: backFontSize),
+			.strokeColor: UIColor.black,
+			.strokeWidth: -3.0,
+			.foregroundColor: UIColor.rookYellow
+		])
+		
+		var textRect = CGRect.zero
+		textRect.size = text.size()
+		
+		let width = bounds.width - (2 * backImageMargin)
+		let totalHeight = width + textRect.height
+		let imageRect = CGRect(x: backImageMargin, y: (bounds.height - totalHeight) / 2, width: width, height: width)
+		textRect.origin = CGPoint(x: (bounds.width - textRect.width) / 2, y: (bounds.height - totalHeight) / 2 + width)
+
+		image.draw(in: imageRect)
+		text.draw(in: textRect)
 	}
 	
 	//MARK: Helpers
