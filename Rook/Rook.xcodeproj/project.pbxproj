@@ -11,6 +11,7 @@
 		0C06A0671FF748D400797ABD /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C06A0661FF748D400797ABD /* Game.swift */; };
 		0C06A0691FF74B7600797ABD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C06A0681FF74B7600797ABD /* Player.swift */; };
 		0C0B738C1FF89E4300537352 /* RookCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0B738B1FF89E4300537352 /* RookCardContainerView.swift */; };
+		0C0B738E1FF99FBA00537352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C0B738D1FF99FBA00537352 /* GoogleService-Info.plist */; };
 		0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */; };
 		0C588FC81FF6B3EF00D6831E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC71FF6B3EF00D6831E /* ViewController.swift */; };
 		0C588FCB1FF6B3EF00D6831E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FC91FF6B3EF00D6831E /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 		0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDB1FF6BB0300D6831E /* RookCardView.swift */; };
 		0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDD1FF6BC6700D6831E /* RookCard.swift */; };
 		0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDF1FF6C23C00D6831E /* Extensions.swift */; };
+		6064D9B2147572760D31F047 /* Pods_Rook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		0C06A0661FF748D400797ABD /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		0C06A0681FF74B7600797ABD /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0C0B738B1FF89E4300537352 /* RookCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCardContainerView.swift; sourceTree = "<group>"; };
+		0C0B738D1FF99FBA00537352 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0C335093905C61357010788E /* Pods-Rook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.release.xcconfig"; sourceTree = "<group>"; };
 		0C588FC21FF6B3EF00D6831E /* Rook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C588FC71FF6B3EF00D6831E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +38,8 @@
 		0C588FDB1FF6BB0300D6831E /* RookCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCardView.swift; sourceTree = "<group>"; };
 		0C588FDD1FF6BC6700D6831E /* RookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCard.swift; sourceTree = "<group>"; };
 		0C588FDF1FF6C23C00D6831E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA6B72E8BFF4A0A7B4221871 /* Pods-Rook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6064D9B2147572760D31F047 /* Pods_Rook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +59,8 @@
 			children = (
 				0C588FC41FF6B3EF00D6831E /* Rook */,
 				0C588FC31FF6B3EF00D6831E /* Products */,
+				B876F69DD4EAFB690E71F978 /* Pods */,
+				9F642A5B0CDAACB04BA90FAD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +80,7 @@
 				0C588FD71FF6B9BB00D6831E /* model */,
 				0C588FDA1FF6B9CA00D6831E /* support */,
 				0C588FD11FF6B3EF00D6831E /* Info.plist */,
+				0C0B738D1FF99FBA00537352 /* GoogleService-Info.plist */,
 			);
 			path = Rook;
 			sourceTree = "<group>";
@@ -88,7 +98,6 @@
 		0C588FD81FF6B9C200D6831E /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */,
 				0C588FC71FF6B3EF00D6831E /* ViewController.swift */,
 			);
 			path = controller;
@@ -109,9 +118,27 @@
 		0C588FDA1FF6B9CA00D6831E /* support */ = {
 			isa = PBXGroup;
 			children = (
+				0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */,
 				0C588FDF1FF6C23C00D6831E /* Extensions.swift */,
 			);
 			path = support;
+			sourceTree = "<group>";
+		};
+		9F642A5B0CDAACB04BA90FAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B876F69DD4EAFB690E71F978 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CA6B72E8BFF4A0A7B4221871 /* Pods-Rook.debug.xcconfig */,
+				0C335093905C61357010788E /* Pods-Rook.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,9 +148,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C588FD41FF6B3EF00D6831E /* Build configuration list for PBXNativeTarget "Rook" */;
 			buildPhases = (
+				13978C1F330646F873C00DAA /* [CP] Check Pods Manifest.lock */,
 				0C588FBE1FF6B3EF00D6831E /* Sources */,
 				0C588FBF1FF6B3EF00D6831E /* Frameworks */,
 				0C588FC01FF6B3EF00D6831E /* Resources */,
+				C6A287A3D5EEB033679B6C00 /* [CP] Embed Pods Frameworks */,
+				F456037F23570328BA35625A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -174,12 +204,69 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C588FD01FF6B3EF00D6831E /* LaunchScreen.storyboard in Resources */,
+				0C0B738E1FF99FBA00537352 /* GoogleService-Info.plist in Resources */,
 				0C06A0651FF70CF900797ABD /* Assets.xcassets in Resources */,
 				0C588FCB1FF6B3EF00D6831E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13978C1F330646F873C00DAA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Rook-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6A287A3D5EEB033679B6C00 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Rook/Pods-Rook-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rook/Pods-Rook-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F456037F23570328BA35625A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rook/Pods-Rook-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0C588FBE1FF6B3EF00D6831E /* Sources */ = {
@@ -328,6 +415,7 @@
 		};
 		0C588FD51FF6B3EF00D6831E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA6B72E8BFF4A0A7B4221871 /* Pods-Rook.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -343,6 +431,7 @@
 		};
 		0C588FD61FF6B3EF00D6831E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C335093905C61357010788E /* Pods-Rook.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
