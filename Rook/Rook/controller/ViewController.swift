@@ -9,12 +9,11 @@
 import UIKit
 
 class ViewController: UIViewController, RookCardViewDelegate {
-	
 	//MARK: Outlets
-	@IBOutlet weak var myPlayedCardView: RookCardContainerView!
-	@IBOutlet weak var leftPlayedCardView: RookCardContainerView!
-	@IBOutlet weak var middlePlayedCardView: RookCardContainerView!
-	@IBOutlet weak var rightPlayedCardView: RookCardContainerView!
+	@IBOutlet private weak var myPlayedCardView: RookCardContainerView!
+	@IBOutlet private weak var leftPlayedCardView: RookCardContainerView!
+	@IBOutlet private weak var middlePlayedCardView: RookCardContainerView!
+	@IBOutlet private weak var rightPlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var handStackView: UIStackView!
 	
 	//MARK: Private properties

@@ -7,4 +7,5 @@ target 'Rook' do
 
   # Pods for Rook
   pod 'Firebase/Core'
+  pod 'FirebaseUI/Google'
 end
