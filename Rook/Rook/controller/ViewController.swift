@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Outlets
+	@IBOutlet weak var playedCardContainerView: RookCardContainerView!
 	@IBOutlet private weak var handStackView: UIStackView!
 	
 	//MARK: Private properties
@@ -37,6 +38,16 @@ class ViewController: UIViewController {
 		drawCards()
 	}
 	
+	//MARK: RookCardViewDelegate
+	
+	func cardSelected(_ cardView: RookCardView) {
+		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
+		
+		//Remove from stack view and add to played container view
+		cardView.removeFromSuperview()
+		playedCardContainerView.cardView = RookCardView(card: cardView.card, delegate: nil)
+	}
+	
 	//MARK: Listeners
 	
 	@IBAction func redealTapped(_ sender: Any) {
@@ -52,7 +63,7 @@ class ViewController: UIViewController {
 		
 		//Remove current cards and add new cards
 		handStackView.subviews.forEach({ $0.removeFromSuperview() })
-		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, height: cardHeight)) }
+		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }
 		handStackView.spacing = cardSpacing
 	}
 }

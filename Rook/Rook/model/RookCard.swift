@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RookCard: Comparable {
+class RookCard: Comparable, CustomStringConvertible {
 	//MARK: Types
 	enum Suit: Int {
 		case red, green, yellow, black, rook
@@ -56,6 +56,10 @@ class RookCard: Comparable {
 	var isFaceUp = true
 	var suit: Suit
 	var rank: Int
+	
+	var description: String {
+		return "\(suit.text) \(rank)"
+	}
 	
 	//MARK: Initialization
 	init() {

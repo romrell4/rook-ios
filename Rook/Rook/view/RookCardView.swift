@@ -10,6 +10,10 @@ import UIKit
 
 let cardAspectRatio: CGFloat = 0.7
 
+protocol RookCardViewDelegate {
+	func cardSelected(_ cardView: RookCardView)
+}
+
 @IBDesignable
 class RookCardView: UIView {
 	
@@ -21,8 +25,11 @@ class RookCardView: UIView {
 		static let underlinedRanks = [6, 9]
 	}
 	
-	//MARK: Public properties
+	//Public properties
 	var card = RookCard()
+	
+	//Private properties
+	private var delegate: RookCardViewDelegate?
 	
 	//Inspectable properties
 	@IBInspectable private var isFaceUp: Bool {
@@ -59,13 +66,17 @@ class RookCardView: UIView {
 	
 	//MARK: Initializers
 	
-	init(card: RookCard, height: CGFloat) {
+	init(card: RookCard, delegate: RookCardViewDelegate?, height: CGFloat? = nil) {
 		self.init()
 		self.card = card
-		NSLayoutConstraint.activate([
-			heightAnchor.constraint(equalToConstant: height),
-			widthAnchor.constraint(equalTo: heightAnchor, multiplier: cardAspectRatio)
-		])
+		self.delegate = delegate
+		
+		translatesAutoresizingMaskIntoConstraints = false
+		var constraints = [widthAnchor.constraint(equalTo: heightAnchor, multiplier: cardAspectRatio)]
+		if let height = height {
+			constraints.append(heightAnchor.constraint(equalToConstant: height))
+		}
+		NSLayoutConstraint.activate(constraints)
 		setup()
 	}
 	
@@ -87,6 +98,12 @@ class RookCardView: UIView {
 	private func setup() {
 		backgroundColor = UIColor.clear
 		isOpaque = false
+	}
+	
+	//MARK: Listeners
+	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		delegate?.cardSelected(self)
 	}
 	
 	//MARK: Drawing
