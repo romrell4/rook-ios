@@ -100,7 +100,10 @@
                     </view>
                     <connections>
                         <outlet property="handStackView" destination="3sY-hJ-PMs" id="LUb-07-rpA"/>
-                        <outlet property="playedCardContainerView" destination="HQx-gB-HiS" id="r30-Du-S4I"/>
+                        <outlet property="leftPlayedCardView" destination="Siz-TL-klf" id="R2x-kY-Zsh"/>
+                        <outlet property="middlePlayedCardView" destination="EAU-r1-jxg" id="tEU-NH-CDM"/>
+                        <outlet property="myPlayedCardView" destination="HQx-gB-HiS" id="r30-Du-S4I"/>
+                        <outlet property="rightPlayedCardView" destination="9Wq-sC-ZX6" id="eN9-P4-tMZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

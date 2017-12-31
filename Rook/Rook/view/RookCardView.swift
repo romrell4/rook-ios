@@ -66,7 +66,7 @@ class RookCardView: UIView {
 	
 	//MARK: Initializers
 	
-	init(card: RookCard, delegate: RookCardViewDelegate?, height: CGFloat? = nil) {
+	init(card: RookCard, delegate: RookCardViewDelegate? = nil, height: CGFloat? = nil) {
 		self.init()
 		self.card = card
 		self.delegate = delegate

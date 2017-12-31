@@ -35,7 +35,7 @@ class Game {
 	}
 	
 	private func createPlayers() {
-		players = (1 ... 4).map { Player(name: "Player \($0)") }
+		players = (1 ... 4).map { Player(id: $0, name: "Player \($0)") }
 	}
 	
 	//MARK: Public functions
