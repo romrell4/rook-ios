@@ -21,6 +21,7 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Private properties
 	private var game = Game.instance
+	private var user: User?
 	
 	//Computed
 	private var playedCardViews: [RookCardContainerView] { return [myPlayedCardView, leftPlayedCardView, middlePlayedCardView, rightPlayedCardView] }
@@ -40,10 +41,7 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		handleLogin {
-			self.game.deal()
-			self.drawCards()
-		}
+		handleLogin()
 	}
 	
 	//MARK: RookCardViewDelegate
@@ -64,10 +62,14 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Listeners
 	
 	@IBAction func logoutTapped(_ sender: Any) {
-		do {
-			try Auth.auth().signOut()
-		} catch {
-			print("Error logging out")
+		if user == nil {
+			handleLogin()
+		} else {
+			do {
+				try Auth.auth().signOut()
+			} catch {
+				print("Error logging out")
+			}
 		}
 	}
 	
@@ -79,15 +81,19 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Private functions
 	
-	private func handleLogin(callback: @escaping () -> Void) {
+	private func handleLogin() {
 		if let authUI = FUIAuth.defaultAuthUI() {
 			let auth = Auth.auth()
 			authUI.providers = [FUIGoogleAuth()]
 			auth.addStateDidChangeListener { (auth, user) in
+				self.user = user
 				if user == nil {
+					self.navigationItem.leftBarButtonItem?.title = "Login"
 					self.present(authUI.authViewController(), animated: true, completion: nil)
 				} else {
-					callback()
+					self.navigationItem.leftBarButtonItem?.title = "Logout"
+					self.game.deal()
+					self.drawCards()
 				}
 			}
 		}

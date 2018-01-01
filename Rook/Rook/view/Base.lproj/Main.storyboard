@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="otu-z8-QzK">
-                                <rect key="frame" x="312.66666666666669" y="49" width="187" height="305"/>
+                                <rect key="frame" x="313" y="49" width="187" height="305"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Cca-PI-Fuy">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="165"/>
@@ -65,9 +65,18 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="-75" translatesAutoresizingMaskIntoConstraints="NO" id="3sY-hJ-PMs">
-                                        <rect key="frame" x="51.666666666666629" y="185" width="84" height="120"/>
+                                        <rect key="frame" x="51.333333333333314" y="185" width="84" height="120"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U6p-3S-VCJ">
+                                                <rect key="frame" x="0.0" y="0.0" width="84" height="120"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="U6p-3S-VCJ" secondAttribute="height" multiplier="7:10" id="vrj-qv-gMd"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="120" id="3x4-wN-GOk"/>
+                                            <constraint firstAttribute="height" constant="120" placeholder="YES" id="3x4-wN-GOk"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
