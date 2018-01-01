@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuthUI
+import FirebaseGoogleAuthUI
 
 class ViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Outlets
@@ -26,7 +29,7 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 300) }
 	private var cardWidth: CGFloat { return cardHeight * cardAspectRatio }
 	private var cardSpacing: CGFloat {
-		guard me.cards.count > 1 else { return 0 } //Avoid divide by zero errors
+		if me.cards.count > 1 { return 0 } //Avoid divide by zero errors
 		
 		//For spacing, we get 80% of the width, minus one card's width (which will display completely)
 		let availSpaceWidth = view.frame.width * 0.8 - cardWidth
@@ -37,8 +40,10 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		game.deal()
-		drawCards()
+		handleLogin {
+			self.game.deal()
+			self.drawCards()
+		}
 	}
 	
 	//MARK: RookCardViewDelegate
@@ -58,6 +63,14 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Listeners
 	
+	@IBAction func logoutTapped(_ sender: Any) {
+		do {
+			try Auth.auth().signOut()
+		} catch {
+			print("Error logging out")
+		}
+	}
+	
 	@IBAction func redealTapped(_ sender: Any) {
 		playedCardViews.forEach({ $0.cardView = nil })
 		game.deal()
@@ -65,6 +78,20 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	//MARK: Private functions
+	
+	private func handleLogin(callback: @escaping () -> Void) {
+		if let authUI = FUIAuth.defaultAuthUI() {
+			let auth = Auth.auth()
+			authUI.providers = [FUIGoogleAuth()]
+			auth.addStateDidChangeListener { (auth, user) in
+				if user == nil {
+					self.present(authUI.authViewController(), animated: true, completion: nil)
+				} else {
+					callback()
+				}
+			}
+		}
+	}
 	
 	private func drawCards() {
 		//Remove current cards and add new cards
@@ -74,4 +101,3 @@ class ViewController: UIViewController, RookCardViewDelegate {
 		handStackView.spacing = cardSpacing
 	}
 }
-
