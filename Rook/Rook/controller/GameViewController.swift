@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Outlets
@@ -37,11 +38,20 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//TODO: Don't default to 4
-		if game.join(), game.players.count == 4 {
-			game.deal()
-			drawCards()
+		DB.playersRef(gameId: game.id).observe(.childAdded) { (snapshot) in
+			let player = Player(snapshot: snapshot)
+			if !self.game.players.contains(player) {
+				self.game.players.append(player)
+			}
+			
+			//TODO: Don't default to 4
+			if self.game.players.count == 4 {
+				self.game.deal()
+				self.drawCards()
+			}
 		}
+		
+		game.join()
 	}
 	
 	//MARK: RookCardViewDelegate
@@ -62,9 +72,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Listeners
 	
 	@IBAction func leaveTapped(_ sender: Any) {
-		if game.leave() {
-			dismiss(animated: true)
-		}
+		game.leave()
+		dismiss(animated: true)
 	}
 	
 	@IBAction func redealTapped(_ sender: Any) {

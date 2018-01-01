@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseDatabase
 
 class Player: Equatable, CustomStringConvertible {
 	private struct Keys {
@@ -25,6 +26,11 @@ class Player: Equatable, CustomStringConvertible {
 	
 	var description: String {
 		return name ?? "Unknown"
+	}
+	
+	convenience init(snapshot: DataSnapshot) {
+		guard let dict = snapshot.value as? [String: Any] else { fatalError() }
+		self.init(id: snapshot.key, dict: dict)
 	}
 	
 	convenience init(id: String, dict: [String: Any]) {

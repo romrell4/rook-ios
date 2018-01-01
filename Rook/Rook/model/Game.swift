@@ -19,8 +19,8 @@ class Game {
 	}
 	
 	//MARK: Public properties
-	var id: String?
-	var name: String?
+	var id: String
+	var name: String
 	var players: [Player]
 	var kitty = [RookCard]() //Not serialized when saved
 	
@@ -30,17 +30,21 @@ class Game {
 		guard let dict = snapshot.value as? [String: Any] else {
 			fatalError()
 		}
+		self.init(id: snapshot.key, dict: dict)
+	}
+	
+	convenience init(id: String, dict: [String: Any]) {
 		let playersDict = dict[Keys.players] as? [String: Any] ?? [:]
 		let players = playersDict.map { (tuple) -> Player in
 			if let dict = tuple.value as? [String: Any] {
 				return Player(id: tuple.key, dict: dict)
 			}
-			fatalError("Invalid model")
+			fatalError()
 		}
-		self.init(id: snapshot.key, name: dict[Keys.name] as? String, players: players)
+		self.init(id: id, name: dict[Keys.name] as? String ?? "", players: players)
 	}
 	
-	init(id: String? = nil, name: String?, players: [Player] = []) {
+	init(id: String, name: String, players: [Player] = []) {
 		self.id = id
 		self.name = name
 		self.players = players
@@ -48,22 +52,18 @@ class Game {
 	
 	//MARK: Public functions
 	
-	func join() -> Bool {
-		if let me = Player.currentPlayer, let id = id {
+	func join() {
+		if let me = Player.currentPlayer {
 			players.append(me)
 			DB.joinGame(gameId: id, player: me)
-			return true
 		}
-		return false
 	}
 	
-	func leave() -> Bool {
-		if let me = Player.currentPlayer, let playerId = me.id, let gameId = id {
+	func leave() {
+		if let me = Player.currentPlayer, let playerId = me.id {
 			players.remove { $0 == me }
-			DB.leaveGame(gameId: gameId, playerId: playerId)
-			return true
+			DB.leaveGame(gameId: id, playerId: playerId)
 		}
-		return false
 	}
 	
 	func deal() {
@@ -79,7 +79,6 @@ class Game {
 	}
 	
 	func toDict() -> [String: Any] {
-		guard let name = name else { return [:] }
 		return [
 			Keys.name: name,
 			Keys.players: players.map({ return $0.toDict() })

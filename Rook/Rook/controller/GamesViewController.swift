@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuthUI
 import FirebaseGoogleAuthUI
+import FirebaseDatabase
 
 class GamesViewController: UITableViewController {
 	
@@ -52,13 +53,10 @@ class GamesViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-		let game = games.remove(at: indexPath.row)
 		tableView.deleteRows(at: [indexPath], with: .automatic)
 		
 		//Delete it from Firebase (so that is gets deleted from other devices)
-		if let id = game.id {
-			DB.gameRef(id: id).removeValue()
-		}
+		DB.gameRef(id: games.remove(at: indexPath.row).id).removeValue()
 	}
 	
 	//MARK: Listeners
@@ -75,7 +73,8 @@ class GamesViewController: UITableViewController {
 	}
 	
 	@IBAction func addTapped(_ sender: Any) {
-		DB.gamesRef.childByAutoId().setValue(Game(name: "Test").toDict())
+		let gameId = DB.gamesRef.childByAutoId().key
+		DB.gamesRef.childByAutoId().setValue(Game(id: gameId, name: "Test").toDict())
 	}
 	
 	//MARK: Authentication
