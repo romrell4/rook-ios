@@ -30,7 +30,7 @@ class ViewController: UIViewController, RookCardViewDelegate {
 	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 300) }
 	private var cardWidth: CGFloat { return cardHeight * cardAspectRatio }
 	private var cardSpacing: CGFloat {
-		if me.cards.count > 1 { return 0 } //Avoid divide by zero errors
+		if me.cards.count < 2 { return 0 } //Avoid divide by zero errors
 		
 		//For spacing, we get 80% of the width, minus one card's width (which will display completely)
 		let availSpaceWidth = view.frame.width * 0.8 - cardWidth
