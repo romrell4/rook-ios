@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Rook-->
+        <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Rook" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="GameViewController" customModule="Rook" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -69,6 +69,24 @@
                                     <constraint firstAttribute="width" placeholder="YES" id="HDX-ux-l5r"/>
                                 </constraints>
                             </stackView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KDQ-BL-Nan">
+                                <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Rook" id="BUy-jb-iX9">
+                                        <barButtonItem key="leftBarButtonItem" title="Leave" id="ZwB-aR-Fll">
+                                            <connections>
+                                                <action selector="leaveTapped:" destination="BYZ-38-t0r" id="xxz-rN-LXW"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Redeal" id="9oU-VL-WsV">
+                                            <connections>
+                                                <action selector="redealTapped:" destination="BYZ-38-t0r" id="6B4-j2-8IO"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" red="0.0078431372549019607" green="0.45882352941176469" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -80,18 +98,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Rook" id="qhz-MS-fir">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="B0x-wj-mY5">
-                            <connections>
-                                <action selector="logoutTapped:" destination="BYZ-38-t0r" id="zJb-oB-aXp"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Redeal" id="9oU-VL-WsV">
-                            <connections>
-                                <action selector="redealTapped:" destination="BYZ-38-t0r" id="6B4-j2-8IO"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="handStackView" destination="3sY-hJ-PMs" id="LUb-07-rpA"/>
                         <outlet property="leftPlayedCardView" destination="Siz-TL-klf" id="R2x-kY-Zsh"/>
@@ -102,7 +108,66 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="189.90147783251231" y="31.199999999999999"/>
+            <point key="canvasLocation" x="604" y="30"/>
+        </scene>
+        <!--Games-->
+        <scene sceneID="RNb-IR-Xle">
+            <objects>
+                <tableViewController id="mpX-sc-YcY" customClass="GamesViewController" customModule="Rook" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fQj-gh-BuM">
+                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="Zcf-Cd-XGX" detailTextLabel="H8k-OA-1bQ" style="IBUITableViewCellStyleValue1" id="C5a-bi-lbS">
+                                <rect key="frame" x="0.0" y="28" width="812" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C5a-bi-lbS" id="H7f-Tt-g4o">
+                                    <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zcf-Cd-XGX">
+                                            <rect key="frame" x="20.000000000000004" y="11.999999999999998" width="33.333333333333336" height="20.333333333333332"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="H8k-OA-1bQ">
+                                            <rect key="frame" x="660" y="11.999999999999998" width="44" height="20.333333333333332"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" id="3mS-ZS-IUe"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="mpX-sc-YcY" id="RrT-MY-z5g"/>
+                            <outlet property="delegate" destination="mpX-sc-YcY" id="TWT-ae-qiF"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Games" id="Zoq-hx-xSb">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="B0x-wj-mY5">
+                            <connections>
+                                <action selector="logoutTapped:" destination="mpX-sc-YcY" id="z9g-2z-CmN"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="pk4-IO-U1T">
+                            <connections>
+                                <action selector="addTapped:" destination="mpX-sc-YcY" id="OqV-5P-SL9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0ef-49-0Qy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-301" y="30"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WQI-BA-KmR">
@@ -112,16 +177,15 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="I02-im-qCd">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.5573730469" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="2i8-vB-uob"/>
+                        <segue destination="mpX-sc-YcY" kind="relationship" relationship="rootViewController" id="JbK-bv-ovu"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9AZ-M6-RT3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-482" y="31"/>
+            <point key="canvasLocation" x="-1247" y="30"/>
         </scene>
     </scenes>
 </document>

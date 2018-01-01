@@ -43,4 +43,10 @@ extension Array {
 			swapAt(firstUnshuffled, i)
 		}
 	}
+	
+	mutating func remove(where predicate: (Element) throws -> Bool) rethrows {
+		if let tmp = try? self.index(where: predicate), let index = tmp {
+			remove(at: index)
+		}
+	}
 }

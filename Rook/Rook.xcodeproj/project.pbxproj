@@ -13,12 +13,14 @@
 		0C0B738C1FF89E4300537352 /* RookCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0B738B1FF89E4300537352 /* RookCardContainerView.swift */; };
 		0C0B738E1FF99FBA00537352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C0B738D1FF99FBA00537352 /* GoogleService-Info.plist */; };
 		0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */; };
-		0C588FC81FF6B3EF00D6831E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC71FF6B3EF00D6831E /* ViewController.swift */; };
+		0C588FC81FF6B3EF00D6831E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC71FF6B3EF00D6831E /* GameViewController.swift */; };
 		0C588FCB1FF6B3EF00D6831E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FC91FF6B3EF00D6831E /* Main.storyboard */; };
 		0C588FD01FF6B3EF00D6831E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C588FCE1FF6B3EF00D6831E /* LaunchScreen.storyboard */; };
 		0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDB1FF6BB0300D6831E /* RookCardView.swift */; };
 		0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDD1FF6BC6700D6831E /* RookCard.swift */; };
 		0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDF1FF6C23C00D6831E /* Extensions.swift */; };
+		0CDFD84B1FF9C64B00AF241C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */; };
+		0CDFD84D1FFA013500AF241C /* DB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84C1FFA013500AF241C /* DB.swift */; };
 		6064D9B2147572760D31F047 /* Pods_Rook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,13 +33,15 @@
 		0C335093905C61357010788E /* Pods-Rook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.release.xcconfig"; sourceTree = "<group>"; };
 		0C588FC21FF6B3EF00D6831E /* Rook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0C588FC71FF6B3EF00D6831E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0C588FC71FF6B3EF00D6831E /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		0C588FCA1FF6B3EF00D6831E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0C588FCF1FF6B3EF00D6831E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0C588FD11FF6B3EF00D6831E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C588FDB1FF6BB0300D6831E /* RookCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCardView.swift; sourceTree = "<group>"; };
 		0C588FDD1FF6BC6700D6831E /* RookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCard.swift; sourceTree = "<group>"; };
 		0C588FDF1FF6C23C00D6831E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
+		0CDFD84C1FFA013500AF241C /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
 		0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B72E8BFF4A0A7B4221871 /* Pods-Rook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +92,7 @@
 		0C588FD71FF6B9BB00D6831E /* model */ = {
 			isa = PBXGroup;
 			children = (
+				0CDFD84C1FFA013500AF241C /* DB.swift */,
 				0C06A0661FF748D400797ABD /* Game.swift */,
 				0C06A0681FF74B7600797ABD /* Player.swift */,
 				0C588FDD1FF6BC6700D6831E /* RookCard.swift */,
@@ -98,7 +103,8 @@
 		0C588FD81FF6B9C200D6831E /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				0C588FC71FF6B3EF00D6831E /* ViewController.swift */,
+				0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */,
+				0C588FC71FF6B3EF00D6831E /* GameViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -241,6 +247,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -248,6 +255,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,8 +270,8 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Rook/Pods-Rook-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle,
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -285,7 +293,9 @@
 				0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */,
 				0C0B738C1FF89E4300537352 /* RookCardContainerView.swift in Sources */,
 				0C06A0671FF748D400797ABD /* Game.swift in Sources */,
-				0C588FC81FF6B3EF00D6831E /* ViewController.swift in Sources */,
+				0CDFD84D1FFA013500AF241C /* DB.swift in Sources */,
+				0C588FC81FF6B3EF00D6831E /* GameViewController.swift in Sources */,
+				0CDFD84B1FF9C64B00AF241C /* GamesViewController.swift in Sources */,
 				0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */,
 				0C06A0691FF74B7600797ABD /* Player.swift in Sources */,
 				0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */,

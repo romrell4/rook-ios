@@ -7,17 +7,31 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 class Player: Equatable, CustomStringConvertible {
-	var id: Int
-	var name: String
+	private struct Keys {
+		static let name = "name"
+	}
+	
+	static var currentPlayer: Player? {
+		guard let user = Auth.auth().currentUser, let name = user.displayName else { return nil }
+		return Player(id: user.uid, name: name)
+	}
+	
+	var id: String?
+	var name: String?
 	var cards: [RookCard]
 	
 	var description: String {
-		return name
+		return name ?? "Unknown"
 	}
 	
-	init(id: Int, name: String) {
+	convenience init(id: String, dict: [String: Any]) {
+		self.init(id: id, name: dict[Keys.name] as? String)
+	}
+	
+	init(id: String?, name: String?) {
 		self.id = id
 		self.name = name
 		self.cards = []
@@ -27,5 +41,13 @@ class Player: Equatable, CustomStringConvertible {
 	
 	static func ==(lhs: Player, rhs: Player) -> Bool {
 		return lhs.id == rhs.id
+	}
+	
+	//MARK: Public functions
+	
+	func toDict() -> [String: Any] {
+		return [
+			Keys.name: name ?? ""
+		]
 	}
 }
