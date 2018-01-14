@@ -11,12 +11,16 @@ import UIKit
 class CustomAlertView: UIView {
 	
 	//MARK: Outlets
-	@IBOutlet weak var dialogView: UIStackView!
-	@IBOutlet weak var centerYConstraint: NSLayoutConstraint!
+	@IBOutlet private weak var centerYConstraint: NSLayoutConstraint!
+	@IBOutlet weak var textLabel: UILabel!
+	@IBOutlet weak var topImage: UIImageView!
+	@IBOutlet weak var leftImage: UIImageView!
+	@IBOutlet weak var rightImage: UIImageView!
+	@IBOutlet weak var bottomImage: UIImageView!
 	
 	private struct UI {
 		static let size: CGFloat = 300
-		static let slideInterval: TimeInterval = 1
+		static let slideInterval: TimeInterval = 0.8
 	}
 	
 	override init(frame: CGRect) {

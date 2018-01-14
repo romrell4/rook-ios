@@ -30,6 +30,14 @@ extension UIImage {
 	convenience init?(named name: String, inView vc: UIView) {
 		self.init(named: name, in: Bundle(for: type(of: vc)), compatibleWith: vc.traitCollection)
 	}
+	
+	convenience init?(fromUrl url: URL?) {
+		if let url = url, let data = try? Data(contentsOf: url) {
+			self.init(data: data)
+		} else {
+			return nil
+		}
+	}
 }
 
 extension Array {
@@ -47,6 +55,16 @@ extension Array {
 	mutating func remove(where predicate: (Element) throws -> Bool) rethrows {
 		if let tmp = try? self.index(where: predicate), let index = tmp {
 			remove(at: index)
+		}
+	}
+}
+
+extension URL {
+	init?(string: String?) {
+		if let string = string {
+			self.init(string: string)
+		} else {
+			return nil
 		}
 	}
 }

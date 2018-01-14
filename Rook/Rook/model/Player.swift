@@ -13,16 +13,18 @@ import FirebaseDatabase
 class Player: Equatable, CustomStringConvertible {
 	private struct Keys {
 		static let name = "name"
+		static let photoUrl = "photoUrl"
 		static let cards = "cards"
 	}
 	
 	static var currentPlayer: Player? {
 		guard let user = Auth.auth().currentUser, let name = user.displayName else { return nil }
-		return Player(id: user.uid, name: name)
+		return Player(id: user.uid, name: name, photoUrl: user.photoURL)
 	}
 	
 	var id: String?
 	var name: String?
+	var photoUrl: URL?
 	var cards: [RookCard]
 	
 	var description: String {
@@ -35,12 +37,13 @@ class Player: Equatable, CustomStringConvertible {
 	}
 	
 	convenience init(id: String, dict: [String: Any]) {
-		self.init(id: id, name: dict[Keys.name] as? String)
+		self.init(id: id, name: dict[Keys.name] as? String, photoUrl: URL(string: dict[Keys.photoUrl] as? String))
 	}
 	
-	init(id: String?, name: String?) {
+	init(id: String?, name: String?, photoUrl: URL?) {
 		self.id = id
 		self.name = name
+		self.photoUrl = photoUrl
 		self.cards = []
 	}
 	

@@ -89,8 +89,12 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="bottomImage" destination="9Ym-KL-hSq" id="k0L-dN-NoX"/>
                 <outlet property="centerYConstraint" destination="992-h1-lSz" id="R72-Wg-6Hk"/>
-                <outlet property="dialogView" destination="Zp1-Fr-AUi" id="HHX-rK-cLM"/>
+                <outlet property="leftImage" destination="rGv-gx-BlL" id="3JM-66-fh0"/>
+                <outlet property="rightImage" destination="uue-PL-8iE" id="m5o-36-2Px"/>
+                <outlet property="textLabel" destination="SD5-hy-LAj" id="gGb-en-toc"/>
+                <outlet property="topImage" destination="5Qg-zg-lPV" id="5gf-hb-GHD"/>
             </connections>
             <point key="canvasLocation" x="-146.5" y="-448.5"/>
         </view>
