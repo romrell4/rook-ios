@@ -16,12 +16,14 @@ class Game {
 	private struct Keys {
 		static let name = "name"
 		static let players = "players"
+		static let started = "started"
 	}
 	
 	//MARK: Public properties
 	var id: String
 	var name: String
 	var players: [Player]
+	var started: Bool
 	var kitty = [RookCard]() //Not serialized when saved
 	
 	//MARK: Initialization
@@ -34,6 +36,7 @@ class Game {
 	}
 	
 	convenience init(id: String, dict: [String: Any]) {
+		let name = dict[Keys.name] as? String ?? ""
 		let playersDict = dict[Keys.players] as? [String: Any] ?? [:]
 		let players = playersDict.map { (tuple) -> Player in
 			if let dict = tuple.value as? [String: Any] {
@@ -41,19 +44,21 @@ class Game {
 			}
 			fatalError()
 		}
-		self.init(id: id, name: dict[Keys.name] as? String ?? "", players: players)
+		let started = dict[Keys.started] as? Bool ?? false
+		self.init(id: id, name: name, players: players, started: started)
 	}
 	
-	init(id: String, name: String, players: [Player] = []) {
+	init(id: String, name: String, players: [Player] = [], started: Bool = false) {
 		self.id = id
 		self.name = name
 		self.players = players
+		self.started = started
 	}
 	
 	//MARK: Public functions
 	
 	func join() {
-		if let me = Player.currentPlayer {
+		if let me = Player.currentPlayer, !players.contains(me) {
 			players.append(me)
 			DB.joinGame(gameId: id, player: me)
 		}
@@ -67,6 +72,8 @@ class Game {
 	}
 	
 	func deal() {
+		started = true
+		
 		var deck = createDeck()
 		deck.shuffle()
 

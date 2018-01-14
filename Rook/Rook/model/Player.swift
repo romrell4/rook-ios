@@ -13,6 +13,7 @@ import FirebaseDatabase
 class Player: Equatable, CustomStringConvertible {
 	private struct Keys {
 		static let name = "name"
+		static let cards = "cards"
 	}
 	
 	static var currentPlayer: Player? {
@@ -52,8 +53,9 @@ class Player: Equatable, CustomStringConvertible {
 	//MARK: Public functions
 	
 	func toDict() -> [String: Any] {
-		return [
-			Keys.name: name ?? ""
-		]
+		var dict = [String: Any]()
+		dict[Keys.name] = name
+		dict[Keys.cards] = cards.map({ $0.toDict() })
+		return dict
 	}
 }

@@ -20,8 +20,13 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Public properties
 	var game: Game!
 	
+	//MARK: Private propreties
+	var waitingAlert: CustomAlertView?
+	
 	//Computed
-	private var me = Player.currentPlayer!
+	private var me: Player {
+		return game.players.first { $0 == Player.currentPlayer }!
+	}
 	private var playedCardViews: [RookCardContainerView] { return [myPlayedCardView, leftPlayedCardView, middlePlayedCardView, rightPlayedCardView] }
 	
 	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 300) }
@@ -38,20 +43,26 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		DB.playersRef(gameId: game.id).observe(.childAdded) { (snapshot) in
-			let player = Player(snapshot: snapshot)
-			if !self.game.players.contains(player) {
-				self.game.players.append(player)
+		game.join()
+		
+		waitingAlert = Bundle.main.loadNibNamed("CustomAlertView", owner: nil)?.first as? CustomAlertView
+		waitingAlert?.setup(superview: view)
+		waitingAlert?.show()
+		
+		DB.gameRef(id: game.id).observe(.value) { (snapshot) in
+			self.game = Game(snapshot: snapshot)
+			
+			if self.game.players.count == 4 {
+				
 			}
 			
-			//TODO: Don't default to 4
 			if self.game.players.count == 4 {
 				self.game.deal()
 				self.drawCards()
+			} else {
+				
 			}
 		}
-		
-		game.join()
 	}
 	
 	//MARK: RookCardViewDelegate
@@ -72,6 +83,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Listeners
 	
 	@IBAction func leaveTapped(_ sender: Any) {
+		DB.gameRef(id: game.id).removeAllObservers()
 		game.leave()
 		dismiss(animated: true)
 	}

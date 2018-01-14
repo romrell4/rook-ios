@@ -15,8 +15,38 @@ class GamesViewController: UITableViewController {
 	
 	//Private properties
 	private var authUI: FUIAuth?
-	private var me: Player?
 	private var games = [Game]()
+	
+	//Computed
+	private var observing: Bool = false {
+		didSet {
+			//If the value changed
+			if oldValue != observing {
+				if observing {
+					print("Listening for updates")
+					//Listen for games getting added, removed, or updated
+					DB.gamesRef.observe(.childAdded) { (snapshot) in
+						self.games.append(Game(snapshot: snapshot))
+						self.tableView.reloadData()
+					}
+					DB.gamesRef.observe(.childRemoved) { (snapshot) in
+						self.games.remove { $0.id == snapshot.key }
+						self.tableView.reloadData()
+					}
+					DB.gamesRef.observe(.childChanged) { (snapshot) in
+						if let index = self.games.index(where: { $0.id == snapshot.key }) {
+							self.games[index] = Game(snapshot: snapshot)
+							self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+						}
+					}
+				} else {
+					print("Not listening for updates")
+					DB.gamesRef.removeAllObservers()
+					games = []
+				}
+			}
+		}
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,8 +54,22 @@ class GamesViewController: UITableViewController {
 		setupAuth()
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		if Player.currentPlayer != nil {
+			observing = true
+		}
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		//Stop listening for updates
+		observing = false
+	}
+	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if let vc = segue.destination as? GameViewController,
+		if let navVc = segue.destination as? UINavigationController,
+			let vc = navVc.topViewController as? GameViewController,
 			let cell = sender as? UITableViewCell,
 			let indexPath = tableView.indexPath(for: cell) {
 			
@@ -53,74 +97,62 @@ class GamesViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		let game = games.remove(at: indexPath.row)
+		//Delete it from Firebase (so that is gets deleted from other devices)
+		DB.gameRef(id: game.id).removeValue()
 		tableView.deleteRows(at: [indexPath], with: .automatic)
 		
-		//Delete it from Firebase (so that is gets deleted from other devices)
-		DB.gameRef(id: games.remove(at: indexPath.row).id).removeValue()
 	}
 	
 	//MARK: Listeners
 	
-	@IBAction func logoutTapped(_ sender: Any) {
-		if me != nil {
+	@IBAction func authButtonTapped(_ sender: Any) {
+		if Player.currentPlayer == nil {
+			if let authUI = authUI {
+				self.present(authUI.authViewController(), animated: true, completion: nil)
+			}
+		} else {
 			do {
 				try Auth.auth().signOut()
+				games = []
+				tableView.reloadData()
+				self.navigationItem.leftBarButtonItem?.title = "Logout"
 			} catch { print("Error logging out") }
-			loggedIn()
-		} else {
-			loggedOut()
 		}
 	}
 	
 	@IBAction func addTapped(_ sender: Any) {
-		let gameId = DB.gamesRef.childByAutoId().key
-		DB.gamesRef.childByAutoId().setValue(Game(id: gameId, name: "Test").toDict())
-	}
-	
-	//MARK: Authentication
-	
-	private func setupAuth() {
-		let auth = Auth.auth()
-		auth.addStateDidChangeListener { (auth, user) in
-			self.me = Player.currentPlayer
-			if self.me != nil {
-				self.loggedIn()
-			} else {
-				self.loggedOut()
+		let alert = UIAlertController(title: "Create a Game", message: "Please enter a name for the game you are creating:", preferredStyle: .alert)
+		alert.addTextField { (textField) in
+			
+		}
+		alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { (action) in
+			if let name = alert.textFields?.first?.text {
+				let gameId = DB.gamesRef.childByAutoId().key
+				DB.gamesRef.childByAutoId().setValue(Game(id: gameId, name: name).toDict())
 			}
-		}
-		
-		authUI = FUIAuth.defaultAuthUI()
-		authUI?.providers = [FUIGoogleAuth()]
-	}
-	
-	private func loggedIn() {
-		self.navigationItem.leftBarButtonItem?.title = "Logout"
-		loadGames()
-	}
-	
-	private func loggedOut() {
-		if let authUI = authUI {
-			self.present(authUI.authViewController(), animated: true, completion: nil)
-		}
-		self.navigationItem.leftBarButtonItem?.title = "Login"
+		}))
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+		present(alert, animated: true)
 	}
 	
 	//MARK: Private functions
 	
-	private func loadGames() {
-		//Listen for games getting added, removed, or updated
-		DB.gamesRef.observe(.childAdded) { (snapshot) in
-			self.games.append(Game(snapshot: snapshot))
-			self.tableView.reloadData()
-		}
-		DB.gamesRef.observe(.childRemoved) { (snapshot) in
-			self.games.remove { $0.id == snapshot.key }
-		}
-		DB.gamesRef.observe(.childChanged) { (snapshot) in
-			if let index = self.games.index(where: { $0.id == snapshot.key }) {
-				self.games[index] = Game(snapshot: snapshot)
-				self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+	private func setupAuth() {
+		authUI = FUIAuth.defaultAuthUI()
+		authUI?.providers = [FUIGoogleAuth()]
+
+		let auth = Auth.auth()
+		auth.addStateDidChangeListener { (auth, user) in
+			if Player.currentPlayer != nil {
+				self.navigationItem.leftBarButtonItem?.title = "Logout"
+				self.observing = true
+			} else {
+				if let authUI = self.authUI {
+					self.present(authUI.authViewController(), animated: true, completion: nil)
+				}
+				self.observing = false
+				self.navigationItem.leftBarButtonItem?.title = "Login"
 			}
 		}
 	}

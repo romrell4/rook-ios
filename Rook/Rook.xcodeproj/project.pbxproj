@@ -19,8 +19,10 @@
 		0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDB1FF6BB0300D6831E /* RookCardView.swift */; };
 		0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDD1FF6BC6700D6831E /* RookCard.swift */; };
 		0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FDF1FF6C23C00D6831E /* Extensions.swift */; };
+		0C87318C200AD01F00BC6C75 /* CustomAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C87318B200AD01F00BC6C75 /* CustomAlertView.xib */; };
 		0CDFD84B1FF9C64B00AF241C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */; };
 		0CDFD84D1FFA013500AF241C /* DB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84C1FFA013500AF241C /* DB.swift */; };
+		0CDFD84F1FFE824000AF241C /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84E1FFE824000AF241C /* CustomAlertView.swift */; };
 		6064D9B2147572760D31F047 /* Pods_Rook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,8 +42,10 @@
 		0C588FDB1FF6BB0300D6831E /* RookCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCardView.swift; sourceTree = "<group>"; };
 		0C588FDD1FF6BC6700D6831E /* RookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCard.swift; sourceTree = "<group>"; };
 		0C588FDF1FF6C23C00D6831E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0C87318B200AD01F00BC6C75 /* CustomAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAlertView.xib; sourceTree = "<group>"; };
 		0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		0CDFD84C1FFA013500AF241C /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
+		0CDFD84E1FFE824000AF241C /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B72E8BFF4A0A7B4221871 /* Pods-Rook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +121,8 @@
 				0C588FC91FF6B3EF00D6831E /* Main.storyboard */,
 				0C0B738B1FF89E4300537352 /* RookCardContainerView.swift */,
 				0C588FDB1FF6BB0300D6831E /* RookCardView.swift */,
+				0CDFD84E1FFE824000AF241C /* CustomAlertView.swift */,
+				0C87318B200AD01F00BC6C75 /* CustomAlertView.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -209,6 +215,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C87318C200AD01F00BC6C75 /* CustomAlertView.xib in Resources */,
 				0C588FD01FF6B3EF00D6831E /* LaunchScreen.storyboard in Resources */,
 				0C0B738E1FF99FBA00537352 /* GoogleService-Info.plist in Resources */,
 				0C06A0651FF70CF900797ABD /* Assets.xcassets in Resources */,
@@ -292,6 +299,7 @@
 			files = (
 				0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */,
 				0C0B738C1FF89E4300537352 /* RookCardContainerView.swift in Sources */,
+				0CDFD84F1FFE824000AF241C /* CustomAlertView.swift in Sources */,
 				0C06A0671FF748D400797ABD /* Game.swift in Sources */,
 				0CDFD84D1FFA013500AF241C /* DB.swift in Sources */,
 				0C588FC81FF6B3EF00D6831E /* GameViewController.swift in Sources */,

@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class RookCard: Comparable, CustomStringConvertible {
 	//MARK: Types
+	private struct Keys {
+		static let faceUp = "faceUp"
+		static let suit = "suit"
+		static let rank = "rank"
+	}
 	enum Suit: Int {
 		case red, green, yellow, black, rook
 		
@@ -72,6 +78,16 @@ class RookCard: Comparable, CustomStringConvertible {
 		self.rank = rank
 	}
 	
+	convenience init(snapshot: DataSnapshot) {
+		guard let dict = snapshot.value as? [String: Any],
+			let suitText = dict[Keys.suit] as? String,
+			let rank = dict[Keys.rank] as? Int else {
+				
+			fatalError()
+		}
+		self.init(suit: Suit.fromText(text: suitText), rank: rank)
+	}
+	
 	//MARK: Comparable
 	
 	static func <(lhs: RookCard, rhs: RookCard) -> Bool {
@@ -86,5 +102,15 @@ class RookCard: Comparable, CustomStringConvertible {
 	
 	static func ==(lhs: RookCard, rhs: RookCard) -> Bool {
 		return lhs.suit == rhs.suit && lhs.rank == rhs.rank
+	}
+	
+	//MARK: Public functions
+	
+	func toDict() -> [String: Any] {
+		return [
+			Keys.faceUp: isFaceUp,
+			Keys.suit: suit.text,
+			Keys.rank: rank
+		]
 	}
 }
