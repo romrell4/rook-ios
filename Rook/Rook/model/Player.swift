@@ -58,6 +58,7 @@ class Player: Equatable, CustomStringConvertible {
 	func toDict() -> [String: Any] {
 		var dict = [String: Any]()
 		dict[Keys.name] = name
+		dict[Keys.photoUrl] = photoUrl?.absoluteString
 		dict[Keys.cards] = cards.map({ $0.toDict() })
 		return dict
 	}
