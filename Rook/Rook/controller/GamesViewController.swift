@@ -89,6 +89,13 @@ class GamesViewController: UITableViewController {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 		cell.textLabel?.text = game.name
 		cell.detailTextLabel?.text = "\(game.players.count) player\(game.players.count != 1 ? "s" : "")"
+		
+		//If you're logged in and the game has spots open or you're already in the game, you can tap it
+		if let me = Player.currentPlayer, (game.players.count < MAX_PLAYERS || game.players.contains(me)) {
+			cell.isUserInteractionEnabled = true
+		} else {
+			cell.isUserInteractionEnabled = false
+		}
 		return cell
 	}
 	
@@ -122,14 +129,14 @@ class GamesViewController: UITableViewController {
 	}
 	
 	@IBAction func addTapped(_ sender: Any) {
+		guard let ownerId = Player.currentPlayer?.id else { return }
 		let alert = UIAlertController(title: "Create a Game", message: "Please enter a name for the game you are creating:", preferredStyle: .alert)
 		alert.addTextField { (textField) in
 			
 		}
 		alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { (action) in
-			if let name = alert.textFields?.first?.text {
-				let gameId = DB.gamesRef.childByAutoId().key
-				DB.gamesRef.childByAutoId().setValue(Game(id: gameId, name: name).toDict())
+			if let name = alert.textFields?.first?.text, name != "" {
+				DB.createGame(Game(name: name, owner: ownerId))
 			}
 		}))
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))

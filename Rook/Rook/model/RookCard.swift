@@ -73,19 +73,14 @@ class RookCard: Comparable, CustomStringConvertible {
 		self.rank = Rank.rook
 	}
 	
+	convenience init(dict: [String: Any]) {
+		guard let suitText = dict[Keys.suit] as? String, let rank = dict[Keys.rank] as? Int else { fatalError() }
+		self.init(suit: Suit.fromText(text: suitText), rank: rank)
+	}
+	
 	init(suit: Suit, rank: Int) {
 		self.suit = suit
 		self.rank = rank
-	}
-	
-	convenience init(snapshot: DataSnapshot) {
-		guard let dict = snapshot.value as? [String: Any],
-			let suitText = dict[Keys.suit] as? String,
-			let rank = dict[Keys.rank] as? Int else {
-				
-			fatalError()
-		}
-		self.init(suit: Suit.fromText(text: suitText), rank: rank)
 	}
 	
 	//MARK: Comparable

@@ -6,15 +6,20 @@
 //  Copyright © 2017 Eric Romrell. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
+private var photoCache = [URL: UIImage]()
+
 class Player: Equatable, CustomStringConvertible {
+	
 	private struct Keys {
 		static let name = "name"
 		static let photoUrl = "photoUrl"
+		static let sortNum = "sortNum"
 		static let cards = "cards"
+		static let playedCard = "playedCard"
 	}
 	
 	static var currentPlayer: Player? {
@@ -22,29 +27,54 @@ class Player: Equatable, CustomStringConvertible {
 		return Player(id: user.uid, name: name, photoUrl: user.photoURL)
 	}
 	
-	var id: String?
+	//MARK: Persistent properties
+	var id: String
 	var name: String?
 	var photoUrl: URL?
+	var sortNum: Int?
 	var cards: [RookCard]
+	var playedCard: RookCard?
+	
+	//MARK: Computed properties
+	var photo: UIImage? {
+		if let photoUrl = photoUrl {
+			if let image = photoCache[photoUrl] {
+				return image
+			} else if let image = UIImage(fromUrl: photoUrl) {
+				print("Fetching \(name ?? "null") from \(photoUrl.absoluteString)")
+				photoCache[photoUrl] = image
+				return image
+			}
+		}
+		return nil
+	}
 	
 	var description: String {
 		return name ?? "Unknown"
 	}
 	
-	convenience init(snapshot: DataSnapshot) {
-		guard let dict = snapshot.value as? [String: Any] else { fatalError() }
-		self.init(id: snapshot.key, dict: dict)
-	}
-	
 	convenience init(id: String, dict: [String: Any]) {
-		self.init(id: id, name: dict[Keys.name] as? String, photoUrl: URL(string: dict[Keys.photoUrl] as? String))
+		var playedCard: RookCard? = nil
+		if let tmp = dict[Keys.playedCard] as? [String: Any] {
+			playedCard = RookCard(dict: tmp)
+		}
+		self.init(
+			id: id,
+			name: dict[Keys.name] as? String,
+			photoUrl: URL(string: dict[Keys.photoUrl] as? String),
+			sortNum: dict[Keys.sortNum] as? Int,
+			cards: (dict[Keys.cards] as? [[String: Any]] ?? []).map { RookCard(dict: $0) },
+			playedCard: playedCard
+		)
 	}
 	
-	init(id: String?, name: String?, photoUrl: URL?) {
+	init(id: String, name: String?, photoUrl: URL?, sortNum: Int? = nil, cards: [RookCard] = [], playedCard: RookCard? = nil) {
 		self.id = id
 		self.name = name
 		self.photoUrl = photoUrl
-		self.cards = []
+		self.sortNum = sortNum
+		self.cards = cards
+		self.playedCard = playedCard
 	}
 	
 	//MARK: Equatable
@@ -59,7 +89,9 @@ class Player: Equatable, CustomStringConvertible {
 		var dict = [String: Any]()
 		dict[Keys.name] = name
 		dict[Keys.photoUrl] = photoUrl?.absoluteString
-		dict[Keys.cards] = cards.map({ $0.toDict() })
+		dict[Keys.sortNum] = sortNum
+		dict[Keys.cards] = cards.map { $0.toDict() }
+		dict[Keys.playedCard] = playedCard?.toDict()
 		return dict
 	}
 }

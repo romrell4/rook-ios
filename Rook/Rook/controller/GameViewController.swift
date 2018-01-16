@@ -21,7 +21,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	var game: Game!
 	
 	//MARK: Private propreties
-	var waitingAlert: CustomAlertView?
+	var waitingAlert: WaitingAlertView?
 	
 	//Computed
 	private var me: Player {
@@ -29,7 +29,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	private var playedCardViews: [RookCardContainerView] { return [myPlayedCardView, leftPlayedCardView, middlePlayedCardView, rightPlayedCardView] }
 	
-	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 300) }
+	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 200) }
 	private var cardWidth: CGFloat { return cardHeight * cardAspectRatio }
 	private var cardSpacing: CGFloat {
 		if me.cards.count < 2 { return 0 } //Avoid divide by zero errors
@@ -45,22 +45,16 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		
 		game.join()
 		
-		waitingAlert = Bundle.main.loadNibNamed("CustomAlertView", owner: nil)?.first as? CustomAlertView
-		waitingAlert?.setup(superview: view)
-		waitingAlert?.show()
+		waitingAlert = Bundle.main.loadNibNamed("WaitingAlertView", owner: nil)?.first as? WaitingAlertView
+		waitingAlert?.setup(superview: view, game: game)
 		
 		DB.gameRef(id: game.id).observe(.value) { (snapshot) in
 			self.game = Game(snapshot: snapshot)
 			
-			if self.game.players.count == 4 {
-				
-			}
+			self.waitingAlert?.updateGame(self.game)
 			
-			if self.game.players.count == 4 {
-				self.game.deal()
+			if !self.game.state.isPreGame {
 				self.drawCards()
-			} else {
-				
 			}
 		}
 	}
@@ -72,12 +66,12 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		
 		//Remove from stack view and add to played container view
 		cardView.removeFromSuperview()
-		myPlayedCardView.cardView = RookCardView(card: cardView.card)
+		myPlayedCardView.cardView = RookCardView(card: cardView.card) //Use constructor to reinitialize constraints
 		
-		//Loop through all the OTHER player to play a card
-		zip(game.players, playedCardViews)
-			.filter { $0.0 != me }
-			.forEach { $1.cardView = RookCardView(card: $0.cards.removeFirst()) }
+		me.cards.remove { $0 == cardView.card }
+		me.playedCard = cardView.card
+		
+		DB.updateGame(game)
 	}
 	
 	//MARK: Listeners
@@ -89,8 +83,9 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	@IBAction func redealTapped(_ sender: Any) {
-		playedCardViews.forEach({ $0.cardView = nil })
+		playedCardViews.forEach { $0.cardView = nil }
 		game.deal()
+		DB.updateGame(game)
 		drawCards()
 	}
 	
@@ -98,9 +93,21 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	private func drawCards() {
 		//Remove current cards and add new cards
-		handStackView.subviews.forEach({ $0.removeFromSuperview() })
+		handStackView.subviews.forEach { $0.removeFromSuperview() }
 		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }
 		handStackView.heightAnchor.constraint(equalToConstant: cardHeight).isActive = true
 		handStackView.spacing = cardSpacing
+		
+		//Draw the played cards
+		game.players.forEach {
+			if let card = $0.playedCard {
+				getPlayedCardView(forPlayer: $0).cardView = RookCardView(card: card)
+			}
+		}
+	}
+	
+	private func getPlayedCardView(forPlayer player: Player) -> RookCardContainerView {
+		let position = ((player.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
+		return playedCardViews[position]
 	}
 }

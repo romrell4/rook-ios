@@ -31,24 +31,18 @@ class DB {
 	static func playerRef(gameId: String, playerId: String) -> DatabaseReference {
 		return playersRef(gameId: gameId).child(playerId)
 	}
+	
+	//MARK: Actions
+	static func createGame(_ game: Game) {
+		gamesRef.childByAutoId().setValue(game.toDict())
+	}
 	static func joinGame(gameId: String, player: Player) {
-		if let playerId = player.id {
-			playerRef(gameId: gameId, playerId: playerId).setValue(player.toDict())
-		}
+		playerRef(gameId: gameId, playerId: player.id).setValue(player.toDict())
 	}
 	static func leaveGame(gameId: String, playerId: String) {
 		playerRef(gameId: gameId, playerId: playerId).removeValue()
 	}
-	
-	
-	//MARK: Players object
-	static var playersRef: DatabaseReference {
-		return ref.child(Keys.players)
-	}
-	static func playerRef(id: String) -> DatabaseReference {
-		return playersRef.child(id)
-	}
-	static func saveMe() {
-		
+	static func updateGame(_ game: Game) {
+		gameRef(id: game.id).setValue(game.toDict())
 	}
 }

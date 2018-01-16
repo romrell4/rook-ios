@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -12,18 +12,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomAlertView" customModule="Rook" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WaitingAlertView" customModule="Rook" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqj-30-rJj">
-                    <rect key="frame" x="63" y="209" width="250" height="250"/>
+                    <rect key="frame" x="208.5" y="62.5" width="250" height="250"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Zp1-Fr-AUi">
-                            <rect key="frame" x="24" y="27.5" width="201.5" height="194.5"/>
+                            <rect key="frame" x="24" y="27.5" width="202" height="194.5"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for 0 other players" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD5-hy-LAj">
-                                    <rect key="frame" x="0.0" y="0.0" width="201.5" height="20.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for 4 other players" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD5-hy-LAj">
+                                    <rect key="frame" x="0.0" y="0.0" width="202" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -31,33 +31,45 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kJl-PV-aU9">
                                     <rect key="frame" x="26" y="44.5" width="150" height="150"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="5Qg-zg-lPV">
+                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="5Qg-zg-lPV" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
                                             <rect key="frame" x="50" y="0.0" width="50" height="50"/>
+                                            <gestureRecognizers/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="LZj-IO-TS8"/>
                                                 <constraint firstAttribute="height" constant="50" id="Pxx-Hc-gZ3"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="HIr-kd-NfM" appends="YES" id="7rn-Lg-OuB"/>
+                                            </connections>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="jdZ-rq-r5c">
                                             <rect key="frame" x="0.0" y="50" width="150" height="50"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="rGv-gx-BlL">
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="rGv-gx-BlL" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="1cJ-Pn-akw"/>
                                                         <constraint firstAttribute="width" constant="50" id="cGK-nD-H49"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="Wzc-EE-OLp" appends="YES" id="tO1-BI-51F"/>
+                                                    </connections>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="uue-PL-8iE">
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="uue-PL-8iE" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
                                                     <rect key="frame" x="100" y="0.0" width="50" height="50"/>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="bXB-cu-q1h"/>
                                                         <constraint firstAttribute="height" constant="50" id="gas-su-fbC"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="4kF-N0-TSI" appends="YES" id="uGd-7B-pOL"/>
+                                                    </connections>
                                                 </imageView>
                                             </subviews>
                                         </stackView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="9Ym-KL-hSq">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="9Ym-KL-hSq" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
                                             <rect key="frame" x="50" y="100" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="PQT-db-FGW"/>
@@ -72,8 +84,10 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Zp1-Fr-AUi" firstAttribute="centerY" secondItem="fqj-30-rJj" secondAttribute="centerY" id="8DI-P9-k54"/>
+                        <constraint firstItem="Zp1-Fr-AUi" firstAttribute="leading" secondItem="fqj-30-rJj" secondAttribute="leading" constant="24" id="Ehs-jb-Gof"/>
                         <constraint firstItem="Zp1-Fr-AUi" firstAttribute="centerX" secondItem="fqj-30-rJj" secondAttribute="centerX" id="FRU-dX-Gdb"/>
-                        <constraint firstAttribute="width" constant="250" id="Qpq-YP-MLS"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="Qpq-YP-MLS"/>
+                        <constraint firstAttribute="trailing" secondItem="Zp1-Fr-AUi" secondAttribute="trailing" constant="24" id="n2E-l9-cNC"/>
                         <constraint firstAttribute="height" constant="250" id="phg-Rm-jd3"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -98,6 +112,21 @@
             </connections>
             <point key="canvasLocation" x="-146.5" y="-448.5"/>
         </view>
+        <tapGestureRecognizer id="HIr-kd-NfM">
+            <connections>
+                <action selector="photoTapped:" destination="iN0-l3-epB" id="qZ0-mM-U33"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Wzc-EE-OLp">
+            <connections>
+                <action selector="photoTapped:" destination="iN0-l3-epB" id="dLH-gn-Xzx"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="4kF-N0-TSI">
+            <connections>
+                <action selector="photoTapped:" destination="iN0-l3-epB" id="LHf-K2-rvr"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="user" width="128" height="128"/>

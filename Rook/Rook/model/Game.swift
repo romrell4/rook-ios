@@ -10,33 +10,47 @@ import Foundation
 import FirebaseAuth
 import FirebaseDatabase
 
+let MAX_PLAYERS = 4
 private let MIN_KITTY_SIZE = 2
 
 class Game {
 	private struct Keys {
 		static let name = "name"
+		static let owner = "owner"
+		static let state = "state"
 		static let players = "players"
-		static let started = "started"
+		static let kitty = "kitty"
+	}
+	
+	enum State: String {
+		case waitingForPlayers
+		case waitingForTeams
+		case bidding
+		case started
+		
+		var isPreGame: Bool {
+			return [.waitingForPlayers, .waitingForTeams].contains(self)
+		}
 	}
 	
 	//MARK: Public properties
 	var id: String
 	var name: String
+	var owner: String
+	var state: State
 	var players: [Player]
-	var started: Bool
-	var kitty = [RookCard]() //Not serialized when saved
+	var kitty: [RookCard]?
 	
 	//MARK: Initialization
 	
 	convenience init(snapshot: DataSnapshot) {
-		guard let dict = snapshot.value as? [String: Any] else {
-			fatalError()
-		}
+		guard let dict = snapshot.value as? [String: Any] else { fatalError() }
 		self.init(id: snapshot.key, dict: dict)
 	}
 	
 	convenience init(id: String, dict: [String: Any]) {
 		let name = dict[Keys.name] as? String ?? ""
+		let owner = dict[Keys.owner] as? String ?? ""
 		let playersDict = dict[Keys.players] as? [String: Any] ?? [:]
 		let players = playersDict.map { (tuple) -> Player in
 			if let dict = tuple.value as? [String: Any] {
@@ -44,15 +58,16 @@ class Game {
 			}
 			fatalError()
 		}
-		let started = dict[Keys.started] as? Bool ?? false
-		self.init(id: id, name: name, players: players, started: started)
+		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
+		self.init(id: id, name: name, owner: owner, players: players, state: state)
 	}
 	
-	init(id: String, name: String, players: [Player] = [], started: Bool = false) {
+	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers) {
 		self.id = id
 		self.name = name
+		self.owner = owner
 		self.players = players
-		self.started = started
+		self.state = state
 	}
 	
 	//MARK: Public functions
@@ -65,14 +80,14 @@ class Game {
 	}
 	
 	func leave() {
-		if let me = Player.currentPlayer, let playerId = me.id {
+		if let me = Player.currentPlayer {
 			players.remove { $0 == me }
-			DB.leaveGame(gameId: id, playerId: playerId)
+			DB.leaveGame(gameId: id, playerId: me.id)
 		}
 	}
 	
 	func deal() {
-		started = true
+		state = .bidding
 		
 		var deck = createDeck()
 		deck.shuffle()
@@ -86,10 +101,17 @@ class Game {
 	}
 	
 	func toDict() -> [String: Any] {
-		return [
+		var dict: [String: Any] = [
 			Keys.name: name,
-			Keys.players: players.map({ return $0.toDict() })
+			Keys.owner: owner,
+			Keys.state: state.rawValue
 		]
+		var playersDict = [String: Any]()
+		players.forEach { playersDict[$0.id] = $0.toDict() }
+		dict[Keys.players] = playersDict
+		
+		dict[Keys.kitty] = kitty?.map { $0.toDict() }
+		return dict
 	}
 	
 	//MARK: Private functions
