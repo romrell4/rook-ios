@@ -12,119 +12,109 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WaitingAlertView" customModule="Rook" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yW0-yM-OFw" customClass="WaitingAlertView" customModule="Rook" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqj-30-rJj">
-                    <rect key="frame" x="208.5" y="62.5" width="250" height="250"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="yCg-QT-2OH">
+                    <rect key="frame" x="24" y="28" width="202" height="194.5"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Zp1-Fr-AUi">
-                            <rect key="frame" x="24" y="27.5" width="202" height="194.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for 4 other players" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctr-Mc-ST2">
+                            <rect key="frame" x="0.0" y="0.0" width="202" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ngM-pH-SHX">
+                            <rect key="frame" x="26" y="44.5" width="150" height="150"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for 4 other players" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD5-hy-LAj">
-                                    <rect key="frame" x="0.0" y="0.0" width="202" height="20.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kJl-PV-aU9">
-                                    <rect key="frame" x="26" y="44.5" width="150" height="150"/>
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="jJ6-or-kcP" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="50" y="0.0" width="50" height="50"/>
+                                    <gestureRecognizers/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="0vU-IG-vku"/>
+                                        <constraint firstAttribute="width" constant="50" id="Elc-Im-7Jd"/>
+                                    </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="ogl-kk-p8m" appends="YES" id="SXQ-kC-9iu"/>
+                                    </connections>
+                                </imageView>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="4pm-nZ-4mh">
+                                    <rect key="frame" x="0.0" y="50" width="150" height="50"/>
                                     <subviews>
-                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="5Qg-zg-lPV" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
-                                            <rect key="frame" x="50" y="0.0" width="50" height="50"/>
+                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="zPE-0t-9JL" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <gestureRecognizers/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="50" id="LZj-IO-TS8"/>
-                                                <constraint firstAttribute="height" constant="50" id="Pxx-Hc-gZ3"/>
+                                                <constraint firstAttribute="width" constant="50" id="IqH-CY-5HC"/>
+                                                <constraint firstAttribute="height" constant="50" id="yej-Mg-NFg"/>
                                             </constraints>
                                             <connections>
-                                                <outletCollection property="gestureRecognizers" destination="HIr-kd-NfM" appends="YES" id="7rn-Lg-OuB"/>
+                                                <outletCollection property="gestureRecognizers" destination="ey3-CS-DAO" appends="YES" id="C5B-d7-M3S"/>
                                             </connections>
                                         </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="jdZ-rq-r5c">
-                                            <rect key="frame" x="0.0" y="50" width="150" height="50"/>
-                                            <subviews>
-                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="rGv-gx-BlL" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <gestureRecognizers/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="1cJ-Pn-akw"/>
-                                                        <constraint firstAttribute="width" constant="50" id="cGK-nD-H49"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <outletCollection property="gestureRecognizers" destination="Wzc-EE-OLp" appends="YES" id="tO1-BI-51F"/>
-                                                    </connections>
-                                                </imageView>
-                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="uue-PL-8iE" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
-                                                    <rect key="frame" x="100" y="0.0" width="50" height="50"/>
-                                                    <gestureRecognizers/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="bXB-cu-q1h"/>
-                                                        <constraint firstAttribute="height" constant="50" id="gas-su-fbC"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <outletCollection property="gestureRecognizers" destination="4kF-N0-TSI" appends="YES" id="uGd-7B-pOL"/>
-                                                    </connections>
-                                                </imageView>
-                                            </subviews>
-                                        </stackView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="9Ym-KL-hSq" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
-                                            <rect key="frame" x="50" y="100" width="50" height="50"/>
+                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="Sbf-ph-zTA" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
+                                            <rect key="frame" x="100" y="0.0" width="50" height="50"/>
+                                            <gestureRecognizers/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="PQT-db-FGW"/>
-                                                <constraint firstAttribute="width" constant="50" id="U3q-gX-QWe"/>
+                                                <constraint firstAttribute="height" constant="50" id="3hy-2e-PvA"/>
+                                                <constraint firstAttribute="width" constant="50" id="cYS-Ok-bqe"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="dNG-ch-lFn" appends="YES" id="mzx-K3-Wto"/>
+                                            </connections>
                                         </imageView>
                                     </subviews>
                                 </stackView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="SA5-B5-QHN" customClass="PlayerImageView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="50" y="100" width="50" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="6J0-h0-bdw"/>
+                                        <constraint firstAttribute="width" constant="50" id="Mxg-Vd-fgr"/>
+                                    </constraints>
+                                </imageView>
                             </subviews>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="Zp1-Fr-AUi" firstAttribute="centerY" secondItem="fqj-30-rJj" secondAttribute="centerY" id="8DI-P9-k54"/>
-                        <constraint firstItem="Zp1-Fr-AUi" firstAttribute="leading" secondItem="fqj-30-rJj" secondAttribute="leading" constant="24" id="Ehs-jb-Gof"/>
-                        <constraint firstItem="Zp1-Fr-AUi" firstAttribute="centerX" secondItem="fqj-30-rJj" secondAttribute="centerX" id="FRU-dX-Gdb"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="Qpq-YP-MLS"/>
-                        <constraint firstAttribute="trailing" secondItem="Zp1-Fr-AUi" secondAttribute="trailing" constant="24" id="n2E-l9-cNC"/>
-                        <constraint firstAttribute="height" constant="250" id="phg-Rm-jd3"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </view>
+                </stackView>
             </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="fqj-30-rJj" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="992-h1-lSz"/>
-                <constraint firstItem="fqj-30-rJj" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="YwG-eb-bKg"/>
+                <constraint firstAttribute="height" constant="250" id="0oL-5c-Ji6"/>
+                <constraint firstItem="yCg-QT-2OH" firstAttribute="centerX" secondItem="yW0-yM-OFw" secondAttribute="centerX" id="BxM-Ta-vo9"/>
+                <constraint firstItem="yCg-QT-2OH" firstAttribute="centerY" secondItem="yW0-yM-OFw" secondAttribute="centerY" id="OcG-fm-8vt"/>
+                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="b85-Hc-cHY"/>
+                <constraint firstItem="yCg-QT-2OH" firstAttribute="leading" secondItem="yW0-yM-OFw" secondAttribute="leading" constant="24" id="iSp-bE-uQW"/>
+                <constraint firstAttribute="trailing" secondItem="yCg-QT-2OH" secondAttribute="trailing" constant="24" id="iiH-hi-wqL"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="7I3-5C-KYL"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                    <integer key="value" value="10"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="bottomImage" destination="9Ym-KL-hSq" id="k0L-dN-NoX"/>
-                <outlet property="centerYConstraint" destination="992-h1-lSz" id="R72-Wg-6Hk"/>
-                <outlet property="leftImage" destination="rGv-gx-BlL" id="3JM-66-fh0"/>
-                <outlet property="rightImage" destination="uue-PL-8iE" id="m5o-36-2Px"/>
-                <outlet property="textLabel" destination="SD5-hy-LAj" id="gGb-en-toc"/>
-                <outlet property="topImage" destination="5Qg-zg-lPV" id="5gf-hb-GHD"/>
+                <outlet property="bottomImage" destination="SA5-B5-QHN" id="87P-lQ-Mlt"/>
+                <outlet property="leftImage" destination="zPE-0t-9JL" id="QFK-tq-Qbi"/>
+                <outlet property="rightImage" destination="Sbf-ph-zTA" id="J5b-NJ-dFh"/>
+                <outlet property="textLabel" destination="ctr-Mc-ST2" id="YbS-0j-UPa"/>
+                <outlet property="topImage" destination="jJ6-or-kcP" id="STD-oW-2gU"/>
             </connections>
-            <point key="canvasLocation" x="-146.5" y="-448.5"/>
+            <point key="canvasLocation" x="-246" y="-450"/>
         </view>
-        <tapGestureRecognizer id="HIr-kd-NfM">
+        <tapGestureRecognizer id="ogl-kk-p8m">
             <connections>
-                <action selector="photoTapped:" destination="iN0-l3-epB" id="qZ0-mM-U33"/>
+                <action selector="photoTapped:" destination="yW0-yM-OFw" id="yeV-xf-6B3"/>
             </connections>
         </tapGestureRecognizer>
-        <tapGestureRecognizer id="Wzc-EE-OLp">
+        <tapGestureRecognizer id="ey3-CS-DAO">
             <connections>
-                <action selector="photoTapped:" destination="iN0-l3-epB" id="dLH-gn-Xzx"/>
+                <action selector="photoTapped:" destination="yW0-yM-OFw" id="I8r-ao-IqH"/>
             </connections>
         </tapGestureRecognizer>
-        <tapGestureRecognizer id="4kF-N0-TSI">
+        <tapGestureRecognizer id="dNG-ch-lFn">
             <connections>
-                <action selector="photoTapped:" destination="iN0-l3-epB" id="LHf-K2-rvr"/>
+                <action selector="photoTapped:" destination="yW0-yM-OFw" id="Pi6-tv-Ltr"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -54,7 +54,12 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 			self.waitingAlert?.updateGame(self.game)
 			
 			if !self.game.state.isPreGame {
-				self.drawCards()
+				//If I have cards, but they aren't drawn yet, draw them
+				if !self.me.cards.isEmpty, self.handStackView.subviews.isEmpty {
+					self.drawCards()
+				}
+				
+				self.drawPlayedCards()
 			}
 		}
 	}
@@ -70,7 +75,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		
 		me.cards.remove { $0 == cardView.card }
 		me.playedCard = cardView.card
-		
+
 		DB.updateGame(game)
 	}
 	
@@ -83,7 +88,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	@IBAction func redealTapped(_ sender: Any) {
-		playedCardViews.forEach { $0.cardView = nil }
+		game.players.forEach { $0.playedCard = nil }
 		game.deal()
 		DB.updateGame(game)
 		drawCards()
@@ -97,12 +102,15 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }
 		handStackView.heightAnchor.constraint(equalToConstant: cardHeight).isActive = true
 		handStackView.spacing = cardSpacing
-		
-		//Draw the played cards
+	}
+	
+	private func drawPlayedCards() {
 		game.players.forEach {
+			var cardView: RookCardView?
 			if let card = $0.playedCard {
-				getPlayedCardView(forPlayer: $0).cardView = RookCardView(card: card)
+				cardView = RookCardView(card: card)
 			}
+			getPlayedCardView(forPlayer: $0).cardView = cardView
 		}
 	}
 	

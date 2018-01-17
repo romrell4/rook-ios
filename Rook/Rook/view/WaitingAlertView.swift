@@ -11,7 +11,6 @@ import UIKit
 class WaitingAlertView: UIView {
 	
 	//MARK: Outlets
-	@IBOutlet private weak var centerYConstraint: NSLayoutConstraint!
 	@IBOutlet private weak var textLabel: UILabel!
 	@IBOutlet private weak var topImage: PlayerImageView!
 	@IBOutlet private weak var leftImage: PlayerImageView!
@@ -22,6 +21,7 @@ class WaitingAlertView: UIView {
 	private var imageViews: [PlayerImageView] { return [leftImage, topImage, rightImage] }
 	
 	//MARK: Private properties
+	private weak var centerYConstraint: NSLayoutConstraint!
 	private var game: Game!
 	
 	private struct UI {
@@ -37,10 +37,19 @@ class WaitingAlertView: UIView {
 		frame = superview.frame
 		superview.addSubview(self)
 		
+		centerYConstraint = superview.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+		NSLayoutConstraint.activate([
+			centerYConstraint,
+			superview.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+		])
+		layoutIfNeeded()
+		
 		updateUI(showing: game.state.isPreGame, animated: false)
 	}
 	
 	func updateGame(_ game: Game) {
+		self.game = game
+		
 		updateUI(showing: game.state.isPreGame)
 		
 		if game.state.isPreGame {
@@ -84,7 +93,7 @@ class WaitingAlertView: UIView {
 	private func updateUI(showing: Bool, animated: Bool = true) {
 		let currentlyShowing = centerYConstraint.constant == 0
 		if currentlyShowing != showing {
-			centerYConstraint.constant = showing ? 0 : frame.height
+			centerYConstraint.constant = showing ? 0 : UIScreen.main.bounds.height
 			UIView.animate(withDuration: animated ? UI.slideInterval : 0) {
 				self.layoutIfNeeded()
 			}
