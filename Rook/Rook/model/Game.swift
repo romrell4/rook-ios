@@ -20,6 +20,8 @@ class Game {
 		static let state = "state"
 		static let players = "players"
 		static let kitty = "kitty"
+		static let bid = "bid"
+		static let bidder = "bidder"
 	}
 	
 	enum State: String {
@@ -40,6 +42,8 @@ class Game {
 	var state: State
 	var players: [Player]
 	var kitty: [RookCard]?
+	var bid: Int?
+	var bidder: String?
 	
 	//MARK: Initialization
 	
@@ -59,15 +63,19 @@ class Game {
 			fatalError()
 		}
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
-		self.init(id: id, name: name, owner: owner, players: players, state: state)
+		let bid = dict[Keys.bid] as? Int
+		let bidder = dict[Keys.bidder] as? String
+		self.init(id: id, name: name, owner: owner, players: players, state: state, bid: bid, bidder: bidder)
 	}
 	
-	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers) {
+	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers, bid: Int? = nil, bidder: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
 		self.players = players
 		self.state = state
+		self.bid = bid
+		self.bidder = bidder
 	}
 	
 	//MARK: Public functions
@@ -111,6 +119,8 @@ class Game {
 		dict[Keys.players] = playersDict
 		
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
+		dict[Keys.bid] = bid
+		dict[Keys.bidder] = bidder
 		return dict
 	}
 	

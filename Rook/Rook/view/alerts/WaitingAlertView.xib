@@ -79,20 +79,15 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="height" constant="250" id="0oL-5c-Ji6"/>
                 <constraint firstItem="yCg-QT-2OH" firstAttribute="centerX" secondItem="yW0-yM-OFw" secondAttribute="centerX" id="BxM-Ta-vo9"/>
+                <constraint firstItem="7I3-5C-KYL" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yCg-QT-2OH" secondAttribute="bottom" constant="8" id="Dox-Qs-v4c"/>
                 <constraint firstItem="yCg-QT-2OH" firstAttribute="centerY" secondItem="yW0-yM-OFw" secondAttribute="centerY" id="OcG-fm-8vt"/>
-                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="b85-Hc-cHY"/>
-                <constraint firstItem="yCg-QT-2OH" firstAttribute="leading" secondItem="yW0-yM-OFw" secondAttribute="leading" constant="24" id="iSp-bE-uQW"/>
-                <constraint firstAttribute="trailing" secondItem="yCg-QT-2OH" secondAttribute="trailing" constant="24" id="iiH-hi-wqL"/>
+                <constraint firstItem="yCg-QT-2OH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yW0-yM-OFw" secondAttribute="leading" constant="24" id="iSp-bE-uQW"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="yCg-QT-2OH" secondAttribute="trailing" constant="24" id="iiH-hi-wqL"/>
+                <constraint firstItem="yCg-QT-2OH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7I3-5C-KYL" secondAttribute="top" constant="8" id="lu4-BC-6MS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="7I3-5C-KYL"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                    <integer key="value" value="10"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="bottomImage" destination="SA5-B5-QHN" id="87P-lQ-Mlt"/>
                 <outlet property="leftImage" destination="zPE-0t-9JL" id="QFK-tq-Qbi"/>

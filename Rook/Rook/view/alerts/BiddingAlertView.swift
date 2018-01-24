@@ -14,24 +14,33 @@ class BiddingAlertView: GameAlertView {
 	@IBOutlet private weak var bidLabel: UILabel!
 	@IBOutlet private weak var stepper: UIStepper!
 	@IBOutlet private weak var submitButton: UIButton!
-	@IBOutlet private weak var cancelButton: UIButton!
 	
-	//MARK: Computed properties
+	//MARK: Overriden properties
 	override var shouldBeShowing: Bool {
 		return super.game.state == .bidding
+	}
+	override var centerYBuffer: CGFloat {
+		return 50
+	}
+	
+	//MARK: Public functions
+	
+	override func updateGame(_ game: Game) {
+		super.updateGame(game)
+		
+		if shouldBeShowing {
+			
+			stepperTapped(stepper)
+		}
 	}
 	
 	//MARK: Listeners
 	
 	@IBAction func stepperTapped(_ sender: UIStepper) {
-		
+		bidLabel.text = "\(Int(sender.value))"
 	}
 	
 	@IBAction func submitTapped(_ sender: UIButton) {
-		
-	}
-	
-	@IBAction func cancelTapped(_ sender: UIButton) {
 		
 	}
 }

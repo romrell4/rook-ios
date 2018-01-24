@@ -10,12 +10,17 @@ import UIKit
 
 class GameAlertView: UIView {
 	
-	//MARK: Public properties
-	var game: Game!
+	//MARK: Overridable properties
 	var shouldBeShowing: Bool {
-		//NOTE: Override this
 		return true
 	}
+	var centerYBuffer: CGFloat {
+		return 0
+	}
+	
+	//MARK: Public properties
+	var game: Game!
+	
 	
 	//MARK: Private properties
 	private weak var centerYConstraint: NSLayoutConstraint!
@@ -29,23 +34,35 @@ class GameAlertView: UIView {
 	func setup(superview: UIView, game: Game) {
 		self.game = game
 		
+		//Set up the border
+		layer.cornerRadius = 10
+		layer.borderColor = UIColor.black.cgColor
+		layer.borderWidth = 1
+		
 		frame = superview.frame
 		superview.addSubview(self)
 		
-		centerYConstraint = superview.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+		translatesAutoresizingMaskIntoConstraints = false
+		centerYConstraint = superview.centerYAnchor.constraint(equalTo: centerYAnchor, constant: centerYBuffer)
 		NSLayoutConstraint.activate([
-			centerYConstraint,
-			superview.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+			widthAnchor.constraint(greaterThanOrEqualTo: heightAnchor),
+			superview.centerXAnchor.constraint(equalTo: centerXAnchor),
+			centerYConstraint
 		])
 		layoutIfNeeded()
 		
-		updateUI(showing: shouldBeShowing, animated: false)
+		updateUI(animated: false)
 	}
 	
-	func updateUI(showing: Bool, animated: Bool = true) {
-		let currentlyShowing = centerYConstraint.constant == 0
-		if currentlyShowing != showing {
-			centerYConstraint.constant = showing ? 0 : UIScreen.main.bounds.height
+	func updateGame(_ game: Game) {
+		self.game = game
+		updateUI()
+	}
+	
+	func updateUI(animated: Bool = true) {
+		let currentlyShowing = centerYConstraint.constant == centerYBuffer
+		if currentlyShowing != shouldBeShowing {
+			centerYConstraint.constant = shouldBeShowing ? centerYBuffer : UIScreen.main.bounds.height
 			UIView.animate(withDuration: animated ? UI.slideInterval : 0) {
 				self.layoutIfNeeded()
 			}

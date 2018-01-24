@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="8Vb-4M-gPQ">
-                    <rect key="frame" x="59.5" y="41" width="132.5" height="169.5"/>
+                    <rect key="frame" x="59" y="52.5" width="132.5" height="145.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your bid?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YS1-mZ-IL9">
                             <rect key="frame" x="0.0" y="0.0" width="132.5" height="20.5"/>
@@ -26,53 +26,45 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oq6-7J-wOM">
-                            <rect key="frame" x="48" y="26.5" width="37" height="72"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                            <rect key="frame" x="54" y="26.5" width="25" height="48"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="40"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" autorepeat="NO" value="50" minimumValue="50" maximumValue="200" stepValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="bO2-kO-NP4">
-                            <rect key="frame" x="19.5" y="104.5" width="94" height="29"/>
+                            <rect key="frame" x="19.5" y="80.5" width="94" height="29"/>
                             <connections>
                                 <action selector="stepperTapped:" destination="iN0-l3-epB" eventType="valueChanged" id="7It-rg-gYf"/>
                             </connections>
                         </stepper>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="duI-d2-u4B">
-                            <rect key="frame" x="10" y="139.5" width="113" height="30"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q66-B0-evB">
-                                    <rect key="frame" x="0.0" y="0.0" width="49" height="30"/>
-                                    <state key="normal" title="Submit"/>
-                                    <connections>
-                                        <action selector="submitTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="rsf-R5-m6l"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5im-8I-dnF">
-                                    <rect key="frame" x="65" y="0.0" width="48" height="30"/>
-                                    <state key="normal" title="Cancel"/>
-                                    <connections>
-                                        <action selector="cancelTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="KyV-db-WcU"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                        </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q66-B0-evB">
+                            <rect key="frame" x="42" y="115.5" width="49" height="30"/>
+                            <state key="normal" title="Submit"/>
+                            <connections>
+                                <action selector="submitTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="rsf-R5-m6l"/>
+                            </connections>
+                        </button>
                     </subviews>
                 </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="8Vb-4M-gPQ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="RO2-Ef-LPW"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="8Vb-4M-gPQ" secondAttribute="bottom" constant="8" id="Yp8-0l-djt"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8Vb-4M-gPQ" secondAttribute="trailing" constant="8" id="Zyh-dD-nby"/>
                 <constraint firstItem="8Vb-4M-gPQ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="b2L-oH-bgd"/>
+                <constraint firstItem="8Vb-4M-gPQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="gbo-cS-VuJ"/>
+                <constraint firstItem="8Vb-4M-gPQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="sSR-jT-XI5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="bidLabel" destination="oq6-7J-wOM" id="ef5-OU-SQ1"/>
-                <outlet property="cancelButton" destination="5im-8I-dnF" id="2LL-2z-aXr"/>
                 <outlet property="stepper" destination="bO2-kO-NP4" id="nlb-bT-grT"/>
                 <outlet property="submitButton" destination="q66-B0-evB" id="obY-4a-18s"/>
                 <outlet property="textLabel" destination="YS1-mZ-IL9" id="qIs-zr-0Ab"/>
             </connections>
+            <point key="canvasLocation" x="36" y="37"/>
         </view>
     </objects>
 </document>

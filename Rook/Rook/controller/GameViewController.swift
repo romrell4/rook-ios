@@ -22,6 +22,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Private propreties
 	var waitingAlert: WaitingAlertView?
+	var biddingAlert: BiddingAlertView?
 	
 	//Computed
 	private var me: Player {
@@ -46,12 +47,15 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		game.join()
 		
 		waitingAlert = Bundle.main.loadNibNamed("WaitingAlertView", owner: nil)?.first as? WaitingAlertView
+		biddingAlert = Bundle.main.loadNibNamed("BiddingAlertView", owner: nil)?.first as? BiddingAlertView
 		waitingAlert?.setup(superview: view, game: game)
+		biddingAlert?.setup(superview: view, game: game)
 		
 		DB.gameRef(id: game.id).observe(.value) { (snapshot) in
 			self.game = Game(snapshot: snapshot)
 			
 			self.waitingAlert?.updateGame(self.game)
+			self.biddingAlert?.updateGame(self.game)
 			
 			if !self.game.state.isPreGame {
 				//If I have cards, but they aren't drawn yet, draw them

@@ -17,7 +17,7 @@ class WaitingAlertView: GameAlertView {
 	@IBOutlet private weak var rightImage: PlayerImageView!
 	@IBOutlet private weak var bottomImage: PlayerImageView!
 	
-	//MARK: Computed properties
+	//MARK: Overriden properties
 	override var shouldBeShowing: Bool {
 		return super.game.state.isPreGame
 	}
@@ -25,12 +25,10 @@ class WaitingAlertView: GameAlertView {
 	
 	//Public functions
 	
-	func updateGame(_ game: Game) {
-		self.game = game
+	override func updateGame(_ game: Game) {
+		super.updateGame(game)
 		
-		super.updateUI(showing: game.state.isPreGame)
-		
-		if game.state.isPreGame {
+		if shouldBeShowing {
 			//Setup the images
 			bottomImage.player = Player.currentPlayer
 			zip(imageViews, game.players.filter { $0 != Player.currentPlayer }) //Remove yourself from the list
