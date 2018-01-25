@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 
 let MAX_PLAYERS = 4
+let MIN_BID = 50
 private let MIN_KITTY_SIZE = 2
 
 class Game {
@@ -20,8 +21,9 @@ class Game {
 		static let state = "state"
 		static let players = "players"
 		static let kitty = "kitty"
-		static let bid = "bid"
-		static let bidder = "bidder"
+		static let currentBid = "currentBid"
+		static let currentBidder = "currentBidder"
+		static let highBidder = "highBidder"
 	}
 	
 	enum State: String {
@@ -42,8 +44,14 @@ class Game {
 	var state: State
 	var players: [Player]
 	var kitty: [RookCard]?
-	var bid: Int?
-	var bidder: String?
+	var currentBid: Int?
+	var currentBidder: String?
+	var highBidder: String?
+	
+	//MARK: Computed properties
+	var me: Player? {
+		return players.first { $0 == Player.currentPlayer }
+	}
 	
 	//MARK: Initialization
 	
@@ -63,19 +71,21 @@ class Game {
 			fatalError()
 		}
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
-		let bid = dict[Keys.bid] as? Int
-		let bidder = dict[Keys.bidder] as? String
-		self.init(id: id, name: name, owner: owner, players: players, state: state, bid: bid, bidder: bidder)
+		let currentBid = dict[Keys.currentBid] as? Int
+		let currentBidder = dict[Keys.currentBidder] as? String
+		let highBidder = dict[Keys.highBidder] as? String
+		self.init(id: id, name: name, owner: owner, players: players, state: state, currentBid: currentBid, currentBidder: currentBidder, highBidder: highBidder)
 	}
 	
-	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers, bid: Int? = nil, bidder: String? = nil) {
+	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers, currentBid: Int? = nil, currentBidder: String? = nil, highBidder: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
 		self.players = players
 		self.state = state
-		self.bid = bid
-		self.bidder = bidder
+		self.currentBid = currentBid
+		self.currentBidder = currentBidder
+		self.highBidder = highBidder
 	}
 	
 	//MARK: Public functions
@@ -96,6 +106,7 @@ class Game {
 	
 	func deal() {
 		state = .bidding
+		currentBidder = owner
 		
 		var deck = createDeck()
 		deck.shuffle()
@@ -119,8 +130,9 @@ class Game {
 		dict[Keys.players] = playersDict
 		
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
-		dict[Keys.bid] = bid
-		dict[Keys.bidder] = bidder
+		dict[Keys.currentBid] = currentBid
+		dict[Keys.currentBidder] = currentBidder
+		dict[Keys.highBidder] = highBidder
 		return dict
 	}
 	

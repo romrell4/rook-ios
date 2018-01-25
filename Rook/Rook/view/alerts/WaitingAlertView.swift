@@ -30,7 +30,7 @@ class WaitingAlertView: GameAlertView {
 		
 		if shouldBeShowing {
 			//Setup the images
-			bottomImage.player = Player.currentPlayer
+			bottomImage.player = game.me
 			zip(imageViews, game.players.filter { $0 != Player.currentPlayer }) //Remove yourself from the list
 				.forEach { $0.0.player = $0.1 } //Set the images for the others
 			if game.state == .waitingForPlayers {
@@ -51,10 +51,10 @@ class WaitingAlertView: GameAlertView {
 	
 	@IBAction func photoTapped(_ sender: UITapGestureRecognizer) {
 		//Only the owner should be able to select a partner, and only when the game is waiting for teams
-		guard game.state == .waitingForTeams, game.players.first(where: { $0 == Player.currentPlayer })?.id == game.owner else { return }
+		guard game.state == .waitingForTeams, game.me?.id == game.owner else { return }
 		
 		if let selectedPlayer = (sender.view as? PlayerImageView)?.player {
-			game.players.first { $0 == Player.currentPlayer }?.sortNum = 0
+			game.me?.sortNum = 0
 			game.players.first { $0 == selectedPlayer }?.sortNum = 2
 			game.players.first { $0.sortNum == nil }?.sortNum = 1
 			game.players.first { $0.sortNum == nil }?.sortNum = 3

@@ -259,7 +259,7 @@ class RookCardView: UIView {
 			.font: rookCardFont(ofSize: backFontSize),
 			.strokeColor: UIColor.black,
 			.strokeWidth: -3.0,
-			.foregroundColor: UIColor.rookYellow
+			.foregroundColor: UIColor.cardYellow
 		])
 		
 		var textRect = CGRect.zero

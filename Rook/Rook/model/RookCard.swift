@@ -41,9 +41,9 @@ class RookCard: Comparable, CustomStringConvertible {
 		
 		var color: UIColor {
 			switch self {
-				case .red	 : 	return .rookRed
-				case .green  : 	return .rookGreen
-				case .yellow : 	return .rookYellow
+				case .red	 : 	return .cardRed
+				case .green  : 	return .cardGreen
+				case .yellow : 	return .cardYellow
 				case .black  : 	return .black
 				case .rook	 : 	return .black
 			}

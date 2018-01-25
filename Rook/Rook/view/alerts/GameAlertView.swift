@@ -45,7 +45,6 @@ class GameAlertView: UIView {
 		translatesAutoresizingMaskIntoConstraints = false
 		centerYConstraint = superview.centerYAnchor.constraint(equalTo: centerYAnchor, constant: centerYBuffer)
 		NSLayoutConstraint.activate([
-			widthAnchor.constraint(greaterThanOrEqualTo: heightAnchor),
 			superview.centerXAnchor.constraint(equalTo: centerXAnchor),
 			centerYConstraint
 		])

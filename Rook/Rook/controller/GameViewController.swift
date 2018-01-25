@@ -26,7 +26,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	//Computed
 	private var me: Player {
-		return game.players.first { $0 == Player.currentPlayer }!
+		return game.me!
 	}
 	private var playedCardViews: [RookCardContainerView] { return [myPlayedCardView, leftPlayedCardView, middlePlayedCardView, rightPlayedCardView] }
 	
@@ -45,6 +45,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		super.viewDidLoad()
 		
 		game.join()
+		
+		title = me.name
 		
 		waitingAlert = Bundle.main.loadNibNamed("WaitingAlertView", owner: nil)?.first as? WaitingAlertView
 		biddingAlert = Bundle.main.loadNibNamed("BiddingAlertView", owner: nil)?.first as? BiddingAlertView
