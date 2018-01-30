@@ -21,7 +21,6 @@ class GameAlertView: UIView {
 	//MARK: Public properties
 	var game: Game!
 	
-	
 	//MARK: Private properties
 	private weak var centerYConstraint: NSLayoutConstraint!
 	

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="KittyAlertView" customModule="Rook" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="P0F-7v-afU">
+                    <rect key="frame" x="26" y="69" width="198.5" height="113"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="-16" translatesAutoresizingMaskIntoConstraints="NO" id="8GY-RO-bYp">
+                            <rect key="frame" x="0.0" y="0.0" width="198.5" height="75"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFm-nG-obC" customClass="RookCardView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="52.5" height="75"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="JFm-nG-obC" secondAttribute="height" multiplier="7:10" id="VxF-Jl-tQl"/>
+                                        <constraint firstAttribute="height" constant="75" id="XDa-ym-eiq"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIZ-H6-PSo" customClass="RookCardView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="36.5" y="0.0" width="52.5" height="75"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="75" id="5c0-jG-yvb"/>
+                                        <constraint firstAttribute="width" secondItem="zIZ-H6-PSo" secondAttribute="height" multiplier="7:10" id="MGL-aG-egW"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X3K-x6-5lY" customClass="RookCardView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="73" y="0.0" width="52.5" height="75"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="75" id="b8m-Iv-wro"/>
+                                        <constraint firstAttribute="width" secondItem="X3K-x6-5lY" secondAttribute="height" multiplier="7:10" id="obp-yb-XKu"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C0e-Ts-4v3" customClass="RookCardView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="109.5" y="0.0" width="52.5" height="75"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="75" id="CLG-dg-Tkr"/>
+                                        <constraint firstAttribute="width" secondItem="C0e-Ts-4v3" secondAttribute="height" multiplier="7:10" id="KJl-SD-6oX"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gK6-Xb-QHB" customClass="RookCardView" customModule="Rook" customModuleProvider="target">
+                                    <rect key="frame" x="146" y="0.0" width="52.5" height="75"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="75" id="PPD-UD-8AA"/>
+                                        <constraint firstAttribute="width" secondItem="gK6-Xb-QHB" secondAttribute="height" multiplier="7:10" id="mZq-3Y-gpx"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                        </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2vX-ed-GaA">
+                            <rect key="frame" x="26.5" y="83" width="146" height="30"/>
+                            <state key="normal" title="Add Kitty to my Hand"/>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="P0F-7v-afU" secondAttribute="bottom" constant="16" id="6Ft-SA-j2j"/>
+                <constraint firstItem="P0F-7v-afU" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="IID-SE-teW"/>
+                <constraint firstItem="P0F-7v-afU" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="J6N-2U-uD5"/>
+                <constraint firstItem="P0F-7v-afU" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QJy-f9-LHJ"/>
+                <constraint firstItem="P0F-7v-afU" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="X4Y-sk-JVh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="P0F-7v-afU" secondAttribute="trailing" constant="16" id="vpi-CT-1o7"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="28.5" y="-90.5"/>
+        </view>
+    </objects>
+</document>

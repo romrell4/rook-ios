@@ -55,7 +55,7 @@ class GamesViewController: UITableViewController {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		if Player.currentPlayer != nil {
+		if Player.current != nil {
 			observing = true
 		}
 	}
@@ -91,7 +91,7 @@ class GamesViewController: UITableViewController {
 		cell.detailTextLabel?.text = "\(game.players.count) player\(game.players.count != 1 ? "s" : "")"
 		
 		//If you're logged in and the game has spots open or you're already in the game, you can tap it
-		if let me = Player.currentPlayer, (game.players.count < MAX_PLAYERS || game.players.contains(me)) {
+		if let me = Player.current, (game.players.count < MAX_PLAYERS || game.players.contains(me)) {
 			cell.isUserInteractionEnabled = true
 		} else {
 			cell.isUserInteractionEnabled = false
@@ -114,7 +114,7 @@ class GamesViewController: UITableViewController {
 	//MARK: Listeners
 	
 	@IBAction func authButtonTapped(_ sender: Any) {
-		if Player.currentPlayer == nil {
+		if Player.current == nil {
 			if let authUI = authUI {
 				self.present(authUI.authViewController(), animated: true, completion: nil)
 			}
@@ -129,7 +129,7 @@ class GamesViewController: UITableViewController {
 	}
 	
 	@IBAction func addTapped(_ sender: Any) {
-		guard let ownerId = Player.currentPlayer?.id else { return }
+		guard let ownerId = Player.current?.id else { return }
 		let alert = UIAlertController(title: "Create a Game", message: "Please enter a name for the game you are creating:", preferredStyle: .alert)
 		alert.addTextField { (textField) in
 			
@@ -151,7 +151,7 @@ class GamesViewController: UITableViewController {
 
 		let auth = Auth.auth()
 		auth.addStateDidChangeListener { (auth, user) in
-			if Player.currentPlayer != nil {
+			if Player.current != nil {
 				self.navigationItem.leftBarButtonItem?.title = "Logout"
 				self.observing = true
 			} else {

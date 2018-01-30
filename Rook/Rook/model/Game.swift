@@ -21,15 +21,14 @@ class Game {
 		static let state = "state"
 		static let players = "players"
 		static let kitty = "kitty"
-		static let currentBid = "currentBid"
 		static let currentBidder = "currentBidder"
-		static let highBidder = "highBidder"
 	}
 	
 	enum State: String {
 		case waitingForPlayers
 		case waitingForTeams
 		case bidding
+		case kitty
 		case started
 		
 		var isPreGame: Bool {
@@ -44,13 +43,14 @@ class Game {
 	var state: State
 	var players: [Player]
 	var kitty: [RookCard]?
-	var currentBid: Int?
 	var currentBidder: String?
-	var highBidder: String?
 	
 	//MARK: Computed properties
 	var me: Player? {
-		return players.first { $0 == Player.currentPlayer }
+		return players.first { $0 == Player.current }
+	}
+	var highBidder: Player? {
+		return players.filter { $0.bid != nil }.max { $0.bid! < $1.bid! }
 	}
 	
 	//MARK: Initialization
@@ -71,34 +71,39 @@ class Game {
 			fatalError()
 		}
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
-		let currentBid = dict[Keys.currentBid] as? Int
 		let currentBidder = dict[Keys.currentBidder] as? String
-		let highBidder = dict[Keys.highBidder] as? String
-		self.init(id: id, name: name, owner: owner, players: players, state: state, currentBid: currentBid, currentBidder: currentBidder, highBidder: highBidder)
+		self.init(id: id, name: name, owner: owner, players: players, state: state, currentBidder: currentBidder)
 	}
 	
-	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers, currentBid: Int? = nil, currentBidder: String? = nil, highBidder: String? = nil) {
+	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers, currentBidder: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
-		self.players = players
+		
+		//Sort the players in their turn order (if available)
+		let me = players.first { $0 == Player.current }
+		self.players = players.sorted { (p1, p2) in
+			if let s1 = p1.sortNum, let s2 = p2.sortNum, let mySort = me?.sortNum {
+				return (s1 + mySort) % MAX_PLAYERS < (s2 + mySort) % MAX_PLAYERS
+			}
+			return false
+		}
+		
 		self.state = state
-		self.currentBid = currentBid
 		self.currentBidder = currentBidder
-		self.highBidder = highBidder
 	}
 	
 	//MARK: Public functions
 	
 	func join() {
-		if let me = Player.currentPlayer, !players.contains(me) {
+		if let me = Player.current, !players.contains(me) {
 			players.append(me)
 			DB.joinGame(gameId: id, player: me)
 		}
 	}
 	
 	func leave() {
-		if let me = Player.currentPlayer {
+		if let me = Player.current {
 			players.remove { $0 == me }
 			DB.leaveGame(gameId: id, playerId: me.id)
 		}
@@ -130,9 +135,7 @@ class Game {
 		dict[Keys.players] = playersDict
 		
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
-		dict[Keys.currentBid] = currentBid
 		dict[Keys.currentBidder] = currentBidder
-		dict[Keys.highBidder] = highBidder
 		return dict
 	}
 	

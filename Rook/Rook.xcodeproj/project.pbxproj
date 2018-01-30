@@ -23,10 +23,12 @@
 		0C77B6D920180F2600A350EF /* BiddingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C77B6D820180F2600A350EF /* BiddingAlertView.swift */; };
 		0C77B6DB20180F4300A350EF /* BiddingAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C77B6DA20180F4300A350EF /* BiddingAlertView.xib */; };
 		0C77B6DD201812E100A350EF /* GameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C77B6DC201812E100A350EF /* GameAlertView.swift */; };
-		0C87318C200AD01F00BC6C75 /* WaitingAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C87318B200AD01F00BC6C75 /* WaitingAlertView.xib */; };
+		0C87318C200AD01F00BC6C75 /* PreGameAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C87318B200AD01F00BC6C75 /* PreGameAlertView.xib */; };
 		0CDFD84B1FF9C64B00AF241C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */; };
 		0CDFD84D1FFA013500AF241C /* DB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84C1FFA013500AF241C /* DB.swift */; };
-		0CDFD84F1FFE824000AF241C /* WaitingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84E1FFE824000AF241C /* WaitingAlertView.swift */; };
+		0CDFD84F1FFE824000AF241C /* PreGameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84E1FFE824000AF241C /* PreGameAlertView.swift */; };
+		0CF7A2F42020091000818B69 /* KittyAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7A2F32020091000818B69 /* KittyAlertView.swift */; };
+		0CF7A2F62020091E00818B69 /* KittyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CF7A2F52020091E00818B69 /* KittyAlertView.xib */; };
 		6064D9B2147572760D31F047 /* Pods_Rook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,10 +52,12 @@
 		0C77B6D820180F2600A350EF /* BiddingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiddingAlertView.swift; sourceTree = "<group>"; };
 		0C77B6DA20180F4300A350EF /* BiddingAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BiddingAlertView.xib; sourceTree = "<group>"; };
 		0C77B6DC201812E100A350EF /* GameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAlertView.swift; sourceTree = "<group>"; };
-		0C87318B200AD01F00BC6C75 /* WaitingAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WaitingAlertView.xib; sourceTree = "<group>"; };
+		0C87318B200AD01F00BC6C75 /* PreGameAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameAlertView.xib; sourceTree = "<group>"; };
 		0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		0CDFD84C1FFA013500AF241C /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
-		0CDFD84E1FFE824000AF241C /* WaitingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingAlertView.swift; sourceTree = "<group>"; };
+		0CDFD84E1FFE824000AF241C /* PreGameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameAlertView.swift; sourceTree = "<group>"; };
+		0CF7A2F32020091000818B69 /* KittyAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KittyAlertView.swift; sourceTree = "<group>"; };
+		0CF7A2F52020091E00818B69 /* KittyAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KittyAlertView.xib; sourceTree = "<group>"; };
 		0EE99DAEFE122DB4873112C0 /* Pods_Rook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B72E8BFF4A0A7B4221871 /* Pods-Rook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,11 +151,13 @@
 			isa = PBXGroup;
 			children = (
 				0C77B6DC201812E100A350EF /* GameAlertView.swift */,
-				0CDFD84E1FFE824000AF241C /* WaitingAlertView.swift */,
-				0C87318B200AD01F00BC6C75 /* WaitingAlertView.xib */,
 				0C604BA7200C049C0039F93F /* PlayerImageView.swift */,
+				0CDFD84E1FFE824000AF241C /* PreGameAlertView.swift */,
+				0C87318B200AD01F00BC6C75 /* PreGameAlertView.xib */,
 				0C77B6D820180F2600A350EF /* BiddingAlertView.swift */,
 				0C77B6DA20180F4300A350EF /* BiddingAlertView.xib */,
+				0CF7A2F32020091000818B69 /* KittyAlertView.swift */,
+				0CF7A2F52020091E00818B69 /* KittyAlertView.xib */,
 			);
 			path = alerts;
 			sourceTree = "<group>";
@@ -235,8 +241,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C87318C200AD01F00BC6C75 /* WaitingAlertView.xib in Resources */,
+				0C87318C200AD01F00BC6C75 /* PreGameAlertView.xib in Resources */,
 				0C588FD01FF6B3EF00D6831E /* LaunchScreen.storyboard in Resources */,
+				0CF7A2F62020091E00818B69 /* KittyAlertView.xib in Resources */,
 				0C0B738E1FF99FBA00537352 /* GoogleService-Info.plist in Resources */,
 				0C77B6DB20180F4300A350EF /* BiddingAlertView.xib in Resources */,
 				0C06A0651FF70CF900797ABD /* Assets.xcassets in Resources */,
@@ -321,7 +328,8 @@
 				0C588FE01FF6C23C00D6831E /* Extensions.swift in Sources */,
 				0C77B6D920180F2600A350EF /* BiddingAlertView.swift in Sources */,
 				0C0B738C1FF89E4300537352 /* RookCardContainerView.swift in Sources */,
-				0CDFD84F1FFE824000AF241C /* WaitingAlertView.swift in Sources */,
+				0CDFD84F1FFE824000AF241C /* PreGameAlertView.swift in Sources */,
+				0CF7A2F42020091000818B69 /* KittyAlertView.swift in Sources */,
 				0C06A0671FF748D400797ABD /* Game.swift in Sources */,
 				0CDFD84D1FFA013500AF241C /* DB.swift in Sources */,
 				0C588FC81FF6B3EF00D6831E /* GameViewController.swift in Sources */,
