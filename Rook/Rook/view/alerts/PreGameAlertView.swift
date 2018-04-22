@@ -29,6 +29,9 @@ class PreGameAlertView: GameAlertView {
 		super.updateGame(game)
 		
 		if shouldBeShowing {
+			
+			//TODO: Redraw images when someone leaves
+			
 			//Setup the images
 			bottomImage.player = game.me
 			zip(imageViews, game.players.filter { $0 != Player.current }) //Remove yourself from the list

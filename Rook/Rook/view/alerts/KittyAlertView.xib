@@ -68,6 +68,9 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2vX-ed-GaA">
                             <rect key="frame" x="26.5" y="83" width="146" height="30"/>
                             <state key="normal" title="Add Kitty to my Hand"/>
+                            <connections>
+                                <action selector="addKittyTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="zaA-w8-MiT"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
@@ -83,6 +86,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="kittyStackView" destination="8GY-RO-bYp" id="n90-Yx-vrU"/>
+            </connections>
             <point key="canvasLocation" x="28.5" y="-90.5"/>
         </view>
     </objects>

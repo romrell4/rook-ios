@@ -46,7 +46,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		
 		let alerts = [
 			"PreGameAlertView",
-			"BiddingAlertView"
+			"BiddingAlertView",
+			"KittyAlertView"
 		].map { Bundle.main.loadNibNamed($0, owner: nil)?.first as? GameAlertView }
 		
 		alerts.forEach { $0?.setup(superview: view, game: game) }
@@ -57,8 +58,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 			alerts.forEach { $0?.updateGame(self.game) }
 			
 			if !self.game.state.isPreGame {
-				//If I have cards, but they aren't drawn yet, draw them
-				if !self.me.cards.isEmpty, self.handStackView.subviews.isEmpty {
+				//If I have cards, but they don't match my hand's stack view, draw them
+				if !self.me.cards.isEmpty, self.handStackView.subviews.count != self.me.cards.count {
 					self.drawCards()
 				}
 				

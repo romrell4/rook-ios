@@ -26,7 +26,7 @@ class RookCardView: UIView {
 	}
 	
 	//Public properties
-	var card = RookCard()
+	private (set) var card = RookCard()
 	
 	//Private properties
 	private var delegate: RookCardViewDelegate?

@@ -70,12 +70,13 @@ class Game {
 			}
 			fatalError()
 		}
+		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
 		let currentBidder = dict[Keys.currentBidder] as? String
-		self.init(id: id, name: name, owner: owner, players: players, state: state, currentBidder: currentBidder)
+		self.init(id: id, name: name, owner: owner, state: state, players: players, kitty: kitty, currentBidder: currentBidder)
 	}
 	
-	init(id: String = "", name: String, owner: String, players: [Player] = [], state: State = .waitingForPlayers, currentBidder: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -89,6 +90,7 @@ class Game {
 			return false
 		}
 		
+		self.kitty = kitty
 		self.state = state
 		self.currentBidder = currentBidder
 	}
