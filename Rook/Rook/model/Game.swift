@@ -29,6 +29,7 @@ class Game {
 		case waitingForTeams
 		case bidding
 		case kitty
+		case declareTrump
 		case started
 		
 		var isPreGame: Bool {

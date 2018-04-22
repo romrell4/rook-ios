@@ -9,6 +9,9 @@
 import UIKit
 import FirebaseDatabase
 
+//TODO: Figure out a way to compute (rather than hard code) 5
+private let KITTY_SIZE = 5
+
 class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Outlets
 	@IBOutlet private weak var myPlayedCardView: RookCardContainerView!
@@ -25,6 +28,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		return game.me!
 	}
 	private var playedCardViews: [RookCardContainerView] { return [myPlayedCardView, leftPlayedCardView, middlePlayedCardView, rightPlayedCardView] }
+	private var selectedCardViews: [RookCardView] { return handStackView.subviews.filter { ($0 as? RookCardView)?.selected ?? false } as? [RookCardView] ?? [] }
 	
 	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 200) }
 	private var cardWidth: CGFloat { return cardHeight * cardAspectRatio }
@@ -64,6 +68,14 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 				}
 				
 				self.drawPlayedCards()
+				
+				//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
+				if self.game.state == .kitty {
+					self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
+					self.navigationItem.rightBarButtonItem?.isEnabled = false
+				} else {
+					self.navigationItem.rightBarButtonItem = nil
+				}
 			}
 		}
 	}
@@ -73,14 +85,23 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	func cardSelected(_ cardView: RookCardView) {
 		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
 		
-		//Remove from stack view and add to played container view
-		cardView.removeFromSuperview()
-		myPlayedCardView.cardView = RookCardView(card: cardView.card) //Use constructor to reinitialize constraints
-		
-		me.cards.remove { $0 == cardView.card }
-		me.playedCard = cardView.card
+		if game.state == .kitty, game.highBidder == me {
+			//TODO: Validate that the card can be removed
+			
+			cardView.selected = !cardView.selected
+			
+			//If we have selected the right number of cards, allow the user to tap "Done"
+			navigationItem.rightBarButtonItem?.isEnabled = selectedCardViews.count == KITTY_SIZE
+		} else if game.state == .started {
+			//Remove from stack view and add to played container view
+			cardView.removeFromSuperview()
+			myPlayedCardView.cardView = RookCardView(card: cardView.card) //Use constructor to reinitialize constraints
+			
+			me.cards.remove { $0 == cardView.card }
+			me.playedCard = cardView.card
 
-		DB.updateGame(game)
+			DB.updateGame(game)
+		}
 	}
 	
 	//MARK: Listeners
@@ -91,11 +112,18 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		dismiss(animated: true)
 	}
 	
-	@IBAction func redealTapped(_ sender: Any) {
-		game.players.forEach { $0.playedCard = nil }
-		game.deal()
-		DB.updateGame(game)
+	@objc func doneTapped() {
+		guard selectedCardViews.count == KITTY_SIZE else { return }
+		
+		selectedCardViews.forEach { selectedCardView in
+			selectedCardView.removeFromSuperview()
+			me.cards.remove { $0 == selectedCardView.card }
+		}
+		
 		drawCards()
+		
+		game.state = .declareTrump
+		DB.updateGame(game)
 	}
 	
 	//MARK: Private functions

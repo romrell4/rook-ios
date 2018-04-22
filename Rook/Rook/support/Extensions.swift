@@ -32,6 +32,10 @@ extension UIColor {
 	static var redTint: UIColor {
 		return UIColor(r: 255, g: 59, b: 48)
 	}
+	
+	static var lighterGray: UIColor {
+		return UIColor(r: 235, g: 235, b: 235)
+	}
 }
 
 extension UIImage {

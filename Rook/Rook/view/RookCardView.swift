@@ -44,6 +44,11 @@ class RookCardView: UIView {
 		get { return card.suit.text }
 		set { card.suit = RookCard.Suit.fromText(text: newValue) }
 	}
+	@IBInspectable var selected: Bool = false {
+		didSet {
+			self.setNeedsDisplay()
+		}
+	}
 	
 	//Computed properties
 	private var centerFontSize       : CGFloat { return bounds.width * 0.55 }
@@ -123,7 +128,8 @@ class RookCardView: UIView {
 		roundedRect.addClip()
 		
 		pushContext()
-		UIColor.white.setFill()
+		
+		selected ? UIColor.lighterGray.setFill() : UIColor.white.setFill()
 		UIRectFill(bounds)
 		roundedRect.lineWidth = 0.5
 		roundedRect.stroke()
