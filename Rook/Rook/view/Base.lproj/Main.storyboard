@@ -135,9 +135,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="Mkv-IB-jWI" kind="presentation" id="3mS-ZS-IUe"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -157,6 +154,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Mkv-IB-jWI" kind="presentation" identifier="game" id="S1K-jE-jSe"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ef-49-0Qy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

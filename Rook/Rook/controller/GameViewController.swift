@@ -81,6 +81,11 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		}
 	}
 	
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		//TODO: Redraw cards view, etc
+		print("Redraw")
+	}
+	
 	//MARK: RookCardViewDelegate
 	
 	func cardSelected(_ cardView: RookCardView) {

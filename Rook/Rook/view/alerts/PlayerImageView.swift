@@ -11,10 +11,8 @@ import UIKit
 class PlayerImageView: UIImageView {
 	var player: Player? {
 		didSet {
-			if let player = player {
-				image = player.photo
-			} else {
-				image = UIImage(named: "user")
+			player?.getPhoto { (photo) in
+				self.image = photo
 			}
 		}
 	}

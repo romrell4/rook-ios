@@ -10,7 +10,8 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-private var photoCache = [URL: UIImage]()
+private var photoCache = [String: UIImage]()
+private let defaultImage = UIImage(named: "user")
 
 class Player: Equatable, CustomStringConvertible {
 	
@@ -26,13 +27,13 @@ class Player: Equatable, CustomStringConvertible {
 	
 	static var current: Player? {
 		guard let user = Auth.auth().currentUser, let name = user.displayName else { return nil }
-		return Player(id: user.uid, name: name, photoUrl: user.photoURL)
+		return Player(id: user.uid, name: name, photoUrl: user.photoURL?.absoluteString)
 	}
 	
 	//MARK: Persistent properties
 	var id: String
 	var name: String?
-	var photoUrl: URL?
+	var photoUrl: String?
 	var sortNum: Int?
 	var cards: [RookCard]
 	var playedCard: RookCard?
@@ -40,17 +41,28 @@ class Player: Equatable, CustomStringConvertible {
 	var passed: Bool?
 	
 	//MARK: Computed properties
-	var photo: UIImage? {
+	func getPhoto(callback: @escaping (UIImage?) -> Void) {
 		if let photoUrl = photoUrl {
 			if let image = photoCache[photoUrl] {
-				return image
-			} else if let image = UIImage(fromUrl: photoUrl) {
-				print("Fetching \(name ?? "null") from \(photoUrl.absoluteString)")
-				photoCache[photoUrl] = image
-				return image
+				callback(image)
+			} else {
+				//Jump onto a background thread to do the download
+				DispatchQueue.global(qos: .background).async {
+					print("Fetching \(self.name ?? "null") from \(photoUrl)")
+					let image = UIImage(fromUrl: URL(string: photoUrl))
+					
+					//Add to the cache, if it came back successfully
+					if image != nil { photoCache[photoUrl] = image }
+					
+					//Jump back onto the main thread
+					DispatchQueue.main.async {
+						callback(image ?? defaultImage)
+					}
+				}
 			}
+		} else {
+			callback(defaultImage)
 		}
-		return nil
 	}
 	
 	var description: String {
@@ -65,7 +77,7 @@ class Player: Equatable, CustomStringConvertible {
 		self.init(
 			id: id,
 			name: dict[Keys.name] as? String,
-			photoUrl: URL(string: dict[Keys.photoUrl] as? String),
+			photoUrl: dict[Keys.photoUrl] as? String,
 			sortNum: dict[Keys.sortNum] as? Int,
 			cards: (dict[Keys.cards] as? [[String: Any]] ?? []).map { RookCard(dict: $0) },
 			playedCard: playedCard,
@@ -74,7 +86,7 @@ class Player: Equatable, CustomStringConvertible {
 		)
 	}
 	
-	init(id: String, name: String?, photoUrl: URL?, sortNum: Int? = nil, cards: [RookCard] = [], playedCard: RookCard? = nil, bid: Int? = nil, passed: Bool? = nil) {
+	init(id: String, name: String?, photoUrl: String?, sortNum: Int? = nil, cards: [RookCard] = [], playedCard: RookCard? = nil, bid: Int? = nil, passed: Bool? = nil) {
 		self.id = id
 		self.name = name
 		self.photoUrl = photoUrl
@@ -96,7 +108,7 @@ class Player: Equatable, CustomStringConvertible {
 	func toDict() -> [String: Any] {
 		var dict = [String: Any]()
 		dict[Keys.name] = name
-		dict[Keys.photoUrl] = photoUrl?.absoluteString
+		dict[Keys.photoUrl] = photoUrl
 		dict[Keys.sortNum] = sortNum
 		dict[Keys.cards] = cards.map { $0.toDict() }
 		dict[Keys.playedCard] = playedCard?.toDict()
