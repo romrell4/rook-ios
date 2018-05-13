@@ -138,8 +138,6 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Private functions
 	
 	private func drawCards() {
-		//TODO: Redraw when orientation switches on iPad
-		
 		//Remove current cards and add new cards
 		handStackView.subviews.forEach { $0.removeFromSuperview() }
 		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }
