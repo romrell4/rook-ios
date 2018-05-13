@@ -73,8 +73,6 @@ class GamesViewController: UITableViewController {
 			let cell = sender as? UITableViewCell,
 			let indexPath = tableView.indexPath(for: cell) {
 			
-			//TODO: Fix massive lag when moving to next screen
-			
 			vc.game = games[indexPath.row]
 		}
 	}
