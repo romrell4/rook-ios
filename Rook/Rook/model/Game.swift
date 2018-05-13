@@ -22,6 +22,7 @@ class Game {
 		static let players = "players"
 		static let kitty = "kitty"
 		static let currentBidder = "currentBidder"
+		static let trumpSuit = "trumpSuit"
 	}
 	
 	enum State: String {
@@ -45,6 +46,7 @@ class Game {
 	var players: [Player]
 	var kitty: [RookCard]?
 	var currentBidder: String?
+	var trumpSuit: RookCard.Suit?
 	
 	//MARK: Computed properties
 	var me: Player? {
@@ -74,10 +76,14 @@ class Game {
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
 		let currentBidder = dict[Keys.currentBidder] as? String
-		self.init(id: id, name: name, owner: owner, state: state, players: players, kitty: kitty, currentBidder: currentBidder)
+		var trumpSuit: RookCard.Suit?
+		if let trumpSuitText = dict[Keys.trumpSuit] as? String {
+			trumpSuit = RookCard.Suit.fromText(text: trumpSuitText)
+		}
+		self.init(id: id, name: name, owner: owner, state: state, players: players, kitty: kitty, currentBidder: currentBidder, trumpSuit: trumpSuit)
 	}
 	
-	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil, trumpSuit: RookCard.Suit? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -94,6 +100,7 @@ class Game {
 		self.kitty = kitty
 		self.state = state
 		self.currentBidder = currentBidder
+		self.trumpSuit = trumpSuit
 	}
 	
 	//MARK: Public functions
@@ -139,6 +146,7 @@ class Game {
 		
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.currentBidder] = currentBidder
+		dict[Keys.trumpSuit] = trumpSuit?.text
 		return dict
 	}
 	

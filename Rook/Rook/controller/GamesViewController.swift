@@ -73,6 +73,8 @@ class GamesViewController: UITableViewController {
 			let cell = sender as? UITableViewCell,
 			let indexPath = tableView.indexPath(for: cell) {
 			
+			//TODO: Fix massive lag when moving to next screen
+			
 			vc.game = games[indexPath.row]
 		}
 	}
@@ -130,9 +132,11 @@ class GamesViewController: UITableViewController {
 	
 	@IBAction func addTapped(_ sender: Any) {
 		guard let ownerId = Player.current?.id else { return }
-		let alert = UIAlertController(title: "Create a Game", message: "Please enter a name for the game you are creating:", preferredStyle: .alert)
+		let alert = UIAlertController(title: "Create a Game", message: nil, preferredStyle: .alert)
 		alert.addTextField { (textField) in
-			
+			textField.autocapitalizationType = .words
+			textField.autocorrectionType = .no
+			textField.placeholder = "Name"
 		}
 		alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { (action) in
 			if let name = alert.textFields?.first?.text, name != "" {

@@ -28,7 +28,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		return game.me!
 	}
 	private var playedCardViews: [RookCardContainerView] { return [myPlayedCardView, leftPlayedCardView, middlePlayedCardView, rightPlayedCardView] }
-	private var selectedCardViews: [RookCardView] { return handStackView.subviews.filter { ($0 as? RookCardView)?.selected ?? false } as? [RookCardView] ?? [] }
+	private var handCardViews: [RookCardView] { return handStackView.subviews as? [RookCardView] ?? [] }
 	
 	private var cardHeight: CGFloat { return min(view.frame.height * 0.3, 200) }
 	private var cardWidth: CGFloat { return cardHeight * cardAspectRatio }
@@ -51,7 +51,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		let alerts = [
 			"PreGameAlertView",
 			"BiddingAlertView",
-			"KittyAlertView"
+			"KittyAlertView",
+			"TrumpColorAlertView"
 		].map { Bundle.main.loadNibNamed($0, owner: nil)?.first as? GameAlertView }
 		
 		alerts.forEach { $0?.setup(superview: view, game: game) }
@@ -86,12 +87,14 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
 		
 		if game.state == .kitty, game.highBidder == me {
-			//TODO: Validate that the card can be removed
+			//If the card is a point, and they still have other non-points to give, don't let them select it
+			//TODO: Add some sort of toast to let them know that they can't select that one
+			guard cardView.card.isKittyable || handCardViews.filter({ !$0.selected && $0.card.isKittyable}).count == 0 else { return }
 			
 			cardView.selected = !cardView.selected
 			
 			//If we have selected the right number of cards, allow the user to tap "Done"
-			navigationItem.rightBarButtonItem?.isEnabled = selectedCardViews.count == KITTY_SIZE
+			navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE
 		} else if game.state == .started {
 			//Remove from stack view and add to played container view
 			cardView.removeFromSuperview()
@@ -113,6 +116,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	@objc func doneTapped() {
+		let selectedCardViews = handCardViews.filter { $0.selected }
 		guard selectedCardViews.count == KITTY_SIZE else { return }
 		
 		selectedCardViews.forEach { selectedCardView in
@@ -129,6 +133,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	//MARK: Private functions
 	
 	private func drawCards() {
+		//TODO: Redraw when orientation switches on iPad
+		
 		//Remove current cards and add new cards
 		handStackView.subviews.forEach { $0.removeFromSuperview() }
 		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }

@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseDatabase
 
+private let POINT_RANKS = [RookCard.Rank.rook, 5, 10, 14, 1]
+
 class RookCard: Comparable, CustomStringConvertible {
 	//MARK: Types
 	private struct Keys {
@@ -58,11 +60,15 @@ class RookCard: Comparable, CustomStringConvertible {
 		static let max = 14
 	}
 	
-	//MARK: Properties
+	//MARK: Public Properties
 	var isFaceUp = true
 	var suit: Suit
 	var rank: Int
 	
+	//MARK: Computed Properties
+	var isKittyable: Bool {
+		return !POINT_RANKS.contains(rank)
+	}
 	var description: String {
 		return "\(suit.text) \(rank)"
 	}
