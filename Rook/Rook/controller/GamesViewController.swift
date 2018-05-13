@@ -20,8 +20,6 @@ class GamesViewController: UITableViewController {
 	//Computed
 	private var observing: Bool = false {
 		didSet {
-			//TODO: Empty data text for no games?
-			
 			//If the value changed
 			if oldValue != observing {
 				if observing {
