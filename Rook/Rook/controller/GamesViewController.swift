@@ -20,6 +20,8 @@ class GamesViewController: UITableViewController {
 	//Computed
 	private var observing: Bool = false {
 		didSet {
+			//TODO: Empty data text for no games?
+			
 			//If the value changed
 			if oldValue != observing {
 				if observing {
@@ -102,7 +104,7 @@ class GamesViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		return true
+		return games[indexPath.row].owner == Player.current?.id
 	}
 	
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -110,7 +112,6 @@ class GamesViewController: UITableViewController {
 		//Delete it from Firebase (so that is gets deleted from other devices)
 		DB.gameRef(id: game.id).removeValue()
 		tableView.deleteRows(at: [indexPath], with: .automatic)
-		
 	}
 	
 	//MARK: Listeners
