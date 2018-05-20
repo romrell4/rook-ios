@@ -43,6 +43,7 @@ class GamesViewController: UITableViewController {
 					print("Not listening for updates")
 					DB.gamesRef.removeAllObservers()
 					games = []
+					tableView.reloadData()
 				}
 			}
 		}

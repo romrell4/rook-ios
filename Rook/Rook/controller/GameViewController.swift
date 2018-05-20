@@ -58,6 +58,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		alerts.forEach { $0?.setup(superview: view, game: game) }
 		
 		DB.gameRef(id: game.id).observe(.value) { (snapshot) in
+			if !snapshot.exists() { self.leaveTapped(); return }
+			
 			self.game = Game(snapshot: snapshot)
 			
 			alerts.forEach { $0?.updateGame(self.game) }
@@ -71,7 +73,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 				self.drawPlayedCards()
 				
 				//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
-				if self.game.state == .kitty {
+				if self.game.state == .kitty && self.game.highBidder == Player.current {
 					self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
 					self.navigationItem.rightBarButtonItem?.isEnabled = false
 				} else {
@@ -114,7 +116,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Listeners
 	
-	@IBAction func leaveTapped(_ sender: Any) {
+	@IBAction func leaveTapped(_ sender: Any? = nil) {
 		DB.gameRef(id: game.id).removeAllObservers()
 		game.leave()
 		dismiss(animated: true)
