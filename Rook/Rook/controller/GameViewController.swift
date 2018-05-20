@@ -40,6 +40,9 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		let spacePerCard = availSpaceWidth / CGFloat(me.cards.count - 1)
 		return spacePerCard - cardWidth
 	}
+	
+	//MARK: Private properties
+	private var relayout = false
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -84,8 +87,14 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		//TODO: Redraw cards view, etc
-		print("Redraw")
+		relayout = true
+	}
+	
+	override func viewDidLayoutSubviews() {
+		if relayout {
+			relayout = false
+			drawCards()
+		}
 	}
 	
 	//MARK: RookCardViewDelegate
