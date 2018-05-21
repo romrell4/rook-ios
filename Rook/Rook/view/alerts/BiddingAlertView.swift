@@ -23,7 +23,6 @@ class BiddingAlertView: GameAlertView {
 	private var bidLabels: [UILabel] { return [leftBidLabel, middleBidLabel, rightBidLabel] }
 	
 	//MARK: Overriden properties
-	override var shouldBeShowing: Bool { return super.game.state == .bidding }
 	override var centerYBuffer: CGFloat { return 50 }
 	
 	private struct UI {
@@ -35,37 +34,35 @@ class BiddingAlertView: GameAlertView {
 	override func updateGame(_ game: Game) {
 		super.updateGame(game)
 		
-		if shouldBeShowing {
-			//If I just took the bid (everyone else passed)
-			if game.players.filter({ $0 != Player.current && $0.passed != true }).count == 0 {
-				game.state = .kitty
-				DB.updateGame(game)
-				return
-			}
-			
-			//Update the other people's bids
-			for (label, player) in zip(bidLabels, game.players.filter { $0 != Player.current }) {
-				label.text = "\(player.name ?? ""): \(player.passed ?? false ? "Passed" : player.bid?.description ?? "-")"
-			}
-			
-			let myBid = game.currentBidder == game.me?.id
-			if let currentBid = game.highBidder?.bid {
-				//Update the minimum stepper value (if it's your bid, set the stepper to 5 over the current bid)
-				stepper.minimumValue = Double(currentBid) + (myBid ? stepper.stepValue : 0)
-				stepper.value = stepper.minimumValue
-				updateBidLabel(stepper)
-			} else {
-				//If it's our bid, update it so that it shows "50" rather than "-"
-				updateBidLabel(myBid ? stepper : nil)
-			}
-			let bidder = game.players.first(where: { $0.id == game.currentBidder })
-			textLabel.text = getText(bidder: bidder)
-			bidLabel.alpha = myBid ? 1 : UI.dimAlpha
-			stepper.isEnabled = myBid
-			stepper.tintColor = myBid ? .defaultTint : .lightGray
-			submitButton.isEnabled = myBid
-			passButton.isEnabled = myBid
+		//If I just took the bid (everyone else passed)
+		if game.players.filter({ $0 != Player.current && $0.passed != true }).count == 0 {
+			game.state = .viewKitty
+			DB.updateGame(game)
+			return
 		}
+		
+		//Update the other people's bids
+		for (label, player) in zip(bidLabels, game.players.filter { $0 != Player.current }) {
+			label.text = "\(player.name ?? ""): \(player.passed ?? false ? "Passed" : player.bid?.description ?? "-")"
+		}
+		
+		let myBid = game.currentBidder == game.me?.id
+		if let currentBid = game.highBidder?.bid {
+			//Update the minimum stepper value (if it's your bid, set the stepper to 5 over the current bid)
+			stepper.minimumValue = Double(currentBid) + (myBid ? stepper.stepValue : 0)
+			stepper.value = stepper.minimumValue
+			updateBidLabel(stepper)
+		} else {
+			//If it's our bid, update it so that it shows "50" rather than "-"
+			updateBidLabel(myBid ? stepper : nil)
+		}
+		let bidder = game.players.first(where: { $0.id == game.currentBidder })
+		textLabel.text = getText(bidder: bidder)
+		bidLabel.alpha = myBid ? 1 : UI.dimAlpha
+		stepper.isEnabled = myBid
+		stepper.tintColor = myBid ? .defaultTint : .lightGray
+		submitButton.isEnabled = myBid
+		passButton.isEnabled = myBid
 	}
 	
 	//MARK: Listeners

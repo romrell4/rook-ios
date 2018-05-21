@@ -21,7 +21,11 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	@IBOutlet private weak var handStackView: UIStackView!
 	
 	//MARK: Public properties
-	var game: Game!
+	var game: Game! {
+		didSet {
+			updateAlerts()
+		}
+	}
 	
 	//Computed
 	private var me: Player {
@@ -43,6 +47,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	//MARK: Private properties
 	private var relayout = false
+	private var currentAlert: GameAlertView?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -51,21 +56,10 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		
 		title = me.name
 		
-		let alerts = [
-			"PreGameAlertView",
-			"BiddingAlertView",
-			"KittyAlertView",
-			"TrumpColorAlertView"
-		].map { Bundle.main.loadNibNamed($0, owner: nil)?.first as? GameAlertView }
-		
-		alerts.forEach { $0?.setup(superview: view, game: game) }
-		
 		DB.gameRef(id: game.id).observe(.value) { (snapshot) in
 			if !snapshot.exists() { self.leaveTapped(); return }
 			
 			self.game = Game(snapshot: snapshot)
-			
-			alerts.forEach { $0?.updateGame(self.game) }
 			
 			if !self.game.state.isPreGame {
 				//If I have cards, but they don't match my hand's stack view, draw them
@@ -76,7 +70,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 				self.drawPlayedCards()
 				
 				//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
-				if self.game.state == .kitty && self.game.highBidder == Player.current {
+				if self.game.state == .discardKitty && self.game.highBidder == Player.current {
 					self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
 					self.navigationItem.rightBarButtonItem?.isEnabled = false
 				} else {
@@ -102,7 +96,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	func cardSelected(_ cardView: RookCardView) {
 		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
 		
-		if game.state == .kitty, game.highBidder == me {
+		if game.state == .discardKitty, game.highBidder == me {
 			//If the card is a point, and they still have other non-points to give, don't let them select it
 			//TODO: Add some sort of toast to let them know that they can't select that one
 			guard cardView.card.isKittyable || handCardViews.filter({ !$0.selected && $0.card.isKittyable}).count == 0 else { return }
@@ -147,6 +141,37 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	//MARK: Private functions
+	
+	private func updateAlerts() {
+		if let alertClass = self.game.state.getAlertClass(inGame: game) {
+			//There is an alert associated with this state
+			if let currentAlert = currentAlert {
+				//We are showing an alert already
+				if type(of: currentAlert) != alertClass {
+					//We are showing a different alert. Dismiss it, then display ours
+					currentAlert.dismiss {
+						self.currentAlert = self.setupPopup(withNibName: String(describing: alertClass))
+					}
+				} else {
+					//We are already showing this alert. Update it
+					currentAlert.updateGame(game)
+				}
+			} else {
+				//No alert showing. Just create the new one
+				self.currentAlert = self.setupPopup(withNibName: String(describing: alertClass))
+			}
+		} else {
+			//No alert should be showing. Dismiss it if there is
+			currentAlert?.dismiss()
+		}
+	}
+	
+	private func setupPopup(withNibName nibName: String) -> GameAlertView? {
+		let alert = Bundle.main.loadNibNamed(nibName, owner: nil)?.first as? GameAlertView
+		alert?.setup(superview: view, game: game)
+		alert?.updateGame(game)
+		return alert
+	}
 	
 	private func drawCards() {
 		//Remove current cards and add new cards

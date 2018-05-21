@@ -17,10 +17,7 @@ class PreGameAlertView: GameAlertView {
 	@IBOutlet private weak var rightImage: PlayerImageView!
 	@IBOutlet private weak var bottomImage: PlayerImageView!
 	
-	//MARK: Overriden properties
-	override var shouldBeShowing: Bool {
-		return super.game.state.isPreGame
-	}
+	//MARK: Computed properties
 	private var imageViews: [PlayerImageView] { return [leftImage, topImage, rightImage] }
 	
 	//Public functions
@@ -28,25 +25,22 @@ class PreGameAlertView: GameAlertView {
 	override func updateGame(_ game: Game) {
 		super.updateGame(game)
 		
-		if shouldBeShowing {
-			
-			//TODO: Redraw images when someone leaves
-			
-			//Setup the images
-			bottomImage.player = game.me
-			zip(imageViews, game.players.filter { $0 != Player.current }) //Remove yourself from the list
-				.forEach { $0.0.player = $0.1 } //Set the images for the others
-			if game.state == .waitingForPlayers {
-				let waitingAmount = MAX_PLAYERS - game.players.count
-				if waitingAmount == 0 {
-					game.state = .waitingForTeams
-					DB.updateGame(game)
-				} else {
-					textLabel.text = "Waiting for \(waitingAmount) other player\(waitingAmount != 1 ? "s" : "")"
-				}
-			} else if game.state == .waitingForTeams {
-				textLabel.text = game.owner == Player.current?.id ? "Please select your partner" : "Waiting for teams to be chosen by the game leader"
+		//TODO: Redraw images when someone leaves
+		
+		//Setup the images
+		bottomImage.player = game.me
+		zip(imageViews, game.players.filter { $0 != Player.current }) //Remove yourself from the list
+			.forEach { $0.0.player = $0.1 } //Set the images for the others
+		if game.state == .waitingForPlayers {
+			let waitingAmount = MAX_PLAYERS - game.players.count
+			if waitingAmount == 0 {
+				game.state = .waitingForTeams
+				DB.updateGame(game)
+			} else {
+				textLabel.text = "Waiting for \(waitingAmount) other player\(waitingAmount != 1 ? "s" : "")"
 			}
+		} else if game.state == .waitingForTeams {
+			textLabel.text = game.owner == Player.current?.id ? "Please select your partner" : "Waiting for teams to be chosen by the game leader"
 		}
 	}
 	

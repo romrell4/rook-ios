@@ -11,9 +11,6 @@ import UIKit
 class GameAlertView: UIView {
 	
 	//MARK: Overridable properties
-	var shouldBeShowing: Bool {
-		return true
-	}
 	var centerYBuffer: CGFloat {
 		return 0
 	}
@@ -48,22 +45,21 @@ class GameAlertView: UIView {
 			centerYConstraint
 		])
 		layoutIfNeeded()
-		
-		updateUI(animated: false)
 	}
 	
 	func updateGame(_ game: Game) {
 		self.game = game
-		updateUI()
 	}
 	
-	func updateUI(animated: Bool = true) {
-		let currentlyShowing = centerYConstraint.constant == centerYBuffer
-		if currentlyShowing != shouldBeShowing {
-			centerYConstraint.constant = shouldBeShowing ? centerYBuffer : UIScreen.main.bounds.height
-			UIView.animate(withDuration: animated ? UI.slideInterval : 0) {
-				self.layoutIfNeeded()
-			}
+	func dismiss(callback: (() -> Void)? = nil) {
+		centerYConstraint.constant = UIScreen.main.bounds.height
+		UIView.animate(withDuration: UI.slideInterval) {
+			self.layoutIfNeeded()
+		}
+		UIView.animate(withDuration: UI.slideInterval, animations: {
+			self.layoutIfNeeded()
+		}) { _ in
+			callback?()
 		}
 	}
 }

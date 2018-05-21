@@ -10,9 +10,6 @@ import UIKit
 
 class TrumpColorAlertView: GameAlertView {
 	
-	//MARK: Overriden properties
-	override var shouldBeShowing: Bool { return game.state == .declareTrump && game.highBidder == Player.current }
-	
 	//MARK: Listeners
 	
 	@IBAction func redTapped(_ sender: UIButton) {

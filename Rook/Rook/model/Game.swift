@@ -29,12 +29,23 @@ class Game {
 		case waitingForPlayers
 		case waitingForTeams
 		case bidding
-		case kitty
+		case viewKitty
+		case discardKitty
 		case declareTrump
 		case started
 		
 		var isPreGame: Bool {
 			return [.waitingForPlayers, .waitingForTeams].contains(self)
+		}
+		
+		func getAlertClass(inGame game: Game) -> GameAlertView.Type? {
+			switch self {
+				case .waitingForPlayers, .waitingForTeams:	return PreGameAlertView.self
+				case .bidding: 								return BiddingAlertView.self
+				case .viewKitty: 							return game.highBidder == game.me ? KittyAlertView.self : nil
+				case .declareTrump: 						return game.highBidder == game.me ? TrumpColorAlertView.self : nil
+				default: 									return nil
+			}
 		}
 	}
 	
