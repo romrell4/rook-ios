@@ -34,8 +34,11 @@ class GameAlertView: UIView {
 		superview.addSubview(self)
 		
 		translatesAutoresizingMaskIntoConstraints = false
+		
+		//Define the center y constraint so that we can set it's priority low. That way, the alert will cover the cards before it goes off screen
 		let centerYConstraint = superview.centerYAnchor.constraint(equalTo: centerYAnchor)
 		centerYConstraint.priority = UILayoutPriority.defaultLow
+		
 		NSLayoutConstraint.activate([
 			superview.centerXAnchor.constraint(equalTo: centerXAnchor),
 			centerYConstraint,
