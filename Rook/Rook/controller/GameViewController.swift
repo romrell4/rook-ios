@@ -150,7 +150,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 				if type(of: currentAlert) != alertClass {
 					//We are showing a different alert. Dismiss it, then display ours
 					currentAlert.dismiss {
-						self.currentAlert = self.setupPopup(withNibName: String(describing: alertClass))
+						self.currentAlert = self.setupPopup(withClass: alertClass)
 					}
 				} else {
 					//We are already showing this alert. Update it
@@ -158,7 +158,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 				}
 			} else {
 				//No alert showing. Just create the new one
-				self.currentAlert = self.setupPopup(withNibName: String(describing: alertClass))
+				self.currentAlert = self.setupPopup(withClass: alertClass)
 			}
 		} else {
 			//No alert should be showing. Dismiss it if there is
@@ -166,8 +166,8 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		}
 	}
 	
-	private func setupPopup(withNibName nibName: String) -> GameAlertView? {
-		let alert = Bundle.main.loadNibNamed(nibName, owner: nil)?.first as? GameAlertView
+	private func setupPopup(withClass klass: GameAlertView.Type) -> GameAlertView? {
+		let alert = Bundle.main.loadNibNamed(String(describing: klass), owner: nil)?.first as? GameAlertView
 		alert?.setup(superview: view, game: game)
 		alert?.updateGame(game)
 		return alert
