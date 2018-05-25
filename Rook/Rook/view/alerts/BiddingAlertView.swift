@@ -22,9 +22,6 @@ class BiddingAlertView: GameAlertView {
 	//MARK: Computed properties
 	private var bidLabels: [UILabel] { return [leftBidLabel, middleBidLabel, rightBidLabel] }
 	
-	//MARK: Overriden properties
-	override var centerYBuffer: CGFloat { return 50 }
-	
 	private struct UI {
 		static let dimAlpha: CGFloat = 0.4
 	}

@@ -10,11 +10,6 @@ import UIKit
 
 class GameAlertView: UIView {
 	
-	//MARK: Overridable properties
-	var centerYBuffer: CGFloat {
-		return 0
-	}
-	
 	//MARK: Public properties
 	var game: Game!
 	
@@ -39,10 +34,12 @@ class GameAlertView: UIView {
 		superview.addSubview(self)
 		
 		translatesAutoresizingMaskIntoConstraints = false
-		centerYConstraint = superview.centerYAnchor.constraint(equalTo: centerYAnchor, constant: centerYBuffer)
+		let centerYConstraint = superview.centerYAnchor.constraint(equalTo: centerYAnchor)
+		centerYConstraint.priority = UILayoutPriority.defaultLow
 		NSLayoutConstraint.activate([
 			superview.centerXAnchor.constraint(equalTo: centerXAnchor),
-			centerYConstraint
+			centerYConstraint,
+			superview.topAnchor.constraint(lessThanOrEqualTo: topAnchor)
 		])
 		layoutIfNeeded()
 	}

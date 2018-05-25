@@ -18,14 +18,12 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	@IBOutlet private weak var leftPlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var middlePlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var rightPlayedCardView: RookCardContainerView!
+	
+	@IBOutlet weak var aboveView: UIView!
 	@IBOutlet private weak var handStackView: UIStackView!
 	
 	//MARK: Public properties
-	var game: Game! {
-		didSet {
-			updateAlerts()
-		}
-	}
+	var game: Game!
 	
 	//Computed
 	private var me: Player {
@@ -60,6 +58,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 			if !snapshot.exists() { self.leaveTapped(); return }
 			
 			self.game = Game(snapshot: snapshot)
+			self.updateAlerts()
 			
 			if !self.game.state.isPreGame {
 				//If I have cards, but they don't match my hand's stack view, draw them
@@ -168,7 +167,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	private func setupPopup(withClass klass: GameAlertView.Type) -> GameAlertView? {
 		let alert = Bundle.main.loadNibNamed(String(describing: klass), owner: nil)?.first as? GameAlertView
-		alert?.setup(superview: view, game: game)
+		alert?.setup(superview: aboveView, game: game)
 		alert?.updateGame(game)
 		return alert
 	}
