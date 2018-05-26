@@ -64,6 +64,12 @@ class RookCard: Comparable, CustomStringConvertible {
 	var isFaceUp = true
 	var suit: Suit
 	var rank: Int
+	var value: Int {
+		return rank == 1 ? 15 : rank
+	}
+	var points: Int {
+		return POINT_RANKS.contains(rank) ? suit == .rook ? 20 : value : 0
+	}
 	
 	//MARK: Computed Properties
 	var isPoint: Bool {
@@ -93,10 +99,7 @@ class RookCard: Comparable, CustomStringConvertible {
 	
 	static func <(lhs: RookCard, rhs: RookCard) -> Bool {
 		if lhs.suit == rhs.suit {
-			//Make the ones act like fifteens for sorting purposes
-			let lRank = lhs.rank == 1 ? 15: lhs.rank
-			let rRank = rhs.rank == 1 ? 15: rhs.rank
-			return lRank < rRank
+			return lhs.value < rhs.value
 		}
 		return lhs.suit.rawValue < rhs.suit.rawValue
 	}
