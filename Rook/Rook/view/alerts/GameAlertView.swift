@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol AlertViewDelegate {
+	func trumpSelected(_ suit: RookCard.Suit)
+}
+
 class GameAlertView: UIView {
 	
 	//MARK: Public properties
+	var delegate: AlertViewDelegate!
 	var game: Game!
 	
 	//MARK: Private properties
@@ -22,7 +27,8 @@ class GameAlertView: UIView {
 	
 	//Public functions
 	
-	func setup(superview: UIView, game: Game) {
+	func setup(withDelegate delegate: AlertViewDelegate, inView parentView: UIView, withGame game: Game) {
+		self.delegate = delegate
 		self.game = game
 		
 		//Set up the border
@@ -30,19 +36,15 @@ class GameAlertView: UIView {
 		layer.borderColor = UIColor.black.cgColor
 		layer.borderWidth = 1
 		
-		frame = superview.frame
-		superview.addSubview(self)
-		
+		frame = parentView.frame
+		parentView.addSubview(self)
+
 		translatesAutoresizingMaskIntoConstraints = false
 		
-		//Define the center y constraint so that we can set it's priority low. That way, the alert will cover the cards before it goes off screen
-		let centerYConstraint = superview.centerYAnchor.constraint(equalTo: centerYAnchor)
-		centerYConstraint.priority = UILayoutPriority.defaultLow
-		
+		centerYConstraint = parentView.centerYAnchor.constraint(equalTo: centerYAnchor)
 		NSLayoutConstraint.activate([
-			superview.centerXAnchor.constraint(equalTo: centerXAnchor),
-			centerYConstraint,
-			superview.topAnchor.constraint(lessThanOrEqualTo: topAnchor)
+			parentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+			centerYConstraint
 		])
 		layoutIfNeeded()
 	}

@@ -30,8 +30,7 @@ class Game {
 		case waitingForTeams
 		case bidding
 		case viewKitty
-		case discardKitty
-		case declareTrump
+		case discardAndDeclareTrump
 		case started
 		
 		var isPreGame: Bool {
@@ -43,7 +42,7 @@ class Game {
 				case .waitingForPlayers, .waitingForTeams:	return PreGameAlertView.self
 				case .bidding: 								return BiddingAlertView.self
 				case .viewKitty: 							return game.highBidder == game.me ? KittyAlertView.self : nil
-				case .declareTrump: 						return game.highBidder == game.me ? TrumpColorAlertView.self : nil
+				case .discardAndDeclareTrump:				return game.highBidder == game.me ? TrumpColorAlertView.self : nil
 				default: 									return nil
 			}
 		}

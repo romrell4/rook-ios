@@ -22,20 +22,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="-75" translatesAutoresizingMaskIntoConstraints="NO" id="3sY-hJ-PMs">
-                                <rect key="frame" x="406" y="234" width="0.0" height="120"/>
+                                <rect key="frame" x="406" y="354" width="0.0" height="0.0"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" placeholder="YES" id="3x4-wN-GOk"/>
+                                    <constraint firstAttribute="height" id="3x4-wN-GOk"/>
                                     <constraint firstAttribute="width" placeholder="YES" id="HDX-ux-l5r"/>
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AwQ-Ap-0qk">
-                                <rect key="frame" x="64" y="32" width="684" height="210"/>
+                                <rect key="frame" x="64" y="32" width="684" height="351"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Cca-PI-Fuy">
-                                        <rect key="frame" x="248" y="22" width="187" height="165"/>
+                                        <rect key="frame" x="248" y="92.666666666666686" width="187" height="165"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Siz-TL-klf" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="45" width="52" height="75"/>
+                                                <rect key="frame" x="0.0" y="44.999999999999986" width="52" height="75"/>
                                                 <color key="backgroundColor" red="0.0" green="0.56031829119999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Siz-TL-klf" secondAttribute="height" multiplier="7:10" id="DOk-gE-rj9"/>
@@ -54,7 +54,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQx-gB-HiS" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="90" width="53" height="75"/>
+                                                        <rect key="frame" x="0.0" y="89.999999999999986" width="53" height="75.000000000000014"/>
                                                         <color key="backgroundColor" red="0.0" green="0.56031829119999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="75" id="0o2-eY-d9B"/>
@@ -64,7 +64,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Wq-sC-ZX6" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
-                                                <rect key="frame" x="135" y="45" width="52" height="75"/>
+                                                <rect key="frame" x="135" y="44.999999999999986" width="52" height="75"/>
                                                 <color key="backgroundColor" red="0.0" green="0.56031829119999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="9Wq-sC-ZX6" secondAttribute="height" multiplier="7:10" id="LRh-HO-B5e"/>
@@ -99,8 +99,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="aboveView" destination="AwQ-Ap-0qk" id="GpD-bS-tTE"/>
+                        <outlet property="alertParentView" destination="AwQ-Ap-0qk" id="GpD-bS-tTE"/>
                         <outlet property="handStackView" destination="3sY-hJ-PMs" id="LUb-07-rpA"/>
+                        <outlet property="handStackViewHeightConstraint" destination="3x4-wN-GOk" id="PFj-TN-Ar2"/>
                         <outlet property="leftPlayedCardView" destination="Siz-TL-klf" id="R2x-kY-Zsh"/>
                         <outlet property="middlePlayedCardView" destination="EAU-r1-jxg" id="tEU-NH-CDM"/>
                         <outlet property="myPlayedCardView" destination="HQx-gB-HiS" id="r30-Du-S4I"/>

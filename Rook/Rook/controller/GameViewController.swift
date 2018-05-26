@@ -12,15 +12,16 @@ import FirebaseDatabase
 //TODO: Figure out a way to compute (rather than hard code) 5
 private let KITTY_SIZE = 5
 
-class GameViewController: UIViewController, RookCardViewDelegate {
+class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDelegate {
 	//MARK: Outlets
 	@IBOutlet private weak var myPlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var leftPlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var middlePlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var rightPlayedCardView: RookCardContainerView!
 	
-	@IBOutlet weak var aboveView: UIView!
+	@IBOutlet private weak var alertParentView: UIView!
 	@IBOutlet private weak var handStackView: UIStackView!
+	@IBOutlet private weak var handStackViewHeightConstraint: NSLayoutConstraint!
 	
 	//MARK: Public properties
 	var game: Game!
@@ -55,7 +56,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		title = me.name
 		
 		DB.gameRef(id: game.id).observe(.value) { (snapshot) in
-			if !snapshot.exists() { self.leaveTapped(); return }
+			guard snapshot.exists() else { self.leaveTapped(); return }
 			
 			self.game = Game(snapshot: snapshot)
 			self.updateAlerts()
@@ -69,7 +70,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 				self.drawPlayedCards()
 				
 				//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
-				if self.game.state == .discardKitty && self.game.highBidder == Player.current {
+				if self.game.state == .discardAndDeclareTrump && self.game.highBidder == Player.current {
 					self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
 					self.navigationItem.rightBarButtonItem?.isEnabled = false
 				} else {
@@ -95,15 +96,17 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	func cardSelected(_ cardView: RookCardView) {
 		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
 		
-		if game.state == .discardKitty, game.highBidder == me {
-			//If the card is a point, and they still have other non-points to give, don't let them select it
+		if game.state == .discardAndDeclareTrump, game.highBidder == me {
+			//If the card is a trump, no go. If the card is the rook, no go. If the card is a point, and they still have other non-points to give, no go.
 			//TODO: Add some sort of toast to let them know that they can't select that one
-			guard cardView.card.isKittyable || handCardViews.filter({ !$0.selected && $0.card.isKittyable}).count == 0 else { return }
+			if cardView.card.suit == game.trumpSuit || cardView.card.suit == .rook || (cardView.card.isPoint && handCardViews.filter({ !($0.selected || $0.card.isPoint || $0.card.suit == game.trumpSuit) }).count != 0) {
+				return
+			}
 			
 			cardView.selected = !cardView.selected
 			
 			//If we have selected the right number of cards, allow the user to tap "Done"
-			navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE
+			navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.trumpSuit != nil
 		} else if game.state == .started {
 			//Remove from stack view and add to played container view
 			cardView.removeFromSuperview()
@@ -116,6 +119,17 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		}
 	}
 	
+	//MARK: TrumpAlertViewDelegate
+	
+	func trumpSelected(_ trumpSuit: RookCard.Suit) {
+		game.trumpSuit = trumpSuit
+		
+		//Deselect all previously selected trump cards
+		handCardViews.filter { $0.selected && $0.card.suit == trumpSuit }.forEach { $0.selected = false }
+		
+		navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.trumpSuit != nil
+	}
+	
 	//MARK: Listeners
 	
 	@IBAction func leaveTapped(_ sender: Any? = nil) {
@@ -125,17 +139,14 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	}
 	
 	@objc func doneTapped() {
-		let selectedCardViews = handCardViews.filter { $0.selected }
-		guard selectedCardViews.count == KITTY_SIZE else { return }
-		
-		selectedCardViews.forEach { selectedCardView in
+		handCardViews.filter { $0.selected }.forEach { selectedCardView in
 			selectedCardView.removeFromSuperview()
 			me.cards.remove { $0 == selectedCardView.card }
 		}
 		
 		drawCards()
 		
-		game.state = .declareTrump
+		game.state = .started
 		DB.updateGame(game)
 	}
 	
@@ -167,7 +178,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 	
 	private func setupPopup(withClass klass: GameAlertView.Type) -> GameAlertView? {
 		let alert = Bundle.main.loadNibNamed(String(describing: klass), owner: nil)?.first as? GameAlertView
-		alert?.setup(superview: aboveView, game: game)
+		alert?.setup(withDelegate: self, inView: alertParentView, withGame: game)
 		alert?.updateGame(game)
 		return alert
 	}
@@ -176,7 +187,7 @@ class GameViewController: UIViewController, RookCardViewDelegate {
 		//Remove current cards and add new cards
 		handStackView.subviews.forEach { $0.removeFromSuperview() }
 		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }
-		handStackView.heightAnchor.constraint(equalToConstant: cardHeight).isActive = true
+		handStackViewHeightConstraint.constant = cardHeight
 		handStackView.spacing = cardSpacing
 	}
 	

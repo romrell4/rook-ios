@@ -34,7 +34,7 @@ class KittyAlertView: GameAlertView {
 			game.me?.cards.append(contentsOf: kitty)
 			game.me?.cards.sort()
 			game.kitty = nil
-			game.state = .discardKitty
+			game.state = .discardAndDeclareTrump
 			DB.updateGame(game)
 		}
 	}

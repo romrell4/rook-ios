@@ -66,8 +66,8 @@ class RookCard: Comparable, CustomStringConvertible {
 	var rank: Int
 	
 	//MARK: Computed Properties
-	var isKittyable: Bool {
-		return !POINT_RANKS.contains(rank)
+	var isPoint: Bool {
+		return POINT_RANKS.contains(rank)
 	}
 	var description: String {
 		return "\(suit.text) \(rank)"

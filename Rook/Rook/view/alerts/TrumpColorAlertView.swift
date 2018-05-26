@@ -12,24 +12,15 @@ class TrumpColorAlertView: GameAlertView {
 	
 	//MARK: Listeners
 	
-	@IBAction func redTapped(_ sender: UIButton) {
-		suitTapped(RookCard.Suit.red)
-	}
-	@IBAction func greenTapped(_ sender: UIButton) {
-		suitTapped(RookCard.Suit.green)
-	}
-	@IBAction func yellowTapped(_ sender: UIButton) {
-		suitTapped(RookCard.Suit.yellow)
-	}
-	@IBAction func blueTapped(_ sender: UIButton) {
-		suitTapped(RookCard.Suit.black)
-	}
-	
-	//MARK: Custom functions
-	
-	private func suitTapped(_ suit: RookCard.Suit) {
-		game.trumpSuit = suit
-		game.state = .started
-		DB.updateGame(game)
+	@IBAction func buttonTapped(_ sender: UIButton) {
+		UIView.animate(withDuration: 0.5) {
+			sender.superview?.subviews.forEach {
+				$0.alpha = 0.5
+				$0.layer.borderWidth = 0
+			}
+			sender.alpha = 1
+			sender.layer.borderWidth = 1
+		}
+		delegate.trumpSelected(RookCard.Suit.fromText(text: sender.titleLabel?.text ?? ""))
 	}
 }
