@@ -217,17 +217,18 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	}
 	
 	private func canSelectCardToDiscard(cardView: RookCardView) -> Bool {
+		//TODO: Implement the toasts below
 		if cardView.selected {
 			if !cardView.card.isPoint && handCardViews.filter({ $0.selected && $0.card.isPoint }).count > 0 {
-				//TODO: Toast "Please deselect all point cards first"
+				//showToast("Please deselect all point cards first")
 				return false
 			}
 		} else {
 			if cardView.card.suit == game.trumpSuit || cardView.card.suit == .rook {
-				//TODO: Toast "You cannot discard trump"
+				//showToast("You cannot discard trump")
 				return false
 			} else if cardView.card.isPoint && handCardViews.filter({ !($0.selected || $0.card.isPoint || $0.card.suit == game.trumpSuit) }).count != 0 {
-				//TODO: Toast "You cannot discard points until all non-point values are selected"
+				//showToast("You cannot discard points until all non-point values are selected")
 				return false
 			}
 		}
