@@ -146,6 +146,8 @@ class Game {
 		//Deal each player the correct number of cards by popping them off the top of the deck
 		players.forEach { $0.cards = (0 ..< cardsPerPlayer).map { _ in deck.removeFirst() }.sorted() }
 		kitty = (0 ..< deck.count).map { _ in deck.removeFirst() }
+		
+		//TODO: Handle misdeal
 	}
 	
 	func toDict() -> [String: Any] {

@@ -249,6 +249,8 @@ class RookCardView: UIView {
 			rankText.draw(in: rankRect)
 			suitText.draw(in: suitRect)
 			popContext()
+			
+			//TODO: Draw the points
 		}
 	}
 	

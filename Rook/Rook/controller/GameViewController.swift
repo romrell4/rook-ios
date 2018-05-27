@@ -97,15 +97,11 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
 		
 		if game.state == .discardAndDeclareTrump, game.highBidder == me {
-			//If the card is a trump, no go. If the card is the rook, no go. If the card is a point, and they still have other non-points to give, no go.
-			//TODO: Add some sort of toast to let them know that they can't select that one
-			if cardView.card.suit == game.trumpSuit || cardView.card.suit == .rook || (cardView.card.isPoint && handCardViews.filter({ !($0.selected || $0.card.isPoint || $0.card.suit == game.trumpSuit) }).count != 0) {
-				return
-			}
+			guard canSelectCardToDiscard(cardView: cardView) else { return }
 			
 			cardView.selected = !cardView.selected
 			
-			//If we have selected the right number of cards, allow the user to tap "Done"
+			//If we have followed all the rules, allow the user to tap "Done"
 			navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.trumpSuit != nil
 		} else if game.state == .started && canPlay(card: cardView.card) {
 			//Remove from stack view and add to played container view
@@ -122,6 +118,7 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				let winner = getTrickWinner()
 				print("\(winner?.name ?? "") won this trick")
 				//TODO: Add points
+				//TODO: Being able to look at cards after the trick is over
 				game.turn = winner?.id
 				game.players.forEach { $0.playedCard = nil }
 			}
@@ -159,6 +156,8 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 		game.turn = game.me?.id
 		game.state = .started
 		DB.updateGame(game)
+		
+		//TODO: Announce trump color
 	}
 	
 	//MARK: Private functions
@@ -215,6 +214,24 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	private func getPlayedCardView(forPlayer player: Player) -> RookCardContainerView {
 		let position = ((player.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
 		return playedCardViews[position]
+	}
+	
+	private func canSelectCardToDiscard(cardView: RookCardView) -> Bool {
+		if cardView.selected {
+			if !cardView.card.isPoint && handCardViews.filter({ $0.selected && $0.card.isPoint }).count > 0 {
+				//TODO: Toast "Please deselect all point cards first"
+				return false
+			}
+		} else {
+			if cardView.card.suit == game.trumpSuit || cardView.card.suit == .rook {
+				//TODO: Toast "You cannot discard trump"
+				return false
+			} else if cardView.card.isPoint && handCardViews.filter({ !($0.selected || $0.card.isPoint || $0.card.suit == game.trumpSuit) }).count != 0 {
+				//TODO: Toast "You cannot discard points until all non-point values are selected"
+				return false
+			}
+		}
+		return true
 	}
 	
 	private func canPlay(card: RookCard) -> Bool {
