@@ -39,6 +39,7 @@ class BiddingAlertView: GameAlertView {
 		}
 		
 		//Update the other people's bids
+		//TODO: Left and right align text
 		for (label, player) in zip(bidLabels, game.players.filter { $0 != Player.current }) {
 			label.text = "\(player.name ?? ""): \(player.passed ?? false ? "Passed" : player.bid?.description ?? "-")"
 		}

@@ -19,6 +19,8 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	@IBOutlet private weak var middlePlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var rightPlayedCardView: RookCardContainerView!
 	
+	@IBOutlet var swipeViews: [UIStackView]!
+	
 	@IBOutlet private weak var alertParentView: UIView!
 	@IBOutlet private weak var handStackView: UIStackView!
 	@IBOutlet private weak var handStackViewHeightConstraint: NSLayoutConstraint!
@@ -76,6 +78,11 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				} else {
 					self.navigationItem.rightBarButtonItem = nil
 				}
+				
+				//If you won, make the swipe view visible
+				self.swipeViews.forEach { $0.alpha = self.iWon() ? 1 : 0 }
+				
+				//TODO: Make the player whose turn it is have a pulsing  playedCardView
 			}
 		}
 	}
@@ -117,10 +124,8 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				//Determine who won
 				let winner = getTrickWinner()
 				print("\(winner?.name ?? "") won this trick")
-				//TODO: Add points
-				//TODO: Being able to look at cards after the trick is over
+				
 				game.turn = winner?.id
-				game.players.forEach { $0.playedCard = nil }
 			}
 			DB.updateGame(game)
 		}
@@ -143,6 +148,16 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 		DB.gameRef(id: game.id).removeAllObservers()
 		game.leave()
 		dismiss(animated: true)
+	}
+	
+	@IBAction func swipedToCollect() {
+		if iWon() {
+			//TODO: Add points
+			game.players.forEach { $0.playedCard = nil }
+			DB.updateGame(game)
+		} else {
+			print("SWiper no swiping!!")
+		}
 	}
 	
 	@objc func doneTapped() {
@@ -236,8 +251,8 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	}
 	
 	private func canPlay(card: RookCard) -> Bool {
-		//It's not your turn? No go.
-		guard game.turn == game.me?.id else { return false }
+		//It's not your turn? Or it is your turn, but you've already played? No go.
+		guard game.turn == game.me?.id && myPlayedCardView.cardView?.card == nil else { return false }
 		
 		//A card has been led? Maybe...
 		if let ledCard = playedCardViews.first(where: { $0.cardView != nil })?.cardView?.card {
@@ -291,5 +306,9 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 		print("\(bestSoFar) wins")
 		
 		return game.players.first { $0.playedCard == bestSoFar }
+	}
+	
+	private func iWon() -> Bool {
+		return game.turn == me.id && me.playedCard != nil
 	}
 }

@@ -9,6 +9,7 @@
 import UIKit
 
 class RookCardContainerView: UIView {
+	//TODO: Larger on ipad
 	var cardView: RookCardView? {
 		didSet {
 			//Remove the previous card
