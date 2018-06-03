@@ -28,33 +28,15 @@ extension Array {
 }
 
 extension UIColor {
-	convenience init(r: Int, g: Int, b: Int, alpha: CGFloat = 1) {
-		self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: alpha)
-	}
+	convenience init(_ name: String) { self.init(named: name)! }
 	
-	static var cardRed: UIColor {
-		return UIColor(r: 237, g: 37, b: 50)
-	}
-	
-	static var cardGreen: UIColor {
-		return UIColor(r: 36, g: 193, b: 80)
-	}
-	
-	static var cardYellow: UIColor {
-		return UIColor(r: 242, g: 199, b: 58)
-	}
-	
-	static var defaultTint: UIColor {
-		return UIColor(r: 0, g: 122, b: 255)
-	}
-	
-	static var redTint: UIColor {
-		return UIColor(r: 255, g: 59, b: 48)
-	}
-	
-	static var lighterGray: UIColor {
-		return UIColor(r: 235, g: 235, b: 235)
-	}
+	static var cardContainerBright: UIColor { return UIColor("cardContainerBright") }
+	static var cardContainer: UIColor { return UIColor("cardContainer") }
+	static var cardGreen: UIColor {	return UIColor("cardGreen") }
+	static var cardRed: UIColor { return UIColor("cardRed") }
+	static var cardYellow: UIColor { return UIColor("cardYellow") }
+	static var defaultTint: UIColor { return UIColor("defaultTint") }
+	static var lighterGray: UIColor { return UIColor("lighterGray") }
 }
 
 extension UIImage {

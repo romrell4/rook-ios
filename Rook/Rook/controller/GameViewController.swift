@@ -76,7 +76,15 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 			//If you won, make the swipe view visible
 			self.swipeViews.forEach { $0.alpha = self.iWon() ? 1 : 0 }
 			
-			//TODO: Make the player whose turn it is have a pulsing  playedCardView
+			//If it's my turn, make my played card view pulse lightly
+			if self.game.turn == self.game.me?.id {
+				UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
+					self.myPlayedCardView.backgroundColor = .cardContainerBright
+				}, completion: nil)
+			} else {
+				self.myPlayedCardView.layer.removeAllAnimations()
+				self.myPlayedCardView.backgroundColor = .cardContainer
+			}
 		}
 	}
 	
