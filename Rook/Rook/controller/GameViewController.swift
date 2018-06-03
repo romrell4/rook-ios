@@ -63,27 +63,20 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 			self.game = Game(snapshot: snapshot)
 			self.updateAlerts()
 			
-			if !self.game.state.isPreGame {
-				//If I have cards, but they don't match my hand's stack view, draw them
-				if !self.me.cards.isEmpty, self.handStackView.subviews.count != self.me.cards.count {
-					self.drawCards()
-				}
-				
-				self.drawPlayedCards()
-				
-				//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
-				if self.game.state == .discardAndDeclareTrump && self.game.highBidder == Player.current {
-					self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
-					self.navigationItem.rightBarButtonItem?.isEnabled = false
-				} else {
-					self.navigationItem.rightBarButtonItem = nil
-				}
-				
-				//If you won, make the swipe view visible
-				self.swipeViews.forEach { $0.alpha = self.iWon() ? 1 : 0 }
-				
-				//TODO: Make the player whose turn it is have a pulsing  playedCardView
+			//If I have cards, but they don't match my hand's stack view, redraw them
+			if !self.me.cards.isEmpty, self.handStackView.subviews.count != self.me.cards.count {
+				self.drawCards()
 			}
+			
+			self.drawPlayedCards()
+			
+			//Display the "Done" button in the top left corner in certain situations
+			self.handleShowDoneButton()
+			
+			//If you won, make the swipe view visible
+			self.swipeViews.forEach { $0.alpha = self.iWon() ? 1 : 0 }
+			
+			//TODO: Make the player whose turn it is have a pulsing  playedCardView
 		}
 	}
 	
@@ -217,18 +210,30 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	}
 	
 	private func drawPlayedCards() {
-		game.players.forEach {
-			var cardView: RookCardView?
-			if let card = $0.playedCard {
-				cardView = RookCardView(card: card)
+		if game.state == .started {
+			game.players.forEach {
+				var cardView: RookCardView?
+				if let card = $0.playedCard {
+					cardView = RookCardView(card: card)
+				}
+				getPlayedCardView(forPlayer: $0).cardView = cardView
 			}
-			getPlayedCardView(forPlayer: $0).cardView = cardView
 		}
 	}
 	
 	private func getPlayedCardView(forPlayer player: Player) -> RookCardContainerView {
 		let position = ((player.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
 		return playedCardViews[position]
+	}
+	
+	private func handleShowDoneButton() {
+		//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
+		if self.game.state == .discardAndDeclareTrump && self.game.highBidder == Player.current {
+			self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
+			self.navigationItem.rightBarButtonItem?.isEnabled = false
+		} else {
+			self.navigationItem.rightBarButtonItem = nil
+		}
 	}
 	
 	private func canSelectCardToDiscard(cardView: RookCardView) -> Bool {
