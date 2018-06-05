@@ -73,8 +73,14 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 			//Display the "Done" button in the top left corner in certain situations
 			self.handleShowDoneButton()
 			
-			//If you won, make the swipe view visible
-			self.swipeViews.forEach { $0.alpha = self.iWon() ? 1 : 0 }
+			//If you won, make the swipe view visible/pulsing
+			if self.iWon() {
+				self.swipeViews.forEach { swipeView in
+					UIView.animate(withDuration: 1, delay: 0, animations: { swipeView.alpha = 1 }, completion: { (_) in
+						UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: { swipeView.alpha = 0.5 }, completion: nil)
+					})
+				}
+			}
 			
 			//If it's my turn, make my played card view pulse lightly
 			if self.game.turn == self.game.me?.id {
@@ -154,10 +160,14 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	@IBAction func swipedToCollect() {
 		if iWon() {
 			//TODO: Add points
+			swipeViews.forEach {
+				$0.layer.removeAllAnimations()
+				$0.alpha = 0
+			}
 			game.players.forEach { $0.playedCard = nil }
 			DB.updateGame(game)
 		} else {
-			print("SWiper no swiping!!")
+			print("Swiper no swiping!!")
 		}
 	}
 	

@@ -15,12 +15,8 @@ class BiddingAlertView: GameAlertView {
 	@IBOutlet private weak var stepper: UIStepper!
 	@IBOutlet private weak var submitButton: UIButton!
 	@IBOutlet private weak var passButton: UIButton!
-	@IBOutlet private weak var leftBidLabel: UILabel!
-	@IBOutlet private weak var middleBidLabel: UILabel!
-	@IBOutlet private weak var rightBidLabel: UILabel!
-	
-	//MARK: Computed properties
-	private var bidLabels: [UILabel] { return [leftBidLabel, middleBidLabel, rightBidLabel] }
+	@IBOutlet var nameLabels: [UILabel]!
+	@IBOutlet var bidLabels: [UILabel]!
 	
 	private struct UI {
 		static let dimAlpha: CGFloat = 0.4
@@ -39,9 +35,9 @@ class BiddingAlertView: GameAlertView {
 		}
 		
 		//Update the other people's bids
-		//TODO: Left and right align text
-		for (label, player) in zip(bidLabels, game.players.filter { $0 != Player.current }) {
-			label.text = "\(player.name ?? ""): \(player.passed ?? false ? "Passed" : player.bid?.description ?? "-")"
+		for ((nameLabel, bidLabel), player) in zip(zip(nameLabels, bidLabels), game.players.filter { $0 != Player.current }) {
+			nameLabel.text = "\(player.name ?? "Player"):"
+			bidLabel.text = player.passed ?? false ? "Passed" : player.bid?.description ?? "-"
 		}
 		
 		let myBid = game.currentBidder == game.me?.id
