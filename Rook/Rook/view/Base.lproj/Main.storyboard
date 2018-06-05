@@ -58,7 +58,7 @@
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Siz-TL-klf" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="44.999999999999986" width="52" height="75"/>
-                                                        <color key="backgroundColor" name="cardContainerGreen"/>
+                                                        <color key="backgroundColor" name="cardContainer"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="Siz-TL-klf" secondAttribute="height" multiplier="7:10" id="DOk-gE-rj9"/>
                                                             <constraint firstAttribute="height" constant="75" id="x8g-Tv-buZ"/>
@@ -69,7 +69,7 @@
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EAU-r1-jxg" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="53" height="75"/>
-                                                                <color key="backgroundColor" name="cardContainerGreen"/>
+                                                                <color key="backgroundColor" name="cardContainer"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="75" id="V6z-4J-rdi"/>
                                                                     <constraint firstAttribute="width" secondItem="EAU-r1-jxg" secondAttribute="height" multiplier="7:10" id="hNV-Eu-nYq"/>
@@ -77,7 +77,7 @@
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQx-gB-HiS" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="89.999999999999986" width="53" height="75.000000000000014"/>
-                                                                <color key="backgroundColor" name="cardContainerGreen"/>
+                                                                <color key="backgroundColor" name="cardContainer"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="75" id="0o2-eY-d9B"/>
                                                                     <constraint firstAttribute="width" secondItem="HQx-gB-HiS" secondAttribute="height" multiplier="7:10" id="rJ9-e2-T6q"/>
@@ -87,7 +87,7 @@
                                                     </stackView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Wq-sC-ZX6" customClass="RookCardContainerView" customModule="Rook" customModuleProvider="target">
                                                         <rect key="frame" x="135" y="44.999999999999986" width="52" height="75"/>
-                                                        <color key="backgroundColor" name="cardContainerGreen"/>
+                                                        <color key="backgroundColor" name="cardContainer"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="9Wq-sC-ZX6" secondAttribute="height" multiplier="7:10" id="LRh-HO-B5e"/>
                                                             <constraint firstAttribute="height" constant="75" id="xh4-cf-Pyk"/>
@@ -275,7 +275,7 @@
         <namedColor name="boardGreen">
             <color red="0.0078431372549019607" green="0.45882352941176469" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="cardContainerGreen">
+        <namedColor name="cardContainer">
             <color red="0.0" green="0.5607843137254902" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
