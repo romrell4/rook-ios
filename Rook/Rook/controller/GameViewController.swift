@@ -75,6 +75,9 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 			
 			//If you won, make the swipe view visible/pulsing
 			if self.iWon() {
+				//TODO: Fix error that happened in this sitation:
+				//Player2: Red 1, Player1: Rook, Player3: Red 2, Player4: Red 5
+				//Both Player2 and Player1 go the swipeViews animating
 				self.swipeViews.forEach { swipeView in
 					UIView.animate(withDuration: 1, delay: 0, animations: { swipeView.alpha = 1 }, completion: { (_) in
 						UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: { swipeView.alpha = 0.5 }, completion: nil)
@@ -158,8 +161,8 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	}
 	
 	@IBAction func swipedToCollect() {
+		//TODO: Make sure that the whole stack view is swipable
 		if iWon() {
-			//TODO: Add points
 			swipeViews.forEach {
 				$0.layer.removeAllAnimations()
 				$0.alpha = 0
