@@ -23,6 +23,7 @@ class Game {
 		static let teams = "teams"
 		static let kitty = "kitty"
 		static let currentBidder = "currentBidder"
+		static let bid = "bid"
 		static let trumpSuit = "trumpSuit"
 		static let turn = "turn"
 	}
@@ -59,6 +60,7 @@ class Game {
 	var teams: [Team]
 	var kitty: [RookCard]?
 	var currentBidder: String?
+	var bid: Int?
 	var trumpSuit: RookCard.Suit?
 	var turn: String?
 	
@@ -91,15 +93,16 @@ class Game {
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
 		let currentBidder = dict[Keys.currentBidder] as? String
+		let bid = dict[Keys.bid] as? Int
 		var trumpSuit: RookCard.Suit?
 		if let trumpSuitText = dict[Keys.trumpSuit] as? String {
 			trumpSuit = RookCard.Suit.fromText(text: trumpSuitText)
 		}
 		let turn = dict[Keys.turn] as? String
-		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, kitty: kitty, currentBidder: currentBidder, trumpSuit: trumpSuit, turn: turn)
+		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, kitty: kitty, currentBidder: currentBidder, bid: bid, trumpSuit: trumpSuit, turn: turn)
 	}
 	
-	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil, trumpSuit: RookCard.Suit? = nil, turn: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil, bid: Int? = nil, trumpSuit: RookCard.Suit? = nil, turn: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -117,6 +120,7 @@ class Game {
 		self.kitty = kitty
 		self.state = state
 		self.currentBidder = currentBidder
+		self.bid = bid
 		self.trumpSuit = trumpSuit
 		self.turn = turn
 	}
@@ -168,6 +172,7 @@ class Game {
 		dict[Keys.teams] = teams.map { $0.toDict() }
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.currentBidder] = currentBidder
+		dict[Keys.bid] = bid
 		dict[Keys.trumpSuit] = trumpSuit?.text
 		dict[Keys.turn] = turn
 		return dict

@@ -29,7 +29,8 @@ class BiddingAlertView: GameAlertView {
 		
 		//If I just took the bid (everyone else passed)
 		if game.players.filter({ $0 != Player.current && $0.passed != true }).count == 0 {
-			//TODO: Save the bid
+			game.currentBidder = nil
+			game.bid = game.me?.bid
 			game.state = .viewKitty
 			DB.updateGame(game)
 			return

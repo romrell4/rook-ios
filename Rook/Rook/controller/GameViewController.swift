@@ -19,7 +19,7 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	@IBOutlet private weak var middlePlayedCardView: RookCardContainerView!
 	@IBOutlet private weak var rightPlayedCardView: RookCardContainerView!
 	
-	@IBOutlet var swipeViews: [UIStackView]!
+	@IBOutlet private var swipeViews: [UIStackView]!
 	
 	@IBOutlet private weak var alertParentView: UIView!
 	@IBOutlet private weak var handStackView: UIStackView!
@@ -156,7 +156,6 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	
 	@IBAction func leaveTapped(_ sender: Any? = nil) {
 		DB.gameRef(id: game.id).removeAllObservers()
-		game.leave()
 		dismiss(animated: true)
 	}
 	

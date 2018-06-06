@@ -25,8 +25,6 @@ class PreGameAlertView: GameAlertView {
 	override func updateGame(_ game: Game) {
 		super.updateGame(game)
 		
-		//TODO: Redraw images when someone leaves
-		
 		//Setup the images
 		bottomImage.player = game.me
 		zip(imageViews, game.players.filter { $0 != Player.current }) //Remove yourself from the list
