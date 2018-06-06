@@ -171,8 +171,6 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				$0.playedCard = nil
 			}
 			DB.updateGame(game)
-		} else {
-			print("Swiper no swiping!!")
 		}
 	}
 	
