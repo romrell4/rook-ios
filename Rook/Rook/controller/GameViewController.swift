@@ -164,7 +164,10 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				$0.layer.removeAllAnimations()
 				$0.alpha = 0
 			}
-			game.players.forEach { $0.playedCard = nil }
+			game.players.forEach {
+				game.teams[$0.teamNumber].handPoints += $0.playedCard?.points ?? 0
+				$0.playedCard = nil
+			}
 			DB.updateGame(game)
 		} else {
 			print("Swiper no swiping!!")

@@ -20,6 +20,7 @@ class Game {
 		static let owner = "owner"
 		static let state = "state"
 		static let players = "players"
+		static let teams = "teams"
 		static let kitty = "kitty"
 		static let currentBidder = "currentBidder"
 		static let trumpSuit = "trumpSuit"
@@ -55,6 +56,7 @@ class Game {
 	var owner: String
 	var state: State
 	var players: [Player]
+	var teams: [Team]
 	var kitty: [RookCard]?
 	var currentBidder: String?
 	var trumpSuit: RookCard.Suit?
@@ -85,6 +87,7 @@ class Game {
 			}
 			fatalError()
 		}
+		let teams = (dict[Keys.teams] as? [[String: Any]])?.map { Team(dict: $0) } ?? []
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
 		let currentBidder = dict[Keys.currentBidder] as? String
@@ -93,10 +96,10 @@ class Game {
 			trumpSuit = RookCard.Suit.fromText(text: trumpSuitText)
 		}
 		let turn = dict[Keys.turn] as? String
-		self.init(id: id, name: name, owner: owner, state: state, players: players, kitty: kitty, currentBidder: currentBidder, trumpSuit: trumpSuit, turn: turn)
+		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, kitty: kitty, currentBidder: currentBidder, trumpSuit: trumpSuit, turn: turn)
 	}
 	
-	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil, trumpSuit: RookCard.Suit? = nil, turn: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil, trumpSuit: RookCard.Suit? = nil, turn: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -110,6 +113,7 @@ class Game {
 			return false
 		}
 		
+		self.teams = teams.sorted { $0.teamNumber < $1.teamNumber }
 		self.kitty = kitty
 		self.state = state
 		self.currentBidder = currentBidder
@@ -156,10 +160,12 @@ class Game {
 			Keys.owner: owner,
 			Keys.state: state.rawValue
 		]
+		
 		var playersDict = [String: Any]()
 		players.forEach { playersDict[$0.id] = $0.toDict() }
 		dict[Keys.players] = playersDict
 		
+		dict[Keys.teams] = teams.map { $0.toDict() }
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.currentBidder] = currentBidder
 		dict[Keys.trumpSuit] = trumpSuit?.text

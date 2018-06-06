@@ -51,6 +51,9 @@ class PreGameAlertView: GameAlertView {
 		guard game.state == .waitingForTeams, game.me?.id == game.owner else { return }
 		
 		if let selectedPlayer = (sender.view as? PlayerImageView)?.player {
+			//Create the teams
+			game.teams = [Team(teamNumber: 0), Team(teamNumber: 1)]
+			
 			//Set up the sort numbers for each player. After doing this, all new games will have the players sorted correctly
 			game.me?.sortNum = 0
 			game.players.first { $0 == selectedPlayer }?.sortNum = 2

@@ -41,6 +41,8 @@ class Player: Equatable, CustomStringConvertible {
 	var passed: Bool?
 	
 	//MARK: Computed properties
+	var teamNumber: Int { return (sortNum ?? 0) % 2 }
+	
 	func getPhoto(callback: @escaping (UIImage?) -> Void) {
 		if let photoUrl = photoUrl {
 			if let image = photoCache[photoUrl] {
