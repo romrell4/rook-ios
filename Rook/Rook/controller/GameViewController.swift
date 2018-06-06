@@ -161,7 +161,6 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	}
 	
 	@IBAction func swipedToCollect() {
-		//TODO: Make sure that the whole stack view is swipable
 		if iWon() {
 			swipeViews.forEach {
 				$0.layer.removeAllAnimations()
