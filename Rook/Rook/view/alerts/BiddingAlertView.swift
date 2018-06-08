@@ -44,6 +44,7 @@ class BiddingAlertView: GameAlertView {
 		
 		let myBid = game.currentBidder == game.me?.id
 		if let currentBid = game.highBidder?.bid {
+			//TODO: Fix bug where you can bid over 200 if others are bidding
 			//Update the minimum stepper value (if it's your bid, set the stepper to 5 over the current bid)
 			stepper.minimumValue = Double(currentBid) + (myBid ? stepper.stepValue : 0)
 			stepper.value = stepper.minimumValue

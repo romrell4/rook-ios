@@ -112,7 +112,6 @@ class GamesViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		//TODO: Look into this more to try to figure out why the threading is off... Maybe firebase does everything on the main thread??
 		//This fixes a bug where a large lag would happen during the segue on some devices
 		DispatchQueue.main.async {
 			self.performSegue(withIdentifier: "game", sender: tableView.cellForRow(at: indexPath))

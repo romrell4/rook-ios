@@ -9,7 +9,6 @@
 import UIKit
 import FirebaseDatabase
 
-//TODO: Figure out a way to compute (rather than hard code) 5
 private let KITTY_SIZE = 5
 
 class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDelegate {
@@ -61,52 +60,17 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 			guard snapshot.exists() else { self.leaveTapped(); return }
 			
 			self.game = Game(snapshot: snapshot)
-			self.updateAlerts()
-			
-			//If I have cards, but they don't match my hand's stack view, redraw them
-			if !self.me.cards.isEmpty, self.handStackView.subviews.count != self.me.cards.count {
-				self.drawCards()
-			}
-			
-			self.drawPlayedCards()
-			
-			//Display the "Done" button in the top left corner in certain situations
+			self.handleStateAlerts()
+			self.handleDrawingCards()
 			self.handleShowDoneButton()
-			
-			//If you won, make the swipe view visible/pulsing
-			if self.iWon() {
-				//TODO: Fix error that happened in this sitation:
-				//Player2: Red 1, Player1: Rook, Player3: Red 2, Player4: Red 5
-				//Both Player2 and Player1 go the swipeViews animating
-				self.swipeViews.forEach { swipeView in
-					UIView.animate(withDuration: 1, delay: 0, animations: { swipeView.alpha = 1 }, completion: { (_) in
-						UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: { swipeView.alpha = 0.5 }, completion: nil)
-					})
-				}
-			}
-			
-			//If it's my turn, make my played card view pulse lightly
-			if self.game.turn == self.game.me?.id {
-				UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
-					self.myPlayedCardView.backgroundColor = .cardContainerBright
-				}, completion: nil)
-			} else {
-				self.myPlayedCardView.layer.removeAllAnimations()
-				self.myPlayedCardView.backgroundColor = .cardContainer
-			}
+			self.handleWinningTrick()
+			self.handleMyTurn()
 		}
 	}
 	
-	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		relayout = true
-	}
-	
-	override func viewDidLayoutSubviews() {
-		if relayout {
-			relayout = false
-			drawCards()
-		}
-	}
+	//These functions will take care of orientation change on the iPad
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) { relayout = true }
+	override func viewDidLayoutSubviews() { if relayout { relayout = false; drawCards() } }
 	
 	//MARK: RookCardViewDelegate
 	
@@ -190,70 +154,12 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	
 	//MARK: Private functions
 	
-	private func updateAlerts() {
-		if let alertClass = self.game.state.getAlertClass(inGame: game) {
-			//There is an alert associated with this state
-			if let currentAlert = currentAlert {
-				//We are showing an alert already
-				if type(of: currentAlert) != alertClass {
-					//We are showing a different alert. Dismiss it, then display ours
-					currentAlert.dismiss {
-						self.currentAlert = self.setupPopup(withClass: alertClass)
-					}
-				} else {
-					//We are already showing this alert. Update it
-					currentAlert.updateGame(game)
-				}
-			} else {
-				//No alert showing. Just create the new one
-				self.currentAlert = self.setupPopup(withClass: alertClass)
-			}
-		} else {
-			//No alert should be showing. Dismiss it if there is
-			currentAlert?.dismiss()
-		}
-	}
-	
-	private func setupPopup(withClass klass: GameAlertView.Type) -> GameAlertView? {
-		let alert = Bundle.main.loadNibNamed(String(describing: klass), owner: nil)?.first as? GameAlertView
-		alert?.setup(withDelegate: self, inView: alertParentView, withGame: game)
-		alert?.updateGame(game)
-		return alert
-	}
-	
 	private func drawCards() {
 		//Remove current cards and add new cards
 		handStackView.subviews.forEach { $0.removeFromSuperview() }
 		me.cards.forEach { handStackView.addArrangedSubview(RookCardView(card: $0, delegate: self, height: cardHeight)) }
 		handStackViewHeightConstraint.constant = cardHeight
 		handStackView.spacing = cardSpacing
-	}
-	
-	private func drawPlayedCards() {
-		if game.state == .started {
-			game.players.forEach {
-				var cardView: RookCardView?
-				if let card = $0.playedCard {
-					cardView = RookCardView(card: card)
-				}
-				getPlayedCardView(forPlayer: $0).cardView = cardView
-			}
-		}
-	}
-	
-	private func getPlayedCardView(forPlayer player: Player) -> RookCardContainerView {
-		let position = ((player.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
-		return playedCardViews[position]
-	}
-	
-	private func handleShowDoneButton() {
-		//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
-		if self.game.state == .discardAndDeclareTrump && self.game.highBidder == Player.current {
-			self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneTapped))
-			self.navigationItem.rightBarButtonItem?.isEnabled = false
-		} else {
-			self.navigationItem.rightBarButtonItem = nil
-		}
 	}
 	
 	private func canSelectCardToDiscard(cardView: RookCardView) -> Bool {
@@ -335,5 +241,97 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	
 	private func iWon() -> Bool {
 		return game.turn == me.id && me.playedCard != nil
+	}
+}
+
+extension GameViewController {
+	
+	private func handleStateAlerts() {
+		//Define closure to setup the pop-ups
+		func setupPopup(withClass klass: GameAlertView.Type) -> GameAlertView? {
+			let alert = Bundle.main.loadNibNamed(String(describing: klass), owner: nil)?.first as? GameAlertView
+			alert?.setup(withDelegate: self, inView: alertParentView, withGame: game)
+			alert?.updateGame(game)
+			return alert
+		}
+		
+		if let alertClass = game.state.getAlertClass(inGame: game) {
+			//There is an alert associated with this state
+			if let currentAlert = currentAlert {
+				//We are showing an alert already
+				if type(of: currentAlert) != alertClass {
+					//We are showing a different alert. Dismiss it, then display ours
+					currentAlert.dismiss {
+						self.currentAlert = setupPopup(withClass: alertClass)
+					}
+				} else {
+					//We are already showing this alert. Update it
+					currentAlert.updateGame(game)
+				}
+			} else {
+				//No alert showing. Just create the new one
+				self.currentAlert = setupPopup(withClass: alertClass)
+			}
+		} else {
+			//No alert should be showing. Dismiss it if there is
+			currentAlert?.dismiss()
+		}
+	}
+	
+	private func handleDrawingCards() {
+		//If I have cards, but they don't match my hand's stack view, redraw them
+		if !me.cards.isEmpty, handStackView.subviews.count != me.cards.count {
+			drawCards()
+		}
+		
+		//Update the played cards
+		if game.state == .started {
+			game.players.forEach {
+				var cardView: RookCardView?
+				if let card = $0.playedCard {
+					cardView = RookCardView(card: card)
+				}
+				
+				//Find the position that this player is in, and update their card
+				let position = (($0.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
+				playedCardViews[position].cardView = cardView
+			}
+		}
+	}
+	
+	private func handleShowDoneButton() {
+		//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
+		if game.state == .discardAndDeclareTrump && game.highBidder == Player.current {
+			navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(doneTapped))
+			navigationItem.rightBarButtonItem?.isEnabled = false
+		} else {
+			navigationItem.rightBarButtonItem = nil
+		}
+	}
+	
+	private func handleWinningTrick() {
+		//If you won, make the swipe view visible/pulsing
+		if iWon() {
+			//TODO: Fix error that happened in this sitation:
+			//Player2: Red 1, Player1: Rook, Player3: Red 2, Player4: Red 5
+			//Both Player2 and Player1 go the swipeViews animating
+			swipeViews.forEach { swipeView in
+				UIView.animate(withDuration: 1, delay: 0, animations: { swipeView.alpha = 1 }, completion: { (_) in
+					UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: { swipeView.alpha = 0.5 }, completion: nil)
+				})
+			}
+		}
+	}
+	
+	private func handleMyTurn() {
+		//If it's my turn, make my played card view pulse lightly
+		if game.turn == game.me?.id {
+			UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
+				self.myPlayedCardView.backgroundColor = .cardContainerBright
+			}, completion: nil)
+		} else {
+			myPlayedCardView.layer.removeAllAnimations()
+			myPlayedCardView.backgroundColor = .cardContainer
+		}
 	}
 }
