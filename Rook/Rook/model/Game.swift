@@ -20,11 +20,9 @@ class Game {
 		static let owner = "owner"
 		static let state = "state"
 		static let players = "players"
-		static let teams = "teams"
+		static let hands = "hands"
 		static let kitty = "kitty"
-		static let currentBidder = "currentBidder"
-		static let bid = "bid"
-		static let trumpSuit = "trumpSuit"
+		static let bidTurn = "bidTurn"
 		static let turn = "turn"
 	}
 	
@@ -57,20 +55,15 @@ class Game {
 	var owner: String
 	var state: State
 	var players: [Player]
-	var teams: [Team]
+	var hands: [Hand]
 	var kitty: [RookCard]?
-	var currentBidder: String?
-	var bid: Int?
-	var trumpSuit: RookCard.Suit?
+	var bidTurn: String?
 	var turn: String?
 	
 	//MARK: Computed properties
-	var me: Player? {
-		return players.first { $0 == Player.current }
-	}
-	var highBidder: Player? {
-		return players.filter { $0.bid != nil }.max { $0.bid! < $1.bid! }
-	}
+	var me: Player? { return players.first { $0 == Player.current } }
+	var currentHand: Hand? { return hands.last }
+	var highBidder: Player? { return players.filter { $0.bid != nil }.max { $0.bid! < $1.bid! } }
 	
 	//MARK: Initialization
 	
@@ -89,20 +82,14 @@ class Game {
 			}
 			fatalError()
 		}
-		let teams = (dict[Keys.teams] as? [[String: Any]])?.map { Team(dict: $0) } ?? []
+		let hands = (dict[Keys.hands] as? [[String: Any]])?.map { Hand(dict: $0) } ?? []
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
-		let currentBidder = dict[Keys.currentBidder] as? String
-		let bid = dict[Keys.bid] as? Int
-		var trumpSuit: RookCard.Suit?
-		if let trumpSuitText = dict[Keys.trumpSuit] as? String {
-			trumpSuit = RookCard.Suit.fromText(text: trumpSuitText)
-		}
 		let turn = dict[Keys.turn] as? String
-		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, kitty: kitty, currentBidder: currentBidder, bid: bid, trumpSuit: trumpSuit, turn: turn)
+		self.init(id: id, name: name, owner: owner, state: state, players: players, hands: hands, kitty: kitty, turn: turn)
 	}
 	
-	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], kitty: [RookCard]? = nil, currentBidder: String? = nil, bid: Int? = nil, trumpSuit: RookCard.Suit? = nil, turn: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], hands: [Hand] = [], kitty: [RookCard]? = nil, turn: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -116,12 +103,9 @@ class Game {
 			return false
 		}
 		
-		self.teams = teams.sorted { $0.teamNumber < $1.teamNumber }
+		self.hands = hands
 		self.kitty = kitty
 		self.state = state
-		self.currentBidder = currentBidder
-		self.bid = bid
-		self.trumpSuit = trumpSuit
 		self.turn = turn
 	}
 	
@@ -143,7 +127,10 @@ class Game {
 	
 	func deal() {
 		state = .bidding
-		currentBidder = owner
+		hands.append(Hand(points: [0, 0]))
+		
+		//TODO: Start with the correct person
+		turn = owner
 		
 		var deck = createDeck()
 		deck.shuffle()
@@ -169,11 +156,8 @@ class Game {
 		players.forEach { playersDict[$0.id] = $0.toDict() }
 		dict[Keys.players] = playersDict
 		
-		dict[Keys.teams] = teams.map { $0.toDict() }
+		dict[Keys.hands] = hands.map { $0.toDict() }
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
-		dict[Keys.currentBidder] = currentBidder
-		dict[Keys.bid] = bid
-		dict[Keys.trumpSuit] = trumpSuit?.text
 		dict[Keys.turn] = turn
 		return dict
 	}

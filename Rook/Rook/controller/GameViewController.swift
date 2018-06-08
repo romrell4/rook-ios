@@ -83,7 +83,7 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 			cardView.selected = !cardView.selected
 			
 			//If we have followed all the rules, allow the user to tap "Done"
-			navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.trumpSuit != nil
+			navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.currentHand?.trumpSuit != nil
 		} else if game.state == .started && canPlay(card: cardView.card) {
 			//Remove from stack view and add to played container view
 			cardView.removeFromSuperview()
@@ -108,12 +108,12 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	//MARK: TrumpAlertViewDelegate
 	
 	func trumpSelected(_ trumpSuit: RookCard.Suit) {
-		game.trumpSuit = trumpSuit
+		game.currentHand?.trumpSuit = trumpSuit
 		
 		//Deselect all previously selected trump cards
 		handCardViews.filter { $0.selected && $0.card.suit == trumpSuit }.forEach { $0.selected = false }
 		
-		navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.trumpSuit != nil
+		navigationItem.rightBarButtonItem?.isEnabled = handCardViews.filter { $0.selected }.count == KITTY_SIZE && game.currentHand?.trumpSuit != nil
 	}
 	
 	//MARK: Listeners
@@ -130,7 +130,7 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				$0.alpha = 0
 			}
 			game.players.forEach {
-				game.teams[$0.teamNumber].handPoints += $0.playedCard?.points ?? 0
+				game.currentHand?.points[$0.teamNumber] += $0.playedCard?.points ?? 0
 				$0.playedCard = nil
 			}
 			DB.updateGame(game)
@@ -170,10 +170,10 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				return false
 			}
 		} else {
-			if cardView.card.suit == game.trumpSuit || cardView.card.suit == .rook {
+			if cardView.card.suit == game.currentHand?.trumpSuit || cardView.card.suit == .rook {
 				//showToast("You cannot discard trump")
 				return false
-			} else if cardView.card.isPoint && handCardViews.filter({ !($0.selected || $0.card.isPoint || $0.card.suit == game.trumpSuit) }).count != 0 {
+			} else if cardView.card.isPoint && handCardViews.filter({ !($0.selected || $0.card.isPoint || $0.card.suit == game.currentHand?.trumpSuit) }).count != 0 {
 				//showToast("You cannot discard points until all non-point values are selected")
 				return false
 			}
@@ -189,7 +189,7 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 		if let ledCard = playedCardViews.first(where: { $0.cardView != nil })?.cardView?.card {
 			//You can follow suit, but are trying not to? No go
 			//TODO: Can we use nil as the rook suit? Then we could just default to trump...
-			let cardsFollowingSuit = game.me?.cards.filter { $0.suit == ledCard.suit || $0.suit == .rook && ledCard.suit == game.trumpSuit || $0.suit == game.trumpSuit && ledCard.suit == .rook } ?? []
+			let cardsFollowingSuit = game.me?.cards.filter { $0.suit == ledCard.suit || $0.suit == .rook && ledCard.suit == game.currentHand?.trumpSuit || $0.suit == game.currentHand?.trumpSuit && ledCard.suit == .rook } ?? []
 			if cardsFollowingSuit.count > 0 && !cardsFollowingSuit.contains(card) {
 				return false
 			}
@@ -222,14 +222,14 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 		
 		var bestSoFar = cards.removeFirst()
 		for nextCard in cards {
-			if bestSoFar.suit == game.trumpSuit || bestSoFar.suit == .rook {
+			if bestSoFar.suit == game.currentHand?.trumpSuit || bestSoFar.suit == .rook {
 				//If best is trump, we have to be trump AND higher than them (no need to include rook, it will never beat a trump)
-				if nextCard.suit == game.trumpSuit && nextCard.value > bestSoFar.value {
+				if nextCard.suit == game.currentHand?.trumpSuit && nextCard.value > bestSoFar.value {
 					bestSoFar = nextCard
 				}
 			} else {
 				//If best is not trump, we can beat it with trump OR by following suit with a higher rank
-				if nextCard.suit == game.trumpSuit || nextCard.suit == .rook || (nextCard.suit == bestSoFar.suit && nextCard.value > bestSoFar.value) {
+				if nextCard.suit == game.currentHand?.trumpSuit || nextCard.suit == .rook || (nextCard.suit == bestSoFar.suit && nextCard.value > bestSoFar.value) {
 					bestSoFar = nextCard
 				}
 			}

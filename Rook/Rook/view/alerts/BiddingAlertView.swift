@@ -29,8 +29,9 @@ class BiddingAlertView: GameAlertView {
 		
 		//If I just took the bid (everyone else passed)
 		if game.players.filter({ $0 != Player.current && $0.passed != true }).count == 0 {
-			game.currentBidder = nil
-			game.bid = game.me?.bid
+			game.turn = nil
+			game.currentHand?.bid = game.me?.bid
+			game.currentHand?.biddingTeam = game.me?.teamNumber
 			game.state = .viewKitty
 			DB.updateGame(game)
 			return
@@ -42,7 +43,7 @@ class BiddingAlertView: GameAlertView {
 			bidLabel.text = player.passed ?? false ? "Passed" : player.bid?.description ?? "-"
 		}
 		
-		let myBid = game.currentBidder == game.me?.id
+		let myBid = game.turn == game.me?.id
 		if let currentBid = game.highBidder?.bid {
 			//TODO: Fix bug where you can bid over 200 if others are bidding
 			//Update the minimum stepper value (if it's your bid, set the stepper to 5 over the current bid)
@@ -53,7 +54,7 @@ class BiddingAlertView: GameAlertView {
 			//If it's our bid, update it so that it shows "50" rather than "-"
 			updateBidLabel(myBid ? stepper : nil)
 		}
-		let bidder = game.players.first(where: { $0.id == game.currentBidder })
+		let bidder = game.players.first(where: { $0.id == game.turn })
 		textLabel.text = getText(bidder: bidder)
 		bidLabel.alpha = myBid ? 1 : UI.dimAlpha
 		stepper.isEnabled = myBid
@@ -84,7 +85,7 @@ class BiddingAlertView: GameAlertView {
 	
 	private func updateBid(_ bid: Int?) {
 		//Only the current bidder can submit a bid
-		if game.me?.id != game.currentBidder { return }
+		if game.me?.id != game.turn { return }
 		
 		let nextPlayer = getNextBidder()
 		
@@ -93,7 +94,7 @@ class BiddingAlertView: GameAlertView {
 		} else {
 			game.me?.passed = true
 		}
-		game.currentBidder = nextPlayer?.id
+		game.turn = nextPlayer?.id
 		DB.updateGame(game)
 	}
 	

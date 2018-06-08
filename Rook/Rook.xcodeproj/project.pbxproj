@@ -12,6 +12,7 @@
 		0C06A0691FF74B7600797ABD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C06A0681FF74B7600797ABD /* Player.swift */; };
 		0C0B738C1FF89E4300537352 /* RookCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0B738B1FF89E4300537352 /* RookCardContainerView.swift */; };
 		0C0B738E1FF99FBA00537352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C0B738D1FF99FBA00537352 /* GoogleService-Info.plist */; };
+		0C11704820CA221600675064 /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C11704720CA221600675064 /* Hand.swift */; };
 		0C45031920A7970700F034F5 /* TrumpColorAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C45031820A7970600F034F5 /* TrumpColorAlertView.swift */; };
 		0C45031B20A7975700F034F5 /* TrumpColorAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C45031A20A7975700F034F5 /* TrumpColorAlertView.xib */; };
 		0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C588FC51FF6B3EF00D6831E /* AppDelegate.swift */; };
@@ -25,7 +26,6 @@
 		0C77B6D920180F2600A350EF /* BiddingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C77B6D820180F2600A350EF /* BiddingAlertView.swift */; };
 		0C77B6DB20180F4300A350EF /* BiddingAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C77B6DA20180F4300A350EF /* BiddingAlertView.xib */; };
 		0C77B6DD201812E100A350EF /* GameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C77B6DC201812E100A350EF /* GameAlertView.swift */; };
-		0C80367C20C621FF00A51256 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C80367B20C621FF00A51256 /* Team.swift */; };
 		0C87318C200AD01F00BC6C75 /* PreGameAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C87318B200AD01F00BC6C75 /* PreGameAlertView.xib */; };
 		0CDFD84B1FF9C64B00AF241C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */; };
 		0CDFD84D1FFA013500AF241C /* DB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDFD84C1FFA013500AF241C /* DB.swift */; };
@@ -41,6 +41,7 @@
 		0C06A0681FF74B7600797ABD /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0C0B738B1FF89E4300537352 /* RookCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RookCardContainerView.swift; sourceTree = "<group>"; };
 		0C0B738D1FF99FBA00537352 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0C11704720CA221600675064 /* Hand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
 		0C335093905C61357010788E /* Pods-Rook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rook.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rook/Pods-Rook.release.xcconfig"; sourceTree = "<group>"; };
 		0C45031820A7970600F034F5 /* TrumpColorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrumpColorAlertView.swift; sourceTree = "<group>"; };
 		0C45031A20A7975700F034F5 /* TrumpColorAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TrumpColorAlertView.xib; sourceTree = "<group>"; };
@@ -57,7 +58,6 @@
 		0C77B6D820180F2600A350EF /* BiddingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiddingAlertView.swift; sourceTree = "<group>"; };
 		0C77B6DA20180F4300A350EF /* BiddingAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BiddingAlertView.xib; sourceTree = "<group>"; };
 		0C77B6DC201812E100A350EF /* GameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAlertView.swift; sourceTree = "<group>"; };
-		0C80367B20C621FF00A51256 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		0C87318B200AD01F00BC6C75 /* PreGameAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameAlertView.xib; sourceTree = "<group>"; };
 		0CDFD84A1FF9C64B00AF241C /* GamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		0CDFD84C1FFA013500AF241C /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 				0CDFD84C1FFA013500AF241C /* DB.swift */,
 				0C06A0661FF748D400797ABD /* Game.swift */,
 				0C06A0681FF74B7600797ABD /* Player.swift */,
-				0C80367B20C621FF00A51256 /* Team.swift */,
+				0C11704720CA221600675064 /* Hand.swift */,
 				0C588FDD1FF6BC6700D6831E /* RookCard.swift */,
 			);
 			path = model;
@@ -345,12 +345,12 @@
 				0C06A0671FF748D400797ABD /* Game.swift in Sources */,
 				0CDFD84D1FFA013500AF241C /* DB.swift in Sources */,
 				0C588FC81FF6B3EF00D6831E /* GameViewController.swift in Sources */,
-				0C80367C20C621FF00A51256 /* Team.swift in Sources */,
 				0CDFD84B1FF9C64B00AF241C /* GamesViewController.swift in Sources */,
 				0C604BA8200C049C0039F93F /* PlayerImageView.swift in Sources */,
 				0C588FC61FF6B3EF00D6831E /* AppDelegate.swift in Sources */,
 				0C06A0691FF74B7600797ABD /* Player.swift in Sources */,
 				0C588FDE1FF6BC6700D6831E /* RookCard.swift in Sources */,
+				0C11704820CA221600675064 /* Hand.swift in Sources */,
 				0C588FDC1FF6BB0300D6831E /* RookCardView.swift in Sources */,
 				0C45031920A7970700F034F5 /* TrumpColorAlertView.swift in Sources */,
 				0C77B6DD201812E100A350EF /* GameAlertView.swift in Sources */,
