@@ -25,7 +25,17 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	@IBOutlet private weak var handStackViewHeightConstraint: NSLayoutConstraint!
 	
 	//MARK: Public properties
-	var game: Game!
+	var game: Game! {
+		didSet {
+			//If the game just changed to the started state, announce trump
+			if oldValue?.currentHand?.trumpSuit == nil, let hand = game.currentHand, let trump = hand.trumpSuit, let winner = game.players.first(where: { $0.id == hand.bidWinner })?.name {
+				//TODO: Brand this a little better...
+				let alert = UIAlertController(title: "\(winner) has declared trump as \(trump)", message: nil, preferredStyle: .alert)
+				alert.addAction(UIAlertAction(title: "OK", style: .default))
+				present(alert, animated: true)
+			}
+		}
+	}
 	
 	//Computed
 	private var me: Player {

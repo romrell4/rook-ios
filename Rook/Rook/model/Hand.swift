@@ -12,30 +12,30 @@ class Hand {
 	private struct Keys {
 		static var points = "points"
 		static var bid = "bid"
-		static var biddingTeam = "biddingTeam"
+		static var bidWinner = "bidWinner"
 		static var trumpSuit = "trumpSuit"
 	}
 	
 	var points: [Int]
 	var bid: Int?
-	var biddingTeam: Int?
+	var bidWinner: String?
 	var trumpSuit: RookCard.Suit?
 	
 	convenience init(dict: [String: Any]) {
 		let points = dict[Keys.points] as? [Int] ?? []
 		let bid = dict[Keys.bid] as? Int
-		let biddingTeam = dict[Keys.biddingTeam] as? Int
+		let bidWinner = dict[Keys.bidWinner] as? String
 		var trumpSuit: RookCard.Suit?
 		if let trumpSuitText = dict[Keys.trumpSuit] as? String {
 			trumpSuit = RookCard.Suit.fromText(text: trumpSuitText)
 		}
-		self.init(points: points, bid: bid, biddingTeam: biddingTeam, trumpSuit: trumpSuit)
+		self.init(points: points, bid: bid, bidWinner: bidWinner, trumpSuit: trumpSuit)
 	}
 	
-	init(points: [Int], bid: Int? = nil, biddingTeam: Int? = nil, trumpSuit: RookCard.Suit? = nil) {
+	init(points: [Int], bid: Int? = nil, bidWinner: String? = nil, trumpSuit: RookCard.Suit? = nil) {
 		self.points = points
 		self.bid = bid
-		self.biddingTeam = biddingTeam
+		self.bidWinner = bidWinner
 		self.trumpSuit = trumpSuit
 	}
 	
@@ -43,7 +43,7 @@ class Hand {
 		var dict = [String: Any]()
 		dict[Keys.points] = points
 		dict[Keys.bid] = bid
-		dict[Keys.biddingTeam] = biddingTeam
+		dict[Keys.bidWinner] = bidWinner
 		dict[Keys.trumpSuit] = trumpSuit?.text
 		return dict
 	}

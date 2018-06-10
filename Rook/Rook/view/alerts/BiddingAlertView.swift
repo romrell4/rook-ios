@@ -31,7 +31,7 @@ class BiddingAlertView: GameAlertView {
 		if game.players.filter({ $0 != Player.current && $0.passed != true }).count == 0 {
 			game.turn = nil
 			game.currentHand?.bid = game.me?.bid
-			game.currentHand?.biddingTeam = game.me?.teamNumber
+			game.currentHand?.bidWinner = game.me?.id
 			game.state = .viewKitty
 			DB.updateGame(game)
 			return
