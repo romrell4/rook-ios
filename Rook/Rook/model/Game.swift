@@ -138,6 +138,15 @@ class Game {
 		//TODO: Handle misdeal
 	}
 	
+	func endHand() {
+		players.forEach {
+			$0.bid = nil
+			$0.passed = nil
+		}
+		
+		deal()
+	}
+	
 	func toDict() -> [String: Any] {
 		var dict: [String: Any] = [
 			Keys.name: name,

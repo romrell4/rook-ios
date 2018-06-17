@@ -66,6 +66,7 @@ class RookCard: Comparable, CustomStringConvertible {
 		return rank == 1 ? 15 : rank
 	}
 	var points: Int {
+		//TODO: Is rook not being added??
 		switch rank {
 		case Rank.rook: return 20
 		case 1: return 15

@@ -143,6 +143,13 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 				game.currentHand?.points[$0.teamNumber] += $0.playedCard?.points ?? 0
 				$0.playedCard = nil
 			}
+			
+			//If you have no cards, deal the next hand
+			if me.cards.isEmpty {
+				game.endHand()
+				game.state = .bidding
+			}
+			
 			DB.updateGame(game)
 		}
 	}
@@ -295,17 +302,15 @@ extension GameViewController {
 		}
 		
 		//Update the played cards
-		if game.state == .started {
-			game.players.forEach {
-				var cardView: RookCardView?
-				if let card = $0.playedCard {
-					cardView = RookCardView(card: card)
-				}
-				
-				//Find the position that this player is in, and update their card
-				let position = (($0.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
-				playedCardViews[position].cardView = cardView
+		game.players.forEach {
+			var cardView: RookCardView?
+			if let card = $0.playedCard {
+				cardView = RookCardView(card: card)
 			}
+			
+			//Find the position that this player is in, and update their card
+			let position = (($0.sortNum ?? 0) - (me.sortNum ?? 0) + MAX_PLAYERS) % MAX_PLAYERS
+			playedCardViews[position].cardView = cardView
 		}
 	}
 	
