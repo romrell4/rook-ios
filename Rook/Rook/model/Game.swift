@@ -114,14 +114,7 @@ class Game {
 	func join() {
 		if let me = Player.current, !players.contains(me) {
 			players.append(me)
-			DB.joinGame(gameId: id, player: me)
-		}
-	}
-	
-	func leave() {
-		if let me = Player.current {
-			players.remove { $0 == me }
-			DB.leaveGame(gameId: id, playerId: me.id)
+			DB.updateGame(self)
 		}
 	}
 	

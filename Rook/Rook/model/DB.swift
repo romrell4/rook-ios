@@ -36,12 +36,6 @@ class DB {
 	static func createGame(_ game: Game) {
 		gamesRef.childByAutoId().setValue(game.toDict())
 	}
-	static func joinGame(gameId: String, player: Player) {
-		playerRef(gameId: gameId, playerId: player.id).setValue(player.toDict())
-	}
-	static func leaveGame(gameId: String, playerId: String) {
-		playerRef(gameId: gameId, playerId: playerId).removeValue()
-	}
 	static func updateGame(_ game: Game) {
 		gameRef(id: game.id).setValue(game.toDict())
 	}
