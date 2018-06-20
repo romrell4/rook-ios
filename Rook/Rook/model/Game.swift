@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 let MAX_PLAYERS = 4
 let MIN_BID = 50
+//TODO: Make it so that if you take all the cards, you get a 200 instead of 180
+let MAX_POINTS = 200
 private let MIN_KITTY_SIZE = 2
 
 class Game {
@@ -63,6 +65,7 @@ class Game {
 	//MARK: Computed properties
 	var me: Player? { return players.first { $0 == Player.current } }
 	var currentHand: Hand? { return hands.last }
+	var otherPlayers: [Player] { return players.filter { $0 != me } }
 	
 	//MARK: Initialization
 	

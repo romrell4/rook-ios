@@ -27,8 +27,7 @@ class PreGameAlertView: GameAlertView {
 		
 		//Setup the images
 		bottomImage.player = game.me
-		zip(imageViews, game.players.filter { $0 != game.me }) //Remove yourself from the list
-			.forEach { $0.0.player = $0.1 } //Set the images for the others
+		zip(imageViews, game.otherPlayers).forEach { $0.0.player = $0.1 } //Set the images for the others
 		if game.state == .waitingForPlayers {
 			let waitingAmount = MAX_PLAYERS - game.players.count
 			if waitingAmount == 0 {

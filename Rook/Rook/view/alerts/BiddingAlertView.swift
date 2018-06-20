@@ -28,7 +28,7 @@ class BiddingAlertView: GameAlertView {
 		super.updateGame(game)
 		
 		//If I just took the bid (everyone else passed)
-		if game.players.filter({ $0 != game.me && $0.passed != true }).count == 0 {
+		if game.otherPlayers.filter({$0.passed != true }).count == 0 {
 			game.turn = nil
 			game.currentHand?.bid = game.me?.bid ?? MIN_BID
 			game.currentHand?.bidWinner = game.me?.id
@@ -38,14 +38,13 @@ class BiddingAlertView: GameAlertView {
 		}
 		
 		//Update the other people's bids
-		for ((nameLabel, bidLabel), player) in zip(zip(nameLabels, bidLabels), game.players.filter { $0 != game.me }) {
+		for ((nameLabel, bidLabel), player) in zip(zip(nameLabels, bidLabels), game.otherPlayers) {
 			nameLabel.text = "\(player.name ?? "Player"):"
 			bidLabel.text = player.passed ?? false ? "Passed" : player.bid?.description ?? "-"
 		}
 		
 		let myBid = game.turn == game.me?.id
 		if let currentBid = game.currentHand?.bid {
-			//TODO: Fix bug where you can bid over 200 if others are bidding
 			//Update the minimum stepper value (if it's your bid, set the stepper to 5 over the current bid)
 			stepper.minimumValue = Double(currentBid) + (myBid ? stepper.stepValue : 0)
 			stepper.value = stepper.minimumValue
@@ -90,6 +89,10 @@ class BiddingAlertView: GameAlertView {
 		let nextPlayer = getNextBidder()
 		
 		if let bid = bid {
+			//If we bid 200, automatically make everyone else pass
+			if bid == MAX_POINTS {
+				game.otherPlayers.forEach { $0.passed = true }
+			}
 			game.me?.bid = bid
 		} else {
 			game.me?.passed = true
