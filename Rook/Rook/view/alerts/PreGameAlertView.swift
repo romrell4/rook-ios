@@ -27,7 +27,7 @@ class PreGameAlertView: GameAlertView {
 		
 		//Setup the images
 		bottomImage.player = game.me
-		zip(imageViews, game.players.filter { $0 != Player.current }) //Remove yourself from the list
+		zip(imageViews, game.players.filter { $0 != game.me }) //Remove yourself from the list
 			.forEach { $0.0.player = $0.1 } //Set the images for the others
 		if game.state == .waitingForPlayers {
 			let waitingAmount = MAX_PLAYERS - game.players.count
@@ -38,7 +38,7 @@ class PreGameAlertView: GameAlertView {
 				textLabel.text = "Waiting for \(waitingAmount) other player\(waitingAmount != 1 ? "s" : "")"
 			}
 		} else if game.state == .waitingForTeams {
-			textLabel.text = game.owner == Player.current?.id ? "Please select your partner" : "Waiting for teams to be chosen by the game leader"
+			textLabel.text = game.owner == game.me?.id ? "Please select your partner" : "Waiting for teams to be chosen by the game leader"
 		}
 	}
 	

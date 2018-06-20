@@ -42,8 +42,8 @@ class Game {
 			switch self {
 				case .waitingForPlayers, .waitingForTeams:	return PreGameAlertView.self
 				case .bidding: 								return BiddingAlertView.self
-				case .viewKitty: 							return game.highBidder == game.me ? KittyAlertView.self : nil
-				case .discardAndDeclareTrump:				return game.highBidder == game.me ? TrumpColorAlertView.self : nil
+				case .viewKitty: 							return game.currentHand?.bidWinner == game.me?.id ? KittyAlertView.self : nil
+				case .discardAndDeclareTrump:				return game.currentHand?.bidWinner == game.me?.id ? TrumpColorAlertView.self : nil
 				default: 									return nil
 			}
 		}
@@ -63,7 +63,6 @@ class Game {
 	//MARK: Computed properties
 	var me: Player? { return players.first { $0 == Player.current } }
 	var currentHand: Hand? { return hands.last }
-	var highBidder: Player? { return players.filter { $0.bid != nil }.max { $0.bid! < $1.bid! } }
 	
 	//MARK: Initialization
 	

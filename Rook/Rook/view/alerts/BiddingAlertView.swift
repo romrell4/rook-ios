@@ -28,9 +28,9 @@ class BiddingAlertView: GameAlertView {
 		super.updateGame(game)
 		
 		//If I just took the bid (everyone else passed)
-		if game.players.filter({ $0 != Player.current && $0.passed != true }).count == 0 {
+		if game.players.filter({ $0 != game.me && $0.passed != true }).count == 0 {
 			game.turn = nil
-			game.currentHand?.bid = game.me?.bid
+			game.currentHand?.bid = game.me?.bid ?? MIN_BID
 			game.currentHand?.bidWinner = game.me?.id
 			game.state = .viewKitty
 			DB.updateGame(game)
@@ -38,13 +38,13 @@ class BiddingAlertView: GameAlertView {
 		}
 		
 		//Update the other people's bids
-		for ((nameLabel, bidLabel), player) in zip(zip(nameLabels, bidLabels), game.players.filter { $0 != Player.current }) {
+		for ((nameLabel, bidLabel), player) in zip(zip(nameLabels, bidLabels), game.players.filter { $0 != game.me }) {
 			nameLabel.text = "\(player.name ?? "Player"):"
 			bidLabel.text = player.passed ?? false ? "Passed" : player.bid?.description ?? "-"
 		}
 		
 		let myBid = game.turn == game.me?.id
-		if let currentBid = game.highBidder?.bid {
+		if let currentBid = game.currentHand?.bid {
 			//TODO: Fix bug where you can bid over 200 if others are bidding
 			//Update the minimum stepper value (if it's your bid, set the stepper to 5 over the current bid)
 			stepper.minimumValue = Double(currentBid) + (myBid ? stepper.stepValue : 0)
@@ -99,7 +99,7 @@ class BiddingAlertView: GameAlertView {
 	}
 	
 	private func getNextBidder() -> Player? {
-		if let me = Player.current, let myIndex = game.players.index(of: me) {
+		if let me = game.me, let myIndex = game.players.index(of: me) {
 			for i in 1 ..< MAX_PLAYERS {
 				let player = game.players[(myIndex + i) % MAX_PLAYERS]
 				if !(player.passed ?? false) {
@@ -113,8 +113,8 @@ class BiddingAlertView: GameAlertView {
 	private func getText(bidder: Player?) -> String {
 		var part1: String = ""
 		var part2: String
-		if bidder == Player.current {
-			if let currentBid = game.highBidder?.bid {
+		if bidder == game.me {
+			if let currentBid = game.currentHand?.bid {
 				part1 = "The bid is at \(currentBid)."
 			} else {
 				part1 = "You start the bidding."

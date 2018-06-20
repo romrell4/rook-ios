@@ -87,7 +87,7 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	func cardSelected(_ cardView: RookCardView) {
 		//TODO: Make a "cardMoved" and "cardDropped" to animate the motion
 		
-		if game.state == .discardAndDeclareTrump, game.highBidder == me {
+		if game.state == .discardAndDeclareTrump, game.currentHand?.bidWinner == me.id {
 			guard canSelectCardToDiscard(cardView: cardView) else { return }
 			
 			cardView.selected = !cardView.selected
@@ -134,19 +134,27 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 	}
 	
 	@IBAction func swipedToCollect() {
-		if iWon() {
+		//Sometimes if firebase is slow, you can swipe before the animation started. Then it will start AFTER you already swiped the cards away. Checking the alpha fixes that.
+		if swipeViews[0].alpha > 0 && iWon() {
 			swipeViews.forEach {
 				$0.layer.removeAllAnimations()
 				$0.alpha = 0
 			}
+			
+//			let pointsWon = game.players.reduce(0, { $0 + ($1.playedCard?.points ?? 0) })
+//			let cardsPlayed = game.players.map { $0.playedCard?.description ?? "" }.joined(separator: " ")
+//			DB.log("Team \(game.me!.teamNumber) won \(pointsWon) points (\(cardsPlayed))")
 			game.players.forEach {
-				game.currentHand?.points[$0.teamNumber] += $0.playedCard?.points ?? 0
+				game.currentHand?.points[me.teamNumber] += $0.playedCard?.points ?? 0
 				$0.playedCard = nil
 			}
+			
 			
 			//If you have no cards, deal the next hand
 			if me.cards.isEmpty {
 				game.endHand()
+				
+				//TODO: Go to score card
 				game.state = .bidding
 			}
 			
@@ -316,7 +324,7 @@ extension GameViewController {
 	
 	private func handleShowDoneButton() {
 		//If we are in the kitty state, create a "Done" button so that the user can finish the kitty state
-		if game.state == .discardAndDeclareTrump && game.highBidder == Player.current {
+		if game.state == .discardAndDeclareTrump && game.currentHand?.bidWinner == me.id {
 			navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(doneTapped))
 			navigationItem.rightBarButtonItem?.isEnabled = false
 		} else {
@@ -327,9 +335,6 @@ extension GameViewController {
 	private func handleWinningTrick() {
 		//If you won, make the swipe view visible/pulsing
 		if iWon() {
-			//TODO: Fix error that happened in this sitation:
-			//Player2: Red 1, Player1: Rook, Player3: Red 2, Player4: Red 5
-			//Both Player2 and Player1 go the swipeViews animating
 			swipeViews.forEach { swipeView in
 				UIView.animate(withDuration: 1, delay: 0, animations: { swipeView.alpha = 1 }, completion: { (_) in
 					UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: { swipeView.alpha = 0.5 }, completion: nil)
@@ -340,7 +345,7 @@ extension GameViewController {
 	
 	private func handleMyTurn() {
 		//If it's my turn, make my played card view pulse lightly
-		if game.turn == game.me?.id {
+		if game.state == .started && game.turn == game.me?.id {
 			UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
 				self.myPlayedCardView.backgroundColor = .cardContainerBright
 			}, completion: nil)

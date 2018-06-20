@@ -14,6 +14,7 @@ class DB {
 		static let games = "games"
 		static let gamePlayers = "players"
 		static let players = "players"
+		static let logs = "logs"
 	}
 	
 	static var ref: DatabaseReference!
@@ -38,5 +39,8 @@ class DB {
 	}
 	static func updateGame(_ game: Game) {
 		gameRef(id: game.id).setValue(game.toDict())
+	}
+	static func log(_ message: String) {
+		ref.child(Keys.logs).childByAutoId().setValue(message)
 	}
 }
