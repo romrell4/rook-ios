@@ -22,6 +22,7 @@ class Game {
 		static let owner = "owner"
 		static let state = "state"
 		static let players = "players"
+		static let teams = "teams"
 		static let hands = "hands"
 		static let kitty = "kitty"
 		static let bidTurn = "bidTurn"
@@ -57,6 +58,7 @@ class Game {
 	var owner: String
 	var state: State
 	var players: [Player]
+	var teams: [Team]
 	var hands: [Hand]
 	var kitty: [RookCard]?
 	var bidTurn: String?
@@ -84,14 +86,15 @@ class Game {
 			}
 			fatalError()
 		}
+		let teams = (dict[Keys.teams] as? [[String: Any]])?.map { Team(dict: $0) } ?? []
 		let hands = (dict[Keys.hands] as? [[String: Any]])?.map { Hand(dict: $0) } ?? []
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
 		let turn = dict[Keys.turn] as? String
-		self.init(id: id, name: name, owner: owner, state: state, players: players, hands: hands, kitty: kitty, turn: turn)
+		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, hands: hands, kitty: kitty, turn: turn)
 	}
 	
-	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], hands: [Hand] = [], kitty: [RookCard]? = nil, turn: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], hands: [Hand] = [], kitty: [RookCard]? = nil, turn: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -105,6 +108,7 @@ class Game {
 			return false
 		}
 		
+		self.teams = teams
 		self.hands = hands
 		self.kitty = kitty
 		self.state = state
@@ -160,6 +164,7 @@ class Game {
 		players.forEach { playersDict[$0.id] = $0.toDict() }
 		dict[Keys.players] = playersDict
 		
+		dict[Keys.teams] = teams.map { $0.toDict() }
 		dict[Keys.hands] = hands.map { $0.toDict() }
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.turn] = turn

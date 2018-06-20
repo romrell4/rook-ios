@@ -144,8 +144,9 @@ class GameViewController: UIViewController, RookCardViewDelegate, AlertViewDeleg
 //			let pointsWon = game.players.reduce(0, { $0 + ($1.playedCard?.points ?? 0) })
 //			let cardsPlayed = game.players.map { $0.playedCard?.description ?? "" }.joined(separator: " ")
 //			DB.log("Team \(game.me!.teamNumber) won \(pointsWon) points (\(cardsPlayed))")
+			let teamNumber = game.teams.index { $0.players.contains(me.id) } ?? 0
 			game.players.forEach {
-				game.currentHand?.points[me.teamNumber] += $0.playedCard?.points ?? 0
+				game.currentHand?.points[teamNumber] += $0.playedCard?.points ?? 0
 				$0.playedCard = nil
 			}
 			
