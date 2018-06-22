@@ -29,8 +29,12 @@ class BiddingAlertView: GameAlertView {
 		
 		//If I just took the bid (everyone else passed)
 		if game.otherPlayers.filter({$0.passed != true }).count == 0 {
+			//If nobody bid, the currentHand's bid will be nil still. Default to the minimum bid
+			if game.currentHand?.bid == nil {
+				game.currentHand?.bid = MIN_BID
+			}
+			
 			game.turn = nil
-			game.currentHand?.bid = game.me?.bid ?? MIN_BID
 			game.currentHand?.bidWinner = game.me?.id
 			game.state = .viewKitty
 			DB.updateGame(game)
@@ -94,6 +98,7 @@ class BiddingAlertView: GameAlertView {
 				game.otherPlayers.forEach { $0.passed = true }
 			}
 			game.me?.bid = bid
+			game.currentHand?.bid = bid
 		} else {
 			game.me?.passed = true
 		}

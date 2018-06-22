@@ -160,7 +160,8 @@ class GamesViewController: UITableViewController {
 
 		let auth = Auth.auth()
 		auth.addStateDidChangeListener { (auth, user) in
-			if Player.current != nil {
+			if let player = Player.current {
+				DB.createUser(player)
 				self.navigationItem.leftBarButtonItem?.title = "Logout"
 				self.observing = true
 			} else {

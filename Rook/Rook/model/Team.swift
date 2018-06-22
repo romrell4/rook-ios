@@ -15,31 +15,34 @@ class Team {
 		static var players = "players"
 	}
 	
-	var name: String
+	var id: String
 	var points: Int
 	var players: [String]
 	
 	convenience init(players: [Player]) {
-		self.init(name: players.reduce("", { $0 + (String(char: $1.name?.first) ?? "") }), points: 0, players: players.map { $0.id })
+		self.init(
+			id: players.reduce("", { $0 + $1.id }),
+			points: 0,
+			players: players.map { $0.id }
+		)
 	}
 	
-	convenience init(dict: [String: Any]) {
+	convenience init(id: String, dict: [String: Any]) {
 		self.init(
-			name: dict[Keys.name] as? String ?? "",
+			id: id,
 			points: dict[Keys.points] as? Int ?? 0,
 			players: dict[Keys.players] as? [String] ?? []
 		)
 	}
 	
-	init(name: String, points: Int, players: [String]) {
-		self.name = name
+	init(id: String, points: Int, players: [String]) {
+		self.id = id
 		self.points = points
 		self.players = players
 	}
 	
 	func toDict() -> [String: Any] {
 		return [
-			Keys.name: name,
 			Keys.points: points,
 			Keys.players: players
 		]

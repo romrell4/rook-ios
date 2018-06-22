@@ -27,16 +27,6 @@ extension Array {
 	}
 }
 
-extension String {
-	init?(char: Character?) {
-		if let char = char {
-			self.init(char)
-		} else {
-			return nil
-		}
-	}
-}
-
 extension UIColor {
 	convenience init(_ name: String) { self.init(named: name)! }
 	

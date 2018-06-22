@@ -80,13 +80,9 @@ class Game {
 		let name = dict[Keys.name] as? String ?? ""
 		let owner = dict[Keys.owner] as? String ?? ""
 		let playersDict = dict[Keys.players] as? [String: Any] ?? [:]
-		let players = playersDict.map { (tuple) -> Player in
-			if let dict = tuple.value as? [String: Any] {
-				return Player(id: tuple.key, dict: dict)
-			}
-			fatalError()
-		}
-		let teams = (dict[Keys.teams] as? [[String: Any]])?.map { Team(dict: $0) } ?? []
+		let players = playersDict.map { Player(id: $0.key, dict: $0.value as? [String: Any] ?? [:]) }
+		let teamsDict = dict[Keys.teams] as? [String: Any] ?? [:]
+		let teams = teamsDict.map { Team(id: $0.key, dict: $0.value as? [String: Any] ?? [:]) }
 		let hands = (dict[Keys.hands] as? [[String: Any]])?.map { Hand(dict: $0) } ?? []
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
@@ -126,7 +122,7 @@ class Game {
 	
 	func deal() {
 		state = .bidding
-		hands.append(Hand(points: [0, 0]))
+		hands.append(Hand(points: [teams[0].id: 0, teams[1].id: 0]))
 		
 		//TODO: Start with the correct person
 		turn = owner
@@ -145,12 +141,28 @@ class Game {
 	}
 	
 	func endHand() {
+		//Add the points from the hand into the teams
+		if let bid = currentHand?.bid,
+			let bidWinner = currentHand?.bidWinner,
+			let points = currentHand?.points,
+			let biddingTeam = teams.first(where: { $0.players.contains(bidWinner) }),
+			let otherTeam = teams.first(where: { $0.id != biddingTeam.id }),
+			let biddingTeamHandPoints = points[biddingTeam.id] {
+			
+			//TODO: Deal with 200 hands
+			//Either add the points they earned, or subtract the bid
+			biddingTeam.points += biddingTeamHandPoints >= bid ? biddingTeamHandPoints : -bid
+			otherTeam.points += points[otherTeam.id] ?? 0
+		}
+
+		//Reset any player data from the previous round
 		players.forEach {
 			$0.bid = nil
 			$0.passed = nil
 		}
 		
 		deal()
+		//TODO: Fix not drawing other player's cards or bidding screen
 	}
 	
 	func toDict() -> [String: Any] {
@@ -164,7 +176,10 @@ class Game {
 		players.forEach { playersDict[$0.id] = $0.toDict() }
 		dict[Keys.players] = playersDict
 		
-		dict[Keys.teams] = teams.map { $0.toDict() }
+		var teamsDict = [String: Any]()
+		teams.forEach { teamsDict[$0.id] = $0.toDict() }
+		dict[Keys.teams] = teamsDict
+		
 		dict[Keys.hands] = hands.map { $0.toDict() }
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.turn] = turn

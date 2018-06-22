@@ -16,13 +16,13 @@ class Hand {
 		static var trumpSuit = "trumpSuit"
 	}
 	
-	var points: [Int]
+	var points: [String: Int]
 	var bid: Int?
 	var bidWinner: String?
 	var trumpSuit: RookCard.Suit?
 	
 	convenience init(dict: [String: Any]) {
-		let points = dict[Keys.points] as? [Int] ?? []
+		let points = dict[Keys.points] as? [String: Int] ?? [:]
 		let bid = dict[Keys.bid] as? Int
 		let bidWinner = dict[Keys.bidWinner] as? String
 		var trumpSuit: RookCard.Suit?
@@ -32,7 +32,7 @@ class Hand {
 		self.init(points: points, bid: bid, bidWinner: bidWinner, trumpSuit: trumpSuit)
 	}
 	
-	init(points: [Int], bid: Int? = nil, bidWinner: String? = nil, trumpSuit: RookCard.Suit? = nil) {
+	init(points: [String: Int], bid: Int? = nil, bidWinner: String? = nil, trumpSuit: RookCard.Suit? = nil) {
 		self.points = points
 		self.bid = bid
 		self.bidWinner = bidWinner
