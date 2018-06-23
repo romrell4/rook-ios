@@ -25,6 +25,13 @@ extension Array {
 			remove(at: index)
 		}
 	}
+	
+	func associate<Key, Value>(_ keyAndTransform: (Element) -> (Key, Value)) -> [Key: Value] {
+		return reduce(into: [:], { (dict, element) in
+			let (key, value) = keyAndTransform(element)
+			dict[key] = value
+		})
+	}
 }
 
 extension UIColor {

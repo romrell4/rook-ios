@@ -79,10 +79,8 @@ class Game {
 	convenience init(id: String, dict: [String: Any]) {
 		let name = dict[Keys.name] as? String ?? ""
 		let owner = dict[Keys.owner] as? String ?? ""
-		let playersDict = dict[Keys.players] as? [String: Any] ?? [:]
-		let players = playersDict.map { Player(id: $0.key, dict: $0.value as? [String: Any] ?? [:]) }
-		let teamsDict = dict[Keys.teams] as? [String: Any] ?? [:]
-		let teams = teamsDict.map { Team(id: $0.key, dict: $0.value as? [String: Any] ?? [:]) }
+		let players = (dict[Keys.players] as? [String: [String: Any]])?.map { Player(id: $0, dict: $1) } ?? []
+		let teams = (dict[Keys.teams] as? [String: [String: Any]])?.map { Team(id: $0, dict: $1) } ?? []
 		let hands = (dict[Keys.hands] as? [[String: Any]])?.map { Hand(dict: $0) } ?? []
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
@@ -169,18 +167,12 @@ class Game {
 		var dict: [String: Any] = [
 			Keys.name: name,
 			Keys.owner: owner,
-			Keys.state: state.rawValue
+			Keys.state: state.rawValue,
+			Keys.players: players.associate { ($0.id, $0.toDict()) },
+			Keys.teams: teams.associate { ($0.id, $0.toDict()) },
+			Keys.hands: hands.map { $0.toDict() }
 		]
 		
-		var playersDict = [String: Any]()
-		players.forEach { playersDict[$0.id] = $0.toDict() }
-		dict[Keys.players] = playersDict
-		
-		var teamsDict = [String: Any]()
-		teams.forEach { teamsDict[$0.id] = $0.toDict() }
-		dict[Keys.teams] = teamsDict
-		
-		dict[Keys.hands] = hands.map { $0.toDict() }
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.turn] = turn
 		return dict
