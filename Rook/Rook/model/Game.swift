@@ -27,6 +27,7 @@ class Game {
 		static let kitty = "kitty"
 		static let bidTurn = "bidTurn"
 		static let turn = "turn"
+		static let dealer = "dealer"
 	}
 	
 	enum State: String {
@@ -63,6 +64,7 @@ class Game {
 	var kitty: [RookCard]?
 	var bidTurn: String?
 	var turn: String?
+	var dealer: String?
 	
 	//MARK: Computed properties
 	var me: Player? { return players.first { $0 == Player.current } }
@@ -85,10 +87,11 @@ class Game {
 		let kitty = (dict[Keys.kitty] as? [[String: Any]])?.map { RookCard(dict: $0) }
 		let state = State(rawValue: dict[Keys.state] as? String ?? "") ?? .waitingForPlayers
 		let turn = dict[Keys.turn] as? String
-		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, hands: hands, kitty: kitty, turn: turn)
+		let dealer = dict[Keys.dealer] as? String
+		self.init(id: id, name: name, owner: owner, state: state, players: players, teams: teams, hands: hands, kitty: kitty, turn: turn, dealer: dealer)
 	}
 	
-	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], hands: [Hand] = [], kitty: [RookCard]? = nil, turn: String? = nil) {
+	init(id: String = "", name: String, owner: String, state: State = .waitingForPlayers, players: [Player] = [], teams: [Team] = [], hands: [Hand] = [], kitty: [RookCard]? = nil, turn: String? = nil, dealer: String? = nil) {
 		self.id = id
 		self.name = name
 		self.owner = owner
@@ -107,6 +110,7 @@ class Game {
 		self.kitty = kitty
 		self.state = state
 		self.turn = turn
+		self.dealer = dealer
 	}
 	
 	//MARK: Public functions
@@ -122,8 +126,18 @@ class Game {
 		state = .bidding
 		hands.append(Hand(points: [teams[0].id: 0, teams[1].id: 0]))
 		
-		//TODO: Start with the correct person
-		turn = owner
+		//Determine who the next dealer is
+		if let currentDealer = dealer {
+			let currentPlayerSortNum = players.first(where: { $0.id == currentDealer })?.sortNum ?? 0
+			let nextPlayerSortNum = currentPlayerSortNum + 1 % MAX_PLAYERS
+			let nextDealer = players.first { $0.sortNum == nextPlayerSortNum }
+			dealer = nextDealer?.id
+		} else {
+			dealer = owner
+		}
+		
+		//The dealer will start the bidding
+		turn = dealer
 		
 		var deck = createDeck()
 		deck.shuffle()
@@ -160,7 +174,6 @@ class Game {
 		}
 		
 		deal()
-		//TODO: Fix not drawing other player's cards or bidding screen
 	}
 	
 	func toDict() -> [String: Any] {
@@ -175,6 +188,7 @@ class Game {
 		
 		dict[Keys.kitty] = kitty?.map { $0.toDict() }
 		dict[Keys.turn] = turn
+		dict[Keys.dealer] = dealer
 		return dict
 	}
 	

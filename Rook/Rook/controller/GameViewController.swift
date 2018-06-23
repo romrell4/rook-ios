@@ -304,12 +304,13 @@ extension GameViewController {
 		} else {
 			//No alert should be showing. Dismiss it if there is
 			currentAlert?.dismiss()
+			currentAlert = nil
 		}
 	}
 	
 	private func handleDrawingCards() {
-		//If I have cards, but they don't match my hand's stack view, redraw them
-		if !me.cards.isEmpty, handStackView.subviews.count != me.cards.count {
+		//If I my cards don't match my hand's stack view, redraw them
+		if handStackView.subviews.count != me.cards.count {
 			drawCards()
 		}
 		
